@@ -1,0 +1,26 @@
+<VirtualHost *:80>
+    ServerName foo.bar.de
+
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/server-status
+    RewriteRule ^/?(.*) https://%{HTTP_HOST}/$1 [R,L]
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName foo.bar.de
+
+    WSGIDaemonProcess cephdash user=www-data group=www-data processes=1 threads=5
+    WSGIScriptAlias / /opt/ceph-dash/contrib/wsgi/cephdash.wsgi
+    WSGIPassAuthorization On
+
+    SSLEngine on
+    SSLCertificateFile /etc/apache2/ssl/ssl.crt
+    SSLCertificateKeyFile /etc/apache2/ssl/ssl.key
+
+    <Directory /opt/ceph-dash>
+        WSGIProcessGroup cephdash
+        WSGIApplicationGroup %{GLOBAL}
+        Order deny,allow
+        Allow from all
+    </Directory>
+</VirtualHost>
