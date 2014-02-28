@@ -38,4 +38,4 @@ Pictures!!
 
 In case anyone wants to see what to expect, here you go:
 
-[![screenshot01](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash.png)]
+![screenshot01](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash.png)
