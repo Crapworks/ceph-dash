@@ -71,6 +71,14 @@ class CephStatusView(MethodView):
                 return render_template('status.html', data=json.loads(buf))
 
 
+def fmtbytes(numbytes):
+    for fmt in ['bytes','KB','MB','GB']:
+        if numbytes < 1024.0:
+            return "%3.1f%s" % (numbytes, fmt)
+        numbytes /= 1024.0
+    return "%3.1f%s" % (numbytes, 'TB')
+
+
 class CephAPI(Flask):
     def __init__(self, name):
         Flask.__init__(self, name)
@@ -81,6 +89,9 @@ class CephAPI(Flask):
         # add custom error handler
         for code in default_exceptions.iterkeys():
             self.error_handler_spec[None][code] = self.make_json_error
+
+        # register custom jinja filter
+        self.jinja_env.filters['fmtbytes'] = fmtbytes
 
     def make_json_error(self, ex):
         if isinstance(ex, HTTPException):

@@ -163,7 +163,7 @@
         </div>
 
         <div class="well well-sm" style="margin-top: 30px;">
-          <strong><center>{{ (data['pgmap']['bytes_used'] / 1024 ** 4)|round }}TB / {{ (data['pgmap']['bytes_total'] / 1024 ** 4)|round }}TB ({{ ((data['pgmap']['bytes_used'] / data['pgmap']['bytes_total']) * 100)|round  }}%)</center></strong>
+          <strong><center>{{ data['pgmap']['bytes_used']|fmtbytes }} / {{ data['pgmap']['bytes_total']|fmtbytes }} ({{ ((data['pgmap']['bytes_used'] / data['pgmap']['bytes_total']) * 100)|round  }}%)</center></strong>
         </div>
 
         <div class="progress" style="margin-bottom: 9px;">
