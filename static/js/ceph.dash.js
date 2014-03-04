@@ -154,7 +154,7 @@ $(function () {
             $("#unhealthy_osds").html(data['osdmap']['osdmap']['num_osds'] - data['osdmap']['osdmap']['num_up_osds'] || 0);
         }
 
-        ajaxCall('http://poc-cephmon01.infra.server.lan:5000/', callback);
+        ajaxCall('/', callback);
     };
     worker();
 })
