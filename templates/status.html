@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="30">
+  <!--<meta http-equiv="refresh" content="30">-->
   <title>Ceph Dashboard</title>
   <link href="{{ url_for('static', filename='css/bootstrap.min.slate.css') }}" rel="stylesheet">
 </head>
@@ -57,7 +57,7 @@
             <div class="alert alert-success">
               <strong><span class="glyphicon glyphicon-ok">&nbsp;</span>Monitor {{ mon['name']|upper }}: {{ mon['health'] }}</strong>
             </div>
-          </div>  
+          </div>
           {% endfor %}
 
         </div>
@@ -90,28 +90,28 @@
           <div class="col-md-3">
             <div class="panel panel-info">
               <div class="panel-heading">Total</div>
-              <div class="panel-body">{{ data['osdmap']['osdmap']['num_osds'] }}</div>
+              <div class="panel-body" id="num_osds"></div>
             </div>
           </div>
 
           <div class="col-md-3">
             <div class="panel panel-success">
               <div class="panel-heading">In</div>
-              <div class="panel-body">{{ data['osdmap']['osdmap']['num_in_osds'] }}</div>
+              <div class="panel-body" id="num_in_osds"></div>
             </div>
           </div>  
 
           <div class="col-md-3">
             <div class="panel panel-success">
               <div class="panel-heading">Up</div>
-              <div class="panel-body">{{ data['osdmap']['osdmap']['num_up_osds'] }}</div>
+              <div class="panel-body" id="num_up_osds"></div>
             </div>
           </div>  
 
           <div class="col-md-3">
             <div class="panel panel-danger">
               <div class="panel-heading">Unhealthy</div>
-              <div class="panel-body">{{ data['osdmap']['osdmap']['num_osds'] - data['osdmap']['osdmap']['num_up_osds'] }}</div>
+              <div class="panel-body" id="unhealthy_osds"></div>
             </div>
           </div>  
         </div>
@@ -125,64 +125,68 @@
       </div>
       <div class="panel-body">
 
-        {% for pgstate in data['pgmap']['pgs_by_state'] %}
-        {% if pgstate['state_name'] == 'active+clean' %}
-        <div class="alert alert-success">
-          <strong>
-            <span class="glyphicon glyphicon-ok"></span>
-              {{ pgstate['count'] }} / {{ data['pgmap']['num_pgs'] }} {{ pgstate['state_name'] }}
-            </strong>
-        </div>
-        {% elif 'active' in pgstate['state_name'] %}
-        <div class="alert alert-warning">
-          <strong>
-            <span class="glyphicon glyphicon-flash"></span>
-              {{ pgstate['count'] }} / {{ data['pgmap']['num_pgs'] }} {{ pgstate['state_name'] }}
-            </strong>
-        </div>
-        {% else %}
-        <div class="alert alert-danger">
-          <strong>
-            <span class="glyphicon glyphicon-remove"></span>
-              {{ pgstate['count'] }} / {{ data['pgmap']['num_pgs'] }} {{ pgstate['state_name'] }}
-            </strong>
-        </div>
-        {% endif %}
-        {% endfor %}
-
         <div class="row">
-          <div class="col-md-4">
-            <div id="ops_per_sec"></div>
-          </div>
-          <div class="col-md-4">
-            <div id="wr_per_sec"></div>
-          </div>
-          <div class="col-md-4">
-            <div id="rd_per_sec"></div>
-          </div>
-        </div>
 
-        <div class="well well-sm" style="margin-top: 30px;">
-          <strong><center>{{ data['pgmap']['bytes_used']|fmtbytes }} / {{ data['pgmap']['bytes_total']|fmtbytes }} ({{ ((data['pgmap']['bytes_used'] / data['pgmap']['bytes_total']) * 100)|round  }}%)</center></strong>
-        </div>
+          <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">Storage</div>
+              <div class="panel-body" id="utilization" style="height:385px"></div>
+              <div class="panel-footer">
+                <strong>
+                  <center id="utilization_info">
+                  </center>
+                </strong>
+              </div>
+            </div>
+          </div>
 
-        <div class="progress" style="margin-bottom: 9px;">
-          <div class="progress-bar progress-bar-success" style="width: {{ ((data['pgmap']['bytes_used'] / data['pgmap']['bytes_total']) * 100)|int }}%">
-        </div> 
+          <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">Write / second</div>
+              <div class="panel-body" align="center">
+                <h1 id="write_bytes"></h1>
+              </div>
+            </div>
+
+            <div class="panel panel-default">
+              <div class="panel-heading">Read / second</div>
+              <div class="panel-body" align="center">
+                <h1 id="read_bytes"></h1>
+              </div>
+            </div>
+
+            <div class="panel panel-default">
+              <div class="panel-heading">Operations / second</div>
+              <div class="panel-body" align="center">
+                <h1 id="operations_per_second"></h1>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">PG Status</div>
+              <div class="panel-body" id="pg_status" style="max-width:300px;height: 385px;"></div>
+              <div class="panel-footer">
+                <strong>
+                  <center id="pg_status_info">
+                  </center>
+                </strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
 
       </div>
     </div>
   </div>
 
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.0.3.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/raphael.2.1.0.min.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/justgage.1.0.1.min.js') }}"></script>
-
-  <script>
-    var ops = new JustGage({ id: "ops_per_sec", value: {{ data['pgmap'].get('op_per_sec', 0) }}, min: 0, max: 1000, title: "Operations per Second" });
-    var wr = new JustGage({ id: "wr_per_sec", value: {{ (data['pgmap'].get('write_bytes_sec', 0) / 1024 ** 2)|int }}, min: 0, max: 300, title: "Write MB per Second" });
-    var rd = new JustGage({ id: "rd_per_sec", value: {{ (data['pgmap'].get('read_bytes_sec', 0) / 1024 ** 2)|int }}, min: 0, max: 300, title: "Read MB per Second" });
-  </script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/globalize.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/dx.chartjs.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/ceph.dash.js') }}"></script>
 
 </body>
 </html>
