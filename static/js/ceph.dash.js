@@ -140,6 +140,13 @@ $(function () {
         HEALTH_ERR: 'danger'
     }
 
+    // 
+    // INITIALIZE EMPTY PIE CHART
+    //
+    $("#pg_status").dxPieChart($.extend(true, {}, chart_options, {
+        dataSource: []
+    }));
+
     //
     // WORKER FUNCTION (UPDATED)
     //
@@ -159,9 +166,9 @@ $(function () {
             $("#utilization_info").html(fmtBytes(bytesUsed) + " / " + fmtBytes(bytesTotal) + " (" + percentUsed + "%)");
 
             // update placement group chart
-            $("#pg_status").dxPieChart($.extend(true, {}, chart_options, {
-                dataSource: data['pgmap']['pgs_by_state'],
-            }));
+            var chart = $("#pg_status").dxPieChart("instance");
+            chart.option('dataSource', data['pgmap']['pgs_by_state']);
+
             $("#pg_status_info").html(data['pgmap']['num_pgs'] + "  placementgroups in cluster");
 
             // Update current throughput values
