@@ -1,15 +1,5 @@
 $(function () {
     //
-    // Convert bytes to human readable form
-    //
-    function fmtBytes(bytes) {
-        if (bytes==0) { return "0 bytes"; }
-        var s = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
-        var e = Math.floor(Math.log(bytes) / Math.log(1024));
-        return (bytes / Math.pow(1024, e)).toFixed(2) + " " + s[e];
-    }
-
-    //
     // Gauge chart configuration options
     //
     var gauge_options = {
@@ -104,6 +94,16 @@ $(function () {
         }]
     };
 
+    //
+    // Convert bytes to human readable form
+    //
+    function fmtBytes(bytes) {
+        if (bytes==0) { return "0 bytes"; }
+        var s = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
+        var e = Math.floor(Math.log(bytes) / Math.log(1024));
+        return (bytes / Math.pow(1024, e)).toFixed(2) + " " + s[e];
+    }
+
     // 
     // GENERIC AJAX WRAPER
     //
@@ -145,11 +145,14 @@ $(function () {
     //
     function worker() {
         callback = function(data, status, xhr) {
+            // Update cluster fsid
+            $("#cluster_fsid").html(data['fsid']);
+
+            // Update storage utilization gauge
             bytesTotal = data['pgmap']['bytes_total'];
             bytesUsed = data['pgmap']['bytes_used'];
             percentUsed = Math.round((bytesUsed / bytesTotal) * 100);
 
-            // Update storage utilization gauge
             $("#utilization").dxCircularGauge($.extend(true, {}, gauge_options, {
                 value: percentUsed
             }));
@@ -171,6 +174,15 @@ $(function () {
             $("#num_in_osds").html(data['osdmap']['osdmap']['num_in_osds'] || 0);
             $("#num_up_osds").html(data['osdmap']['osdmap']['num_up_osds'] || 0);
             $("#unhealthy_osds").html(data['osdmap']['osdmap']['num_osds'] - data['osdmap']['osdmap']['num_up_osds'] || 0);
+
+            // Update osd full / nearfull warnings
+            $("#osd_warning").empty();
+            if (data['osdmap']['osdmap']['full'] == "true") {
+                $("#osd_warning").append(message('danger', 'OSD FULL ERROR'));
+            }
+            if (data['osdmap']['osdmap']['nearfull'] == "true") {
+                $("#osd_warning").append(message('warning', 'OSD NEARFULL WARNING'));
+            }
 
             // Update overall cluster state
             $("#overall_status").empty();

@@ -9,7 +9,8 @@
   <div class="container">
     <div class="well">
       <h1>Ceph Dashboard</h1>
-      <p><small>{{ data['fsid'] }}</small></p>
+      <!--add cluster fsid for informational purposes-->
+      <p><small id="cluster_fsid"></small></p>
     </div>
 
     <!--START CEPH OVERALL CLUSTER STATUS-->
@@ -41,21 +42,8 @@
       </div>
       <div class="panel-body" align="center">
 
-        {% if data['osdmap']['osdmap']['full'] == "true"%}
-        <div class="alert alert-danger">
-          <strong>
-            <span class="glyphicon glyphicon-remove"></span>
-            OSD FULL ERROR
-            </strong>
-        </div>
-        {% elif data['osdmap']['osdmap']['nearfull'] == "true" %}
-        <div class="alert alert-warning">
-          <strong>
-            <span class="glyphicon glyphicon-flash"></span>
-            OSD NEARFULL WARNING
-            </strong>
-        </div>
-        {% endif %}
+        <!--here we add warnings about nearfull / full osds-->
+        <div id="osd_warning"></div>
 
         <div class="row">
           <div class="col-md-3">
