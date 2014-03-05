@@ -122,6 +122,25 @@ $(function () {
     }
 
     //
+    // CREATE A ALERT MESSAGE
+    //
+    function message(severity, msg) {
+        if (severity == 'success') { icon = 'ok' }
+        if (severity == 'warning') { icon = 'flash' }
+        if (severity == 'danger') { icon = 'remove' }
+        return '<div class="alert alert-' + severity + '"><strong><span class="glyphicon glyphicon-' + icon + '">&nbsp;</span>' + msg + '</strong></div>';
+    }
+
+    //
+    // MAPPING CEPH TO BOOTSTRAP
+    //
+    var ceph2bootstrap = {
+        HEALTH_OK: 'success',
+        HEALTH_WARN: 'warning',
+        HEALTH_ERR: 'danger'
+    }
+
+    //
     // WORKER FUNCTION (UPDATED)
     //
     function worker() {
@@ -152,6 +171,24 @@ $(function () {
             $("#num_in_osds").html(data['osdmap']['osdmap']['num_in_osds'] || 0);
             $("#num_up_osds").html(data['osdmap']['osdmap']['num_up_osds'] || 0);
             $("#unhealthy_osds").html(data['osdmap']['osdmap']['num_osds'] - data['osdmap']['osdmap']['num_up_osds'] || 0);
+
+            // Update overall cluster state
+            $("#overall_status").empty();
+            $("#overall_status").append(message(ceph2bootstrap[data['health']['overall_status']], 'Cluster Status:' + data['health']['overall_status']));
+
+            // Update overall cluster status details
+            $("#overall_status").append('<ul class="list-group">');
+            $.each(data['health']['summary'], function(index, obj) {
+                $("#overall_status").append('<li class="list-group-item active"><span class="glyphicon glyphicon-flash"></span>' + obj['summary'] + '</li>');
+            });
+            $("#overall_status").append('</ul>');
+
+            // Update monitor status
+            $("#monitor_status").empty();
+            $.each(data['health']['health']['health_services'][0]['mons'], function(index, mon) {
+                msg = 'Monitor ' + mon['name'].toUpperCase() + ': ' + mon['health'];
+                $("#monitor_status").append('<div class="col-md-4">' + message(ceph2bootstrap[mon['health']], msg) + '</div>');
+            });
         }
 
         ajaxCall('/', callback);

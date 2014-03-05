@@ -2,7 +2,6 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <!--<meta http-equiv="refresh" content="30">-->
   <title>Ceph Dashboard</title>
   <link href="{{ url_for('static', filename='css/bootstrap.min.slate.css') }}" rel="stylesheet">
 </head>
@@ -13,57 +12,29 @@
       <p><small>{{ data['fsid'] }}</small></p>
     </div>
 
+    <!--START CEPH OVERALL CLUSTER STATUS-->
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title"><strong>Ceph Cluster Overall Status</h3>
       </div>
-      <div class="panel-body">
-
-        {% if data['health']['overall_status'] == 'HEALTH_OK' %}
-        <div class="alert alert-success">
-          <strong><span class="glyphicon glyphicon-ok">&nbsp;</span>Cluster Status: {{ data['health']['overall_status'] }}</strong>
-        </div>
-        {% elif data['health']['overall_status'] == 'HEALTH_WARN' %}
-        <div class="alert alert-warning">
-          <strong><span class="glyphicon glyphicon-flash">&nbsp;</span>Cluster Status: {{ data['health']['overall_status'] }}</strong>
-        </div>
-        {% else %}
-        <div class="alert alert-danger">
-          <strong><span class="glyphicon glyphicon-remove">&nbsp;</span>Cluster Status: {{ data['health']['overall_status'] }}</strong>
-        </div>
-        {% endif %}
-
-        <ul class="list-group">
-          {% for item in data['health']['summary'] %}
-          <li class="list-group-item active">
-            <span class="glyphicon glyphicon-flash"></span>
-            {{ item['summary'] }}
-          </li>
-          {% endfor %}
-        </ul>
-
-      </div>
+        <!--here we add the overall status-->
+      <div class="panel-body" id="overall_status"></div>
     </div>
+    <!--END CEPH OVERALL CLUSTER STATUS-->
 
+    <!--START CEPH MONITOR STATUS-->
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title"><strong>Ceph Monitor Status</h3>
       </div>
       <div class="panel-body">
-        <div class="row">
-
-          {% for mon in data['health']['health']['health_services'][0]['mons'] %}
-          <div class="col-md-4">
-            <div class="alert alert-success">
-              <strong><span class="glyphicon glyphicon-ok">&nbsp;</span>Monitor {{ mon['name']|upper }}: {{ mon['health'] }}</strong>
-            </div>
-          </div>
-          {% endfor %}
-
-        </div>
+        <!--here we add the monitor status-->
+        <div class="row" id="monitor_status"></div>
       </div>
     </div>
+    <!--END CEPH MONITOR STATUS-->
 
+    <!--START CEPH OSD STATUS-->
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title"><strong>Ceph Cluster OSD Status</h3>
@@ -90,6 +61,7 @@
           <div class="col-md-3">
             <div class="panel panel-info">
               <div class="panel-heading">Total</div>
+              <!--here we add the total number of osds-->
               <div class="panel-body" id="num_osds"></div>
             </div>
           </div>
@@ -97,6 +69,7 @@
           <div class="col-md-3">
             <div class="panel panel-success">
               <div class="panel-heading">In</div>
+              <!--here we add the number of osds with IN state-->
               <div class="panel-body" id="num_in_osds"></div>
             </div>
           </div>  
@@ -104,6 +77,7 @@
           <div class="col-md-3">
             <div class="panel panel-success">
               <div class="panel-heading">Up</div>
+              <!--here we add the number of osds with UP state-->
               <div class="panel-body" id="num_up_osds"></div>
             </div>
           </div>  
@@ -111,6 +85,7 @@
           <div class="col-md-3">
             <div class="panel panel-danger">
               <div class="panel-heading">Unhealthy</div>
+              <!--here we count the osds with and unhealthy state-->
               <div class="panel-body" id="unhealthy_osds"></div>
             </div>
           </div>  
@@ -118,7 +93,9 @@
 
       </div>
     </div>
+    <!--END CEPH OSD STATUS-->
 
+    <!--START CEPH PLACEMENTGROUP STATUS-->
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title"><strong>Ceph Cluster Placement Group Status</h3>
@@ -130,9 +107,11 @@
           <div class="col-md-4">
             <div class="panel panel-default">
               <div class="panel-heading">Storage</div>
+              <!--here we place the fancy storage usage gauge-->
               <div class="panel-body" id="utilization" style="height:385px"></div>
               <div class="panel-footer">
                 <strong>
+                  <!--here we place the text information about storage usage-->
                   <center id="utilization_info">
                   </center>
                 </strong>
@@ -144,6 +123,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">Write / second</div>
               <div class="panel-body" align="center">
+                <!--here we add the bytes written per second-->
                 <h1 id="write_bytes"></h1>
               </div>
             </div>
@@ -151,6 +131,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">Read / second</div>
               <div class="panel-body" align="center">
+                <!--here we add the bytes read per second-->
                 <h1 id="read_bytes"></h1>
               </div>
             </div>
@@ -158,6 +139,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">Operations / second</div>
               <div class="panel-body" align="center">
+                <!--here we add the operations per second-->
                 <h1 id="operations_per_second"></h1>
               </div>
             </div>
@@ -166,9 +148,11 @@
           <div class="col-md-4">
             <div class="panel panel-default">
               <div class="panel-heading">PG Status</div>
+              <!--here we place the fancy pg donut chart-->
               <div class="panel-body" id="pg_status" style="max-width:300px;height: 385px;"></div>
               <div class="panel-footer">
                 <strong>
+                  <!--here we add the total number of placement groups-->
                   <center id="pg_status_info">
                   </center>
                 </strong>
@@ -180,6 +164,8 @@
 
       </div>
     </div>
+    <!--END CEPH PLACEMENTGROUP STATUS-->
+
   </div>
 
   <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.0.3.min.js') }}"></script>
