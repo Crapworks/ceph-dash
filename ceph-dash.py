@@ -68,9 +68,9 @@ class CephStatusView(MethodView):
         if 'client_id' in self.config and 'client_name' in self.config:
             raise RadosError("Can't supply both client_id and client_name")
         if 'client_id' in self.config:
-            kwargs['name'] = self.config['client_id']
+            kwargs['rados_id'] = self.config['client_id']
         if 'client_name' in self.config:
-            kwargs['rados_id'] = self.config['client_name']
+            kwargs['name'] = self.config['client_name']
         with Rados(**kwargs) as cluster:
             command = { 'prefix': 'status', 'format': 'json' }
             ret, buf, err = cluster.mon_command(json.dumps(command), '', timeout=5)
