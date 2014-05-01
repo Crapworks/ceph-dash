@@ -73,7 +73,8 @@ class CephStatusView(MethodView):
 
 class CephAPI(Flask):
     def __init__(self, name):
-        Flask.__init__(self, name)
+        template_folder = os.path.join(os.path.dirname(__file__), 'templates')
+        Flask.__init__(self, name, template_folder=template_folder)
 
         status_view = CephStatusView.as_view('status')
         self.add_url_rule('/', view_func=status_view)
