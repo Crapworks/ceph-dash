@@ -33,6 +33,12 @@ Deployment
 
 You may want to deploy this wsgi application into a real webserver like apache or nginx. For convenience, I've put the wsgi file and a sample apache vhost config inside of the ```contrib``` folder,
 
+You can edit the config.json file to configure how to talk to the Ceph cluster.
+
+ - `ceph\_config` is the location of /etc/ceph/ceph.conf
+ - `keyring` points to a keyring to use to authenticate with the cluster
+ - `client\_id` or `client\_name` is used to specify the name to use with the keyring
+
 Pictures!!
 ----------
 
