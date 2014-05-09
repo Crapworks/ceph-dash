@@ -1,0 +1,14 @@
+Source: ceph-dash
+Section: misc
+Priority: extra
+Maintainer: Christian Eichelmann <christian.eichelmann@1und1.de>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.2
+Vcs-Git: git://github.com/crapworks/ceph-dash.git
+Vcs-Browser: http://github.com/crapworks/ceph-dash
+
+Package: ceph-dash
+Architecture: all
+Depends: python, python-flask, python-ceph
+Description: Dashboard to view ceph cluster status
+  Dashboard to view ceph cluster status
