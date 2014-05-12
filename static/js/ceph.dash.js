@@ -240,7 +240,7 @@ $(function () {
             });
         }
 
-        ajaxCall('/', callback);
+        ajaxCall(window.location.pathname, callback);
     };
     worker();
 })
