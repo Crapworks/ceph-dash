@@ -1,7 +1,7 @@
 ceph-dash - a free ceph dashboard / monitoring api
 ==================================================
 
-This is a small and clean approach of providing the ceph overall cluster health status via a restful json api as well as via a (hopefully) fancy web gui. There are no dependecies to the existing ```ceph-rest-api```. This wsgi application talks to the cluster directly via librados. I'm aware that there already is an api for ceph, but I simply hate XML, so I decided to build one using json instead.
+This is a small and clean approach of providing the ceph overall cluster health status via a restful json api as well as via a (hopefully) fancy web gui. There are no dependecies to the existing ```ceph-rest-api```. This wsgi application talks to the cluster directly via librados.
 
 Quickstart
 ----------
@@ -22,11 +22,14 @@ REST Api
 
 If you access the address via commandline tools or programming languages, use ```content-type: application/json``` and you will get all the information as a json output (wich is acutally the json formatted output of ```ceph status --format=json```.
 
-Anyways, this is not a wrapper arounf the ceph binary, it uses the python bindings of librados.
+Anyways, this is not a wrapper around the ceph binary, it uses the python bindings of librados.
 
 This api can be requested by, for example, a nagios check, to check your overall cluster health. This brings the advantage of querying this information without running local checks on your monitor nodes, just by accessing a read only http api.
 
-**Hint:** a nagios check will appear soon here!
+Nagios Check
+------------
+
+A Nagios check that uses ceph-dash for monitoring your ceph cluster status is available [here](https://github.com/Crapworks/check_ceph_dash)
 
 Deployment
 ----------
