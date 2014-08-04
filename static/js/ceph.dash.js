@@ -234,9 +234,15 @@ $(function () {
 
             // Update monitor status
             $("#monitor_status").empty();
-            $.each(data['health']['health']['health_services'][0]['mons'], function(index, mon) {
-                msg = 'Monitor ' + mon['name'].toUpperCase() + ': ' + mon['health'];
-                $("#monitor_status").append('<div class="col-md-4">' + message(ceph2bootstrap[mon['health']], msg) + '</div>');
+            $.each(data['monmap']['mons'], function(index, mon) {
+                health = 'HEALTH_ERR'
+                $.each(data['health']['timechecks']['mons'], function(index, mon_health) {
+                    if (mon['name'] == mon_health['name']) {
+                        health = mon_health['health'];
+                    }
+                });
+                msg = 'Monitor ' + mon['name'].toUpperCase() + ': ' + health;
+                $("#monitor_status").append('<div class="col-md-4">' + message(ceph2bootstrap[health], msg) + '</div>');
             });
         }
 
