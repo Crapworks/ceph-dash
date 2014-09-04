@@ -1,0 +1,4 @@
+{
+    "ceph_version": "firefly",
+    "graphite_host": "graphite.server.com"
+}

@@ -1,7 +1,5 @@
 $(function () {
-    //
-    // Gauge chart configuration options
-    //
+    // Gauge chart configuration options {{{
     var gauge_options = {
         palette: 'Soft Pastel',
         animation: {
@@ -44,10 +42,9 @@ $(function () {
             }
         }
     };
+    // }}}
 
-    //
-    // Pie chart configuration options
-    //
+    // Pie chart configuration options {{{
     var chart_options = {
         animation: {
             enabled: false
@@ -93,20 +90,18 @@ $(function () {
             }
         }]
     };
+    // }}}
 
-    //
-    // Convert bytes to human readable form
-    //
+    // Convert bytes to human readable form {{{
     function fmtBytes(bytes) {
         if (bytes==0) { return "0 bytes"; }
         var s = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
         var e = Math.floor(Math.log(bytes) / Math.log(1024));
         return (bytes / Math.pow(1024, e)).toFixed(2) + " " + s[e];
     }
+    // }}}
 
-    // 
-    // GENERIC AJAX WRAPER
-    //
+    // GENERIC AJAX WRAPER {{{
     function ajaxCall(url, callback) {
         $.ajax({
           url: url,
@@ -120,20 +115,18 @@ $(function () {
           }
         });
     }
+    // }}}
 
-    //
-    // CREATE A ALERT MESSAGE
-    //
+    // CREATE A ALERT MESSAGE {{{
     function message(severity, msg) {
         if (severity == 'success') { icon = 'ok' }
         if (severity == 'warning') { icon = 'flash' }
         if (severity == 'danger') { icon = 'remove' }
         return '<div class="alert alert-' + severity + '"><strong><span class="glyphicon glyphicon-' + icon + '">&nbsp;</span>' + msg + '</strong></div>';
     }
+    // }}}
 
-    //
-    // CREATE PANEL
-    //
+    // CREATE PANEL {{{
     function panel(severity, titel, message) {
         tmp = '<div class="panel panel-' + severity + '">';
         tmp = tmp + '<div class="panel-heading">' + titel + '</div>';
@@ -143,36 +136,69 @@ $(function () {
         tmp = tmp + '</div>';
         return tmp;
     }
+    // }}}
 
-    //
-    // MAPPING CEPH TO BOOTSTRAP
-    //
+    // MAPPING CEPH TO BOOTSTRAP {{{
     var ceph2bootstrap = {
         HEALTH_OK: 'success',
         HEALTH_WARN: 'warning',
         HEALTH_ERR: 'danger'
     }
+    // }}}
 
-    // 
-    // INITIALIZE EMPTY PIE CHART
-    //
+    // INITIALIZE EMPTY PIE CHART {{{
     $("#pg_status").dxPieChart($.extend(true, {}, chart_options, {
         dataSource: []
     }));
+    // }}}
 
-    //
-    // WORKER FUNCTION (UPDATED)
-    //
+    // WORKER FUNCTION (UPDATED) {{{
     function worker() {
         callback = function(data, status, xhr) {
             // Update cluster fsid
             $("#cluster_fsid").html(data['fsid']);
 
-            // Update storage utilization gauge
+            // load all relevant data from retrieved json {{{
+            // ----------------------------------------------------------------
+            // *storage capacity*
             bytesTotal = data['pgmap']['bytes_total'];
             bytesUsed = data['pgmap']['bytes_used'];
             percentUsed = Math.round((bytesUsed / bytesTotal) * 100);
 
+            // *placement groups*
+            pgsByState = data['pgmap']['pgs_by_state'];
+            numPgs = data['pgmap']['pgs_by_state'];
+
+            // *recovery status*
+            recoverBytes = data['pgmap']['recovering_bytes_per_sec'];
+            recoverKeys = data['pgmap']['recovering_keys_per_sec'];
+            recoverObjects = data['pgmap']['recovering_objects_per_sec'];
+
+            // *throughput* 
+            opsPerSec = data['pgmap']['op_per_sec'] || 0;
+            writesPerSec = fmtBytes(data['pgmap']['write_bytes_sec'] || 0);
+            readsPerSec = fmtBytes(data['pgmap']['read_bytes_sec'] || 0);
+
+            // *osd state*
+            numOSDtotal = data['osdmap']['osdmap']['num_osds'] || 0;
+            numOSDin = data['osdmap']['osdmap']['num_in_osds'] || 0;
+            numOSDup = data['osdmap']['osdmap']['num_up_osds'] || 0;
+            numOSDunhealthy = data['osdmap']['osdmap']['num_osds'] - data['osdmap']['osdmap']['num_up_osds'] || 0;
+            osdFull = data['osdmap']['osdmap']['full'];
+            osdNearFull = data['osdmap']['osdmap']['nearfull'];
+
+            // *overall status*
+            clusterStatusOverall = data['health']['overall_status'];
+            clusterHealthSummary = data['health']['summary'];
+
+            // *monitor state*
+            monmapMons = data['monmap']['mons'];
+            timechekMons = data['health']['timechecks']['mons'];
+            // }}}
+
+            // Update Content {{{
+            // ----------------------------------------------------------------
+            // update storage capacity
             $("#utilization").dxCircularGauge($.extend(true, {}, gauge_options, {
                 value: percentUsed
             }));
@@ -180,63 +206,63 @@ $(function () {
 
             // update placement group chart
             var chart = $("#pg_status").dxPieChart("instance");
-            chart.option('dataSource', data['pgmap']['pgs_by_state']);
+            chart.option('dataSource', pgsByState);
 
-            $("#pg_status_info").html(data['pgmap']['num_pgs'] + "  placementgroups in cluster");
+            $("#pg_status_info").html(numPgs + "  placementgroups in cluster");
 
-            // Update recovering status
-            if (typeof(data['pgmap']['recovering_bytes_per_sec']) != 'undefined') {
-                $("#recovering_bytes").html(panel('warning', 'Recovering bytes / second', fmtBytes(data['pgmap']['recovering_bytes_per_sec'])));
+            // update recovering status
+            if (typeof(recoverBytes) != 'undefined') {
+                $("#recovering_bytes").html(panel('warning', 'Recovering bytes / second', fmtBytes(recoverBytes)));
             } else {
                 $("#recovering_bytes").empty();
             }
-            if (typeof(data['pgmap']['recovering_keys_per_sec']) != 'undefined') {
-                $("#recovering_keys").html(panel('warning', 'Recovering keys / second', data['pgmap']['recovering_keys_per_sec']));
+            if (typeof(recoverKeys) != 'undefined') {
+                $("#recovering_keys").html(panel('warning', 'Recovering keys / second', recoverKeys));
             } else {
                 $("#recovering_keys").empty();
             }
-            if (typeof(data['pgmap']['recovering_objects_per_sec']) != 'undefined') {
-                $("#recovering_objects").html(panel('warning', 'Recovering objects / second', data['pgmap']['recovering_objects_per_sec']));
+            if (typeof(recoverObjects) != 'undefined') {
+                $("#recovering_objects").html(panel('warning', 'Recovering objects / second', recoverObjects));
             } else {
                  $("#recovering_objects").empty();
             }
 
-            // Update current throughput values
-            $("#operations_per_second").html(data['pgmap']['op_per_sec'] || 0);
-            $("#write_bytes").html(fmtBytes(data['pgmap']['write_bytes_sec'] || 0));
-            $("#read_bytes").html(fmtBytes(data['pgmap']['read_bytes_sec'] || 0));
+            // update current throughput values
+            $("#operations_per_second").html(opsPerSec);
+            $("#write_bytes").html(fmtBytes(writesPerSec));
+            $("#read_bytes").html(fmtBytes(readsPerSec));
 
-            // Update OSD states
-            $("#num_osds").html(data['osdmap']['osdmap']['num_osds'] || 0);
-            $("#num_in_osds").html(data['osdmap']['osdmap']['num_in_osds'] || 0);
-            $("#num_up_osds").html(data['osdmap']['osdmap']['num_up_osds'] || 0);
-            $("#unhealthy_osds").html(data['osdmap']['osdmap']['num_osds'] - data['osdmap']['osdmap']['num_up_osds'] || 0);
+            // update OSD states
+            $("#num_osds").html(numOSDtotal);
+            $("#num_in_osds").html(numOSDin);
+            $("#num_up_osds").html(numOSDup);
+            $("#unhealthy_osds").html(numOSDunhealthy);
 
-            // Update osd full / nearfull warnings
+            // update osd full / nearfull warnings
             $("#osd_warning").empty();
-            if (data['osdmap']['osdmap']['full'] == "true") {
+            if (osdFull == "true") {
                 $("#osd_warning").append(message('danger', 'OSD FULL ERROR'));
             }
-            if (data['osdmap']['osdmap']['nearfull'] == "true") {
+            if (osdNearFull == "true") {
                 $("#osd_warning").append(message('warning', 'OSD NEARFULL WARNING'));
             }
 
-            // Update overall cluster state
+            // update overall cluster state
             $("#overall_status").empty();
-            $("#overall_status").append(message(ceph2bootstrap[data['health']['overall_status']], 'Cluster Status:' + data['health']['overall_status']));
+            $("#overall_status").append(message(ceph2bootstrap[clusterStatusOverall], 'Cluster Status:' + clusterStatusOverall));
 
-            // Update overall cluster status details
+            // update overall cluster status details
             $("#overall_status").append('<ul class="list-group">');
-            $.each(data['health']['summary'], function(index, obj) {
+            $.each(clusterHealthSummary, function(index, obj) {
                 $("#overall_status").append('<li class="list-group-item active"><span class="glyphicon glyphicon-flash"></span>' + obj['summary'] + '</li>');
             });
             $("#overall_status").append('</ul>');
 
-            // Update monitor status
+            // update monitor status
             $("#monitor_status").empty();
-            $.each(data['monmap']['mons'], function(index, mon) {
+            $.each(monmapMons, function(index, mon) {
                 health = 'HEALTH_ERR'
-                $.each(data['health']['timechecks']['mons'], function(index, mon_health) {
+                $.each(timechekMons, function(index, mon_health) {
                     if (mon['name'] == mon_health['name']) {
                         health = mon_health['health'];
                     }
@@ -244,9 +270,13 @@ $(function () {
                 msg = 'Monitor ' + mon['name'].toUpperCase() + ': ' + health;
                 $("#monitor_status").append('<div class="col-md-4">' + message(ceph2bootstrap[health], msg) + '</div>');
             });
+            // }}}
         }
 
         ajaxCall(window.location.pathname, callback);
     };
     worker();
+    // }}}
 })
+
+# vim: set foldmethod=marker foldlevel=0 ts=4 sts=4 filetype=javascript fileencoding=utf-8 formatoptions+=ro expandtab:
