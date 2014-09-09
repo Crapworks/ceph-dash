@@ -4,6 +4,11 @@
   <meta charset="utf-8">
   <title>Ceph Dashboard</title>
   <link href="{{ url_for('static', filename='css/bootstrap.min.slate.css') }}" rel="stylesheet">
+  <style>
+  .clickable {
+      cursor: pointer;
+  }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -16,9 +21,12 @@
     <!--START CEPH OVERALL CLUSTER STATUS-->
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title"><strong>Ceph Cluster Overall Status</h3>
+        <h3 class="panel-title">
+          <strong>Ceph Cluster Overall Status</strong>
+          <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+        </h3>
       </div>
-        <!--here we add the overall status-->
+      <!--here we add the overall status-->
       <div class="panel-body" id="overall_status"></div>
     </div>
     <!--END CEPH OVERALL CLUSTER STATUS-->
@@ -26,7 +34,10 @@
     <!--START CEPH MONITOR STATUS-->
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title"><strong>Ceph Monitor Status</h3>
+        <h3 class="panel-title">
+          <strong>Ceph Monitor Status</strong>
+          <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+        </h3>
       </div>
       <div class="panel-body">
         <!--here we add the monitor status-->
@@ -38,7 +49,10 @@
     <!--START CEPH OSD STATUS-->
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title"><strong>Ceph Cluster OSD Status</h3>
+        <h3 class="panel-title">
+          <strong>Ceph Cluster OSD Status</strong>
+          <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+        </h3>
       </div>
       <div class="panel-body" align="center">
 
@@ -48,7 +62,7 @@
         <div class="row">
           <div class="col-md-3">
             <div class="panel panel-info">
-              <div class="panel-heading">Total</div>
+              <div class="panel-heading"><strong>Total</strong></div>
               <!--here we add the total number of osds-->
               <div class="panel-body" id="num_osds"></div>
             </div>
@@ -56,7 +70,7 @@
 
           <div class="col-md-3">
             <div class="panel panel-success">
-              <div class="panel-heading">In</div>
+              <div class="panel-heading"><strong>In</strong></div>
               <!--here we add the number of osds with IN state-->
               <div class="panel-body" id="num_in_osds"></div>
             </div>
@@ -64,7 +78,7 @@
 
           <div class="col-md-3">
             <div class="panel panel-success">
-              <div class="panel-heading">Up</div>
+              <div class="panel-heading"><strong>Up</strong></div>
               <!--here we add the number of osds with UP state-->
               <div class="panel-body" id="num_up_osds"></div>
             </div>
@@ -72,7 +86,7 @@
 
           <div class="col-md-3">
             <div class="panel panel-danger">
-              <div class="panel-heading">Unhealthy</div>
+              <div class="panel-heading"><strong>Unhealthy</strong></div>
               <!--here we count the osds with and unhealthy state-->
               <div class="panel-body" id="unhealthy_osds"></div>
             </div>
@@ -86,7 +100,10 @@
     <!--START CEPH PLACEMENTGROUP STATUS-->
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title"><strong>Ceph Cluster Placement Group Status</h3>
+        <h3 class="panel-title">
+          <strong>Ceph Cluster Placement Group Status</strong>
+          <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+        </h3>
       </div>
       <div class="panel-body">
 
@@ -94,7 +111,7 @@
 
           <div class="col-md-4">
             <div class="panel panel-default">
-              <div class="panel-heading">Storage</div>
+              <div class="panel-heading"><strong>Storage</strong></div>
               <!--here we place the fancy storage usage gauge-->
               <div class="panel-body" id="utilization" style="height:385px"></div>
               <div class="panel-footer">
@@ -109,7 +126,7 @@
 
           <div class="col-md-4">
             <div class="panel panel-default">
-              <div class="panel-heading">Write / second</div>
+              <div class="panel-heading"><strong>Write / second</strong></div>
               <div class="panel-body" align="center">
                 <!--here we add the bytes written per second-->
                 <h1 id="write_bytes"></h1>
@@ -117,7 +134,7 @@
             </div>
 
             <div class="panel panel-default">
-              <div class="panel-heading">Read / second</div>
+              <div class="panel-heading"><strong>Read / second</strong></div>
               <div class="panel-body" align="center">
                 <!--here we add the bytes read per second-->
                 <h1 id="read_bytes"></h1>
@@ -125,7 +142,7 @@
             </div>
 
             <div class="panel panel-default">
-              <div class="panel-heading">Operations / second</div>
+              <div class="panel-heading"><strong>Operations / second</strong></div>
               <div class="panel-body" align="center">
                 <!--here we add the operations per second-->
                 <h1 id="operations_per_second"></h1>
@@ -135,7 +152,7 @@
 
           <div class="col-md-4">
             <div class="panel panel-default">
-              <div class="panel-heading">PG Status</div>
+              <div class="panel-heading"><strong>PG Status</strong></div>
               <!--here we place the fancy pg donut chart-->
               <div class="panel-body" id="pg_status" style="max-width:300px;height: 385px;"></div>
               <div class="panel-footer">

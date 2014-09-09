@@ -101,6 +101,23 @@ $(function () {
     }
     // }}}
 
+    // MAKE SECTION COLLAPSABLE {{{
+    $('.panel-heading span.clickable').on("click", function (e) {
+        if ($(this).hasClass('panel-collapsed')) {
+            // expand the panel
+            $(this).parents('.panel').find('.panel-body').slideDown();
+            $(this).removeClass('panel-collapsed');
+            $(this).find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+        }
+        else {
+            // collapse the panel
+            $(this).parents('.panel').find('.panel-body').slideUp();
+            $(this).addClass('panel-collapsed');
+            $(this).find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+        }
+    });
+    // }}}
+
     // GENERIC AJAX WRAPER {{{
     function ajaxCall(url, callback) {
         $.ajax({
@@ -167,7 +184,7 @@ $(function () {
 
             // *placement groups*
             pgsByState = data['pgmap']['pgs_by_state'];
-            numPgs = data['pgmap']['pgs_by_state'];
+            numPgs = data['pgmap']['num_pgs'];
 
             // *recovery status*
             recoverBytes = data['pgmap']['recovering_bytes_per_sec'];
@@ -229,8 +246,8 @@ $(function () {
 
             // update current throughput values
             $("#operations_per_second").html(opsPerSec);
-            $("#write_bytes").html(fmtBytes(writesPerSec));
-            $("#read_bytes").html(fmtBytes(readsPerSec));
+            $("#write_bytes").html(writesPerSec);
+            $("#read_bytes").html(readsPerSec);
 
             // update OSD states
             $("#num_osds").html(numOSDtotal);
@@ -254,7 +271,7 @@ $(function () {
             // update overall cluster status details
             $("#overall_status").append('<ul class="list-group">');
             $.each(clusterHealthSummary, function(index, obj) {
-                $("#overall_status").append('<li class="list-group-item active"><span class="glyphicon glyphicon-flash"></span>' + obj['summary'] + '</li>');
+                $("#overall_status").append('<li class="list-group-item active"><span class="glyphicon glyphicon-flash"></span><strong>' + obj['summary'] + '</strong></li>');
             });
             $("#overall_status").append('</ul>');
 
@@ -273,10 +290,11 @@ $(function () {
             // }}}
         }
 
+        // TODO: load json config file and put it into a global var
         ajaxCall(window.location.pathname, callback);
     };
     worker();
     // }}}
 })
 
-# vim: set foldmethod=marker foldlevel=0 ts=4 sts=4 filetype=javascript fileencoding=utf-8 formatoptions+=ro expandtab:
+// vim: set foldmethod=marker foldlevel=0 ts=4 sts=4 filetype=javascript fileencoding=utf-8 formatoptions+=ro expandtab:
