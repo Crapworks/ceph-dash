@@ -1,0 +1,11 @@
+.panel-body {
+    font-weight: bold;
+}
+
+.panel-title {
+    font-weight: bold;
+}
+
+.clickable {
+    cursor: pointer;
+}

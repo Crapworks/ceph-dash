@@ -4,11 +4,7 @@
   <meta charset="utf-8">
   <title>Ceph Dashboard</title>
   <link href="{{ url_for('static', filename='css/bootstrap.min.slate.css') }}" rel="stylesheet">
-  <style>
-  .clickable {
-      cursor: pointer;
-  }
-  </style>
+  <link href="{{ url_for('static', filename='css/ceph.dash.css') }}" rel="stylesheet">
 </head>
 <body>
   <div class="container">
@@ -22,7 +18,7 @@
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title">
-          <strong>Ceph Cluster Overall Status</strong>
+          Ceph Cluster Overall Status
           <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
         </h3>
       </div>
@@ -35,7 +31,7 @@
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title">
-          <strong>Ceph Monitor Status</strong>
+          Ceph Cluster Monitor Status
           <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
         </h3>
       </div>
@@ -50,7 +46,7 @@
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title">
-          <strong>Ceph Cluster OSD Status</strong>
+          Ceph Cluster OSD Status
           <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
         </h3>
       </div>
@@ -101,7 +97,7 @@
     <div class="panel panel-primary">
       <div class="panel-heading">
         <h3 class="panel-title">
-          <strong>Ceph Cluster Placement Group Status</strong>
+          Ceph Cluster Placement Group Status
           <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
         </h3>
       </div>
