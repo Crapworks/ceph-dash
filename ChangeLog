@@ -1,0 +1,3 @@
+2014-09-10	Christian Eichelmann	<christian@crapworks.de>
+	* ceph-dash (js/css): general cleanup
+	* ceph-dash (js/css): sections are now collapsable
