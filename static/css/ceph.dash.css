@@ -6,10 +6,6 @@
     font-weight: bold;
 }
 
-.clickable {
-    cursor: pointer;
-}
-
 .cd-collapsable h3:after {
     font-family: 'Glyphicons Halflings';
     content: "\e113";
