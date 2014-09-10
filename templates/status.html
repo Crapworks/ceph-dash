@@ -90,6 +90,21 @@
     </div>
     <!--END CEPH OSD STATUS-->
 
+    <!--START GRAPHITE METRICS-->
+    {% if "graphite" in config.keys() %}
+    <div class="panel panel-primary">
+      <div class="panel-heading cd-collapsable">
+        <h3 class="panel-title">
+          Ceph Cluster Performance Metrics
+        </h3>
+      </div>
+      <div class="panel-body">
+      </div>
+    </div>
+    {% endif %}
+    <!--END CEPH OSD STATUS-->
+
+
     <!--START CEPH PLACEMENTGROUP STATUS-->
     <div class="panel panel-primary">
       <div class="panel-heading cd-collapsable">
@@ -177,6 +192,8 @@
   <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/globalize.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/dx.chartjs.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.flot.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.flot.byte.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/ceph.dash.js') }}"></script>
 
 </body>
