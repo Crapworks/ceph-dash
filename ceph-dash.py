@@ -80,7 +80,7 @@ class CephStatusView(MethodView):
             if request.mimetype == 'application/json':
                 return jsonify(json.loads(buf))
             else:
-                return render_template('status.html', data=json.loads(buf))
+                return render_template('status.html', data=json.loads(buf), config=self.config)
 
 
 class CephAPI(Flask):
