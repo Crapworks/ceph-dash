@@ -44,34 +44,30 @@ $(function () {
     };
     // }}}
 
-    // Graphite to flot configuration {{{
-    var series = [ {
-        data: [],
-        lines: { fill: true }
-    } ];
-
-    var plot = null;
-
-    function createPlot() {
-        return $.plot("#graphite", series, {
-            grid: {
-                show: true
-            },
-            xaxis: {
-                tickFormatter: function() { return ""; }
-            },
-            legend: {
-                show: true
-            },
-            yaxis: {
-                min: 0,
-                mode: "byteRate"
-            }
-        });
+    // Graphite to flot configuration options {{{
+    var flot_options = {
+        grid: {
+            show: true
+        },
+        xaxis: {
+            tickFormatter: function() { return ""; }
+        },
+        legend: {
+            show: true
+        },
+        yaxis: {
+            //tickFormatter: function() { return ""; }
+            min: 0,
+            mode: "byteRate"
+        }
     }
 
-    function updatePlot(graphite_url, target, from) {
+    function updatePlot(index, graphite_url, target, from, label) {
         var query_url = graphite_url + "/render?format=json&from=" + from + "&target=" + target;
+        var series = [ {
+            data: [],
+            lines: { fill: true }
+        } ];
         $.getJSON(query_url, function(targets) {
             if (targets.length > 0) {
                 var datapoints = targets[0].datapoints;
@@ -90,14 +86,8 @@ $(function () {
 
                 // update plot
                 series[0].data = data;
-                series[0].label = 'lolz';
-                if (plot === null) {
-                    plot = createPlot();
-                } else {
-                    plot.setData(series);
-                    plot.setupGrid();
-                    plot.draw();
-                }
+                series[0].label = label;
+                $.plot("#graphite" + index, series, flot_options);
             }
         });
     }
@@ -343,6 +333,11 @@ $(function () {
                 });
                 msg = 'Monitor ' + mon['name'].toUpperCase() + ': ' + health;
                 $("#monitor_status").append('<div class="col-md-4">' + message(ceph2bootstrap[health], msg) + '</div>');
+            });
+
+            // update graphite if available
+            $.each(config.graphite.targets, function(index, target) {
+                updatePlot(index + 1, config.graphite.url, target.target, target.from, target.label);
             });
             // }}}
         }
