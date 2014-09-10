@@ -9,3 +9,17 @@
 .clickable {
     cursor: pointer;
 }
+
+.cd-collapsable h3:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e113";
+    cursor: pointer;
+    float: right;
+}
+
+.cd-collapsed h3:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e114";
+    cursor: pointer;
+    float: right;
+}
