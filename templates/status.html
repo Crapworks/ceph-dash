@@ -92,6 +92,9 @@
 
     <!--START GRAPHITE METRICS-->
     {% if "graphite" in config.keys() %}
+    <script language="javascript">
+        var config = {{ config|tojson|safe}};
+    </script>
     <div class="panel panel-primary">
       <div class="panel-heading cd-collapsable">
         <h3 class="panel-title">
@@ -99,6 +102,7 @@
         </h3>
       </div>
       <div class="panel-body">
+        <div id="graphite"></div>
       </div>
     </div>
     {% endif %}
