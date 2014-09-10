@@ -102,7 +102,13 @@
         </h3>
       </div>
       <div class="panel-body">
-        <div id="graphite"></div>
+        <div class="row">
+          {% for index in config['graphite']['targets'] %}
+            <div class="col-md-6">
+              <div id="graphite{{ loop.index }}" class="graphite"></div>
+            </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
     {% endif %}
