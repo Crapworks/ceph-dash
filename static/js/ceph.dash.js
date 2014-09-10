@@ -44,6 +44,65 @@ $(function () {
     };
     // }}}
 
+    // Graphite to flot configuration {{{
+    var series = [ {
+        data: [],
+        lines: { fill: true }
+    } ];
+
+    var plot = null;
+
+    function createPlot() {
+        return $.plot("#graphite", series, {
+            grid: {
+                show: true
+            },
+            xaxis: {
+                tickFormatter: function() { return ""; }
+            },
+            legend: {
+                show: true
+            },
+            yaxis: {
+                min: 0,
+                mode: "byteRate"
+            }
+        });
+    }
+
+    function updatePlot(graphite_url, target, from) {
+        var query_url = graphite_url + "/render?format=json&from=" + from + "&target=" + target;
+        $.getJSON(query_url, function(targets) {
+            if (targets.length > 0) {
+                var datapoints = targets[0].datapoints;
+                var xzero = datapoints[0][1];
+                var data = $.map(targets[0].datapoints, function(value) {
+                if (value[0] === null) return null;
+                    return [[ value[1]-xzero, value[0] ]];
+                });
+
+                // replace null value with previous item value
+                for (var i = 0; i < data.length; i++) {
+                    if (i > 0 && data[i] === null) data[i] = data[-i];
+                }
+
+                var last = data[data.length-1][1];
+
+                // update plot
+                series[0].data = data;
+                series[0].label = 'lolz';
+                if (plot === null) {
+                    plot = createPlot();
+                } else {
+                    plot.setData(series);
+                    plot.setupGrid();
+                    plot.draw();
+                }
+            }
+        });
+    }
+    // }}}
+
     // Pie chart configuration options {{{
     var chart_options = {
         animation: {
