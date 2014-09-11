@@ -17,7 +17,7 @@
                     "avg(monitoring.ceph-mon*.ceph_overall_cluster_status.op_per_sec)"
                 ],
                 "labels": [ "IOPS" ],
-                "colors" [ "#5bc0de" ],
+                "colors": [ "#5bc0de" ],
                 "from": "-2h"
             }
         ]
