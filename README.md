@@ -64,7 +64,7 @@ There is a sample configuration file called ```config.graphite.json```. Everythi
 
 ### Example
 
-Here you can see an example where one graphs show the bytes read/write per second, and another one shows the IOPS during the last two hours:
+Here you can see an example where one graph shows the bytes read/write per second, and another one shows the IOPS during the last two hours:
 
 ![screenshot01](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash-graphite.png)
 
