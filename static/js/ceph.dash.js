@@ -46,6 +46,7 @@ $(function () {
 
     // Graphite to flot configuration options {{{
     var flot_options = {
+        colors: [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ],
         grid: {
             show: true
         },
@@ -61,7 +62,7 @@ $(function () {
         }
     }
 
-    // TODO: Test more graphs
+    // TODO: Test more graphs / alignment
     function updatePlot(index, graphite_url, targets, from, labels, colors, mode) {
         combined_targets = "";
         $.each(targets, function(index, target) {
