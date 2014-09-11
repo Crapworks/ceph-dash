@@ -50,14 +50,24 @@ $(function () {
             show: true
         },
         xaxis: {
-            tickFormatter: function() { return ""; }
+            mode: "time",
+            timezone: "browser"
         },
         legend: {
             show: true
         },
+        grid: {
+            hoverable: true,
+            clickable: true
+        },
+        tooltip: true,
+        tooltipOpts: {
+            id: "tooltip",
+            defaultTheme: false,
+            content: "%s: %y"
+        },
         yaxis: {
-            //tickFormatter: function() { return ""; }
-            min: 0,
+            min: 0
         }
     }
 
@@ -73,11 +83,10 @@ $(function () {
         $.getJSON(query_url, function(targets) {
             if (targets.length > 0) {
                 $.each(targets, function(index, target) {
-                    var datapoints = target.datapoints;
-                    var xzero = datapoints[0][1];
+                    // map graphite timestamp to javascript timestamps
                     var data = $.map(target.datapoints, function(value) {
                     if (value[0] === null) return null;
-                        return [[ value[1]-xzero, value[0] ]];
+                        return [[ value[1] * 1000, value[0] ]];
                     });
 
                     // replace null value with previous item value
@@ -85,23 +94,19 @@ $(function () {
                         if (i > 0 && data[i] === null) data[i] = data[-i];
                     }
 
+                    // add target datapoints to dataseries
                     series.push({
                         data: data,
                         label: labels[index],
-                        lines: { fill: true }
+                        lines: { fill: true },
+                        mode: (typeof mode != "undefined") ? mode : null
                     });
                 });
+                // set the yaxis mode
+                flot_options.yaxis.mode = (typeof mode != "undefined") ? mode : null;
+                // set the target graph colors
+                flot_options.colors = (typeof colors != "undefined") ? colors :  [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ];
                 // update plot
-                if (typeof mode != "undefined") {
-                    flot_options.yaxis.mode = mode;
-                } else {
-                    flot_options.yaxis.mode = null;
-                }
-                if (typeof colors != "undefined") {
-                    flot_options.colors = colors;
-                } else {
-                    flot_options.colors = [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ];
-                }
                 $.plot("#graphite" + index, series, flot_options);
             }
         });
