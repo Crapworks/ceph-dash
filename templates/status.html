@@ -103,7 +103,7 @@
       </div>
       <div class="panel-body">
         <div class="row">
-          {% for index in config['graphite']['targets'] %}
+          {% for index in config['graphite']['metrics'] %}
             <div class="col-md-6">
               <div id="graphite{{ loop.index }}" class="graphite"></div>
             </div>
