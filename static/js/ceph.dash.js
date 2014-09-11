@@ -94,6 +94,8 @@ $(function () {
                 // update plot
                 if (typeof mode != "undefined") {
                     flot_options.yaxis.mode = mode;
+                } else {
+                    flot_options.yaxis.mode = null;
                 }
                 if (typeof colors != "undefined") {
                     flot_options.colors = colors;
