@@ -52,7 +52,7 @@ In case anyone wants to see what to expect, here you go:
 Graphite Integration
 --------------------
 
-In the latest git version, I've integrated the flot graphing library to make it possible to show some graphs from [Graphite](graphite.wikidot.com) in ceph-dash. First of all: ceph-dash does **NOT** put any data into graphite! You have to do it yourself. We are pushing our [Icinga](https://www.icinga.org/) monitoring to push performance metrics to graphite. The graphs shown in the example were created by the above mentioned [Nagios check for ceph-dash](https://github.com/Crapworks/check_ceph_dash).
+In the latest git version, I've integrated the flot graphing library to make it possible to show some graphs from [Graphite](graphite.wikidot.com) in ceph-dash. First of all: ceph-dash does **NOT** put any data into graphite! You have to do it yourself. We are using our [Icinga](https://www.icinga.org/) monitoring to push performance metrics to graphite. The graphs shown in the example were created by the above mentioned [Nagios check for ceph-dash](https://github.com/Crapworks/check_ceph_dash).
 
 This is currently **TESTING**!
 
