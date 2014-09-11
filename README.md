@@ -1,6 +1,18 @@
 ceph-dash - a free ceph dashboard / monitoring api
 ==================================================
 
+- [ceph-dash - a free ceph dashboard / monitoring api](#user-content-ceph-dash---a-free-ceph-dashboard--monitoring-api)
+	- [Quickstart](#user-content-quickstart)
+	- [Dashboard](#user-content-dashboard)
+	- [REST Api](#user-content-rest-api)
+	- [Nagios Check](#user-content-nagios-check)
+	- [Deployment](#user-content-deployment)
+	- [Pictures!!](#user-content-pictures)
+	- [Graphite Integration](#user-content-graphite-integration)
+		- [Configuration](#user-content-configuration)
+		- [Example](#user-content-example)
+
+
 This is a small and clean approach of providing the [Ceph](http://ceph.com) overall cluster health status via a restful json api as well as via a (hopefully) fancy web gui. There are no dependecies to the existing ```ceph-rest-api```. This wsgi application talks to the cluster directly via librados.
 
 Quickstart
