@@ -1,24 +1,3 @@
 {
-    "ceph_config": "/etc/ceph/ceph.conf",
-    "graphite": {
-        "url": "https://mamat-graphite.infra.server.lan",
-        "metrics": [
-            {
-                "targets": [ 
-                    "avg(monitoring.ceph-mon-bs*_infra_server_lan.ceph_overall_cluster_status.read_bytes_sec.value)",
-                    "avg(monitoring.ceph-mon-bs*_infra_server_lan.ceph_overall_cluster_status.write_bytes_sec.value)"
-                ],
-                "labels": [ "Read", "Write" ],
-                "from": "-2h",
-                "mode": "byteRate"
-            },
-            {
-                "targets": [ 
-                    "avg(monitoring.ceph-mon-bs*_infra_server_lan.ceph_overall_cluster_status.op_per_sec.value)" ],
-                "labels": [ "IOPS" ],
-                "colors": [ "#5bc0de" ],
-                "from": "-2h"
-            }
-        ]
-    }
+    "ceph_config": "/etc/ceph/ceph.conf"
 }
