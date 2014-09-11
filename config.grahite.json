@@ -9,14 +9,16 @@
                     "avg(monitoring.ceph-mon*.ceph_overall_cluster_status.write_bytes_sec)"
                 ],
                 "labels": [ "Read", "Write" ],
-                "colors": [ "green", "red" ],
+                "colors": [ "#ee5f5b", "#62c462" ],
                 "from": "-2h",
                 "mode": "byteRate"
             },
             {
                 "targets": [ 
-                    "avg(monitoring.ceph-mon*.ceph_overall_cluster_status.op_per_sec)" ],
+                    "avg(monitoring.ceph-mon*.ceph_overall_cluster_status.op_per_sec)"
+                ],
                 "labels": [ "IOPS" ],
+                "colors" [ "#5bc0de" ],
                 "from": "-2h"
             }
         ]
