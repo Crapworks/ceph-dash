@@ -46,7 +46,6 @@ $(function () {
 
     // Graphite to flot configuration options {{{
     var flot_options = {
-        colors: [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ],
         grid: {
             show: true
         },
@@ -93,11 +92,13 @@ $(function () {
                     });
                 });
                 // update plot
-                if (typeof mode != undefined) {
-                    flot_options.yaxis.mode = mode
+                if (typeof mode != "undefined") {
+                    flot_options.yaxis.mode = mode;
                 }
-                if (typeof color != undefined) {
-                    flot_options.colors = colors
+                if (typeof colors != "undefined") {
+                    flot_options.colors = colors;
+                } else {
+                    flot_options.colors = [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ];
                 }
                 $.plot("#graphite" + index, series, flot_options);
             }
