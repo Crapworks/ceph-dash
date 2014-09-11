@@ -58,35 +58,46 @@ $(function () {
         yaxis: {
             //tickFormatter: function() { return ""; }
             min: 0,
-            mode: "byteRate"
         }
     }
 
-    function updatePlot(index, graphite_url, target, from, label) {
-        var query_url = graphite_url + "/render?format=json&from=" + from + "&target=" + target;
-        var series = [ {
-            data: [],
-            lines: { fill: true }
-        } ];
+    // TODO: Test more graphs
+    function updatePlot(index, graphite_url, targets, from, labels, colors, mode) {
+        combined_targets = "";
+        $.each(targets, function(index, target) {
+            combined_targets += "&target=" + target;
+        });
+        var query_url = graphite_url + "/render?format=json&from=" + from + combined_targets;
+
+        var series = [ ];
         $.getJSON(query_url, function(targets) {
             if (targets.length > 0) {
-                var datapoints = targets[0].datapoints;
-                var xzero = datapoints[0][1];
-                var data = $.map(targets[0].datapoints, function(value) {
-                if (value[0] === null) return null;
-                    return [[ value[1]-xzero, value[0] ]];
+                $.each(targets, function(index, target) {
+                    var datapoints = target.datapoints;
+                    var xzero = datapoints[0][1];
+                    var data = $.map(target.datapoints, function(value) {
+                    if (value[0] === null) return null;
+                        return [[ value[1]-xzero, value[0] ]];
+                    });
+
+                    // replace null value with previous item value
+                    for (var i = 0; i < data.length; i++) {
+                        if (i > 0 && data[i] === null) data[i] = data[-i];
+                    }
+
+                    series.push({
+                        data: data,
+                        label: labels[index],
+                        lines: { fill: true }
+                    });
                 });
-
-                // replace null value with previous item value
-                for (var i = 0; i < data.length; i++) {
-                    if (i > 0 && data[i] === null) data[i] = data[-i];
-                }
-
-                var last = data[data.length-1][1];
-
                 // update plot
-                series[0].data = data;
-                series[0].label = label;
+                if (typeof mode != undefined) {
+                    flot_options.yaxis.mode = mode
+                }
+                if (typeof color != undefined) {
+                    flot_options.colors = colors
+                }
                 $.plot("#graphite" + index, series, flot_options);
             }
         });
@@ -336,13 +347,12 @@ $(function () {
             });
 
             // update graphite if available
-            $.each(config.graphite.targets, function(index, target) {
-                updatePlot(index + 1, config.graphite.url, target.target, target.from, target.label);
+            $.each(config.graphite.metrics, function(index, metric) {
+                updatePlot(index + 1, config.graphite.url, metric.targets, metric.from, metric.labels, metric.colors, metric.mode);
             });
             // }}}
         }
 
-        // TODO: load json config file and put it into a global var
         ajaxCall(window.location.pathname, callback);
     };
     worker();
