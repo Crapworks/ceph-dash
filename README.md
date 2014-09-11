@@ -1,7 +1,7 @@
 ceph-dash - a free ceph dashboard / monitoring api
 ==================================================
 
-This is a small and clean approach of providing the ceph overall cluster health status via a restful json api as well as via a (hopefully) fancy web gui. There are no dependecies to the existing ```ceph-rest-api```. This wsgi application talks to the cluster directly via librados.
+This is a small and clean approach of providing the [Ceph](http://ceph.com) overall cluster health status via a restful json api as well as via a (hopefully) fancy web gui. There are no dependecies to the existing ```ceph-rest-api```. This wsgi application talks to the cluster directly via librados.
 
 Quickstart
 ----------
@@ -48,3 +48,23 @@ Pictures!!
 In case anyone wants to see what to expect, here you go:
 
 ![screenshot01](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash.png)
+
+Graphite Integration
+--------------------
+
+In the latest git version, I've integrated the flot graphing library to make it possible to show some graphs from [Graphite](graphite.wikidot.com) in ceph-dash. First of all: ceph-dash does **NOT** put any data into graphite! You have to do it yourself. We are pushing our [Icinga](https://www.icinga.org/) monitoring to push performance metrics to graphite. The graphs shown in the example were created by the above mentioned [Nagios check for ceph-dash](https://github.com/Crapworks/check_ceph_dash).
+
+This is currently **TESTING**!
+
+If you do not have a graphite section in your ```config.json``` the Metrics section will not appear in ceph-dash. This has currently the status **works for me**. If no one will complain, I will create a new stable release after a few weeks.
+
+### Configuration
+
+There is a sample configuration file called ```config.graphite.json```. Everything in there should be quite self-explanatory. If not, feel free to open an issue on github!
+
+### Example
+
+Here you can see an example where one graphs show the bytes read/write per second, and another one shows the IOPS during the last two hours:
+
+![screenshot01](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash-graphite.png)
+
