@@ -346,10 +346,12 @@ $(function () {
                 $("#monitor_status").append('<div class="col-md-4">' + message(ceph2bootstrap[health], msg) + '</div>');
             });
 
-            // update graphite if available
-            $.each(config.graphite.metrics, function(index, metric) {
-                updatePlot(index + 1, config.graphite.url, metric.targets, metric.from, metric.labels, metric.colors, metric.mode);
-            });
+            if ($('#graphite1').length > 0) {
+                // update graphite if available
+                $.each(config.graphite.metrics, function(index, metric) {
+                    updatePlot(index + 1, config.graphite.url, metric.targets, metric.from, metric.labels, metric.colors, metric.mode);
+                });
+            }
             // }}}
         }
 
