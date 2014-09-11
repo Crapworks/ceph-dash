@@ -26,3 +26,11 @@
      font-size: 14px;
      line-height: 1.2em;
 }
+
+#tooltip {
+    position: absolute;
+    display: none;
+    border: 1px solid #000;
+    padding: 2px;
+    background-color: #272b30;
+}
