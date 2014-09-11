@@ -9,7 +9,6 @@
                     "avg(monitoring.ceph-mon*.ceph_overall_cluster_status.write_bytes_sec)"
                 ],
                 "labels": [ "Read", "Write" ],
-                "colors": [ "#ee5f5b", "#62c462" ],
                 "from": "-2h",
                 "mode": "byteRate"
             },
