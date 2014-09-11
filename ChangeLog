@@ -1,3 +1,9 @@
 2014-09-10	Christian Eichelmann	<christian@crapworks.de>
 	* ceph-dash (js/css): general cleanup
 	* ceph-dash (js/css): sections are now collapsable
+
+2014-09-11	Christian Eichelmann	<christian@crapworks.de>
+	* ceph-dash (js): added flot library
+	* ceph-dash (js/css): added code to show graphite graphs in ceph-dash
+	* ceph-dash (config): added sample config for graphite integration
+	* ceph-dash (template): added optional metrics section for flot
