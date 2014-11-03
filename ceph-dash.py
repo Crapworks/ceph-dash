@@ -104,7 +104,11 @@ class CephOsdView(MethodView):
         command = { 'prefix': 'osd tree', 'format': 'json' }
         buf = self.connection.run(command)
 
-        return jsonify(json.loads(buf))
+        if request.mimetype == 'application/json':
+            return jsonify(json.loads(buf))
+        else:
+            return render_template('osd.html', data=json.loads(buf),
+                    config=self.config)
 
 class CephAPI(Flask):
     def __init__(self, name):
