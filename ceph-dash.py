@@ -92,7 +92,19 @@ class CephStatusView(MethodView):
             return render_template('status.html', data=json.loads(buf), config=self.config)
 
 class CephOsdView(MethodView):
-    pass
+    """
+    Endpoint that shows overall OSD status, hard disk mapping, and health status.
+    """
+    def __init__(self):
+        MethodView.__init__(self)
+        self.config = CephApiConfig()
+        self.connection = CephClusterConnection(self.config)
+
+    def get(self):
+        command = { 'prefix': 'osd tree', 'format': 'json' }
+        buf = self.connection.run(command)
+
+        return jsonify(json.loads(buf))
 
 class CephAPI(Flask):
     def __init__(self, name):
