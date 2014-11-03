@@ -48,17 +48,11 @@ class CephApiConfig(dict):
         configfile = os.path.join(os.path.dirname(__file__), 'config.json')
         self.update(json.load(open(configfile), object_hook=self._string_decode_hook))
 
+class CephClusterConnection():
+    def __init__(self, config):
+        self.config = config
 
-class CephStatusView(MethodView):
-    """
-    Endpoint that shows overall cluster status
-    """
-
-    def __init__(self):
-        MethodView.__init__(self)
-        self.config = CephApiConfig()
-
-    def get(self):
+    def run(self, command):
         kwargs = dict()
         conf = dict()
         kwargs['conffile'] = self.config['ceph_config']
@@ -69,19 +63,36 @@ class CephStatusView(MethodView):
             raise RadosError("Can't supply both client_id and client_name")
         if 'client_id' in self.config:
             kwargs['rados_id'] = self.config['client_id']
-        if 'client_name' in self.config:
+	if 'client_name' in self.config:
             kwargs['name'] = self.config['client_name']
         with Rados(**kwargs) as cluster:
-            command = { 'prefix': 'status', 'format': 'json' }
             ret, buf, err = cluster.mon_command(json.dumps(command), '', timeout=5)
             if ret != 0:
                 abort(500, err)
+	return buf
 
-            if request.mimetype == 'application/json':
-                return jsonify(json.loads(buf))
-            else:
-                return render_template('status.html', data=json.loads(buf), config=self.config)
 
+class CephStatusView(MethodView):
+    """
+    Endpoint that shows overall cluster status
+    """
+
+    def __init__(self):
+        MethodView.__init__(self)
+        self.config = CephApiConfig()
+        self.connection = CephClusterConnection(self.config)
+
+    def get(self):
+        command = { 'prefix': 'status', 'format': 'json' }
+        buf = self.connection.run(command)
+
+        if request.mimetype == 'application/json':
+            return jsonify(json.loads(buf))
+        else:
+            return render_template('status.html', data=json.loads(buf), config=self.config)
+
+class CephOsdView(MethodView):
+    pass
 
 class CephAPI(Flask):
     def __init__(self, name):
@@ -91,6 +102,9 @@ class CephAPI(Flask):
 
         status_view = CephStatusView.as_view('status')
         self.add_url_rule('/', view_func=status_view)
+
+        osd_view = CephOsdView.as_view('osd')
+        self.add_url_rule('/osd', view_func=osd_view)
 
         # add custom error handler
         for code in default_exceptions.iterkeys():
