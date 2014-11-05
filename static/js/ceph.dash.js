@@ -170,6 +170,14 @@ $(function () {
     }
     // }}}
 
+    // Initialize unhealthy osd popover {{{
+    $("#unhealthy_osds").popover({
+        html: true,
+        placement: 'bottom',
+        trigger: 'hover'
+    });
+    // }}}
+
     // MAKE SECTION COLLAPSABLE {{{
     $('.cd-collapsable').on("click", function (e) {
         if ($(this).hasClass('cd-collapsed')) {
@@ -226,7 +234,9 @@ $(function () {
     var ceph2bootstrap = {
         HEALTH_OK: 'success',
         HEALTH_WARN: 'warning',
-        HEALTH_ERR: 'danger'
+        HEALTH_ERR: 'danger',
+        down: 'warning',
+        out: 'danger'
     }
     // }}}
 
@@ -268,6 +278,7 @@ $(function () {
             numOSDin = data['osdmap']['osdmap']['num_in_osds'] || 0;
             numOSDup = data['osdmap']['osdmap']['num_up_osds'] || 0;
             numOSDunhealthy = data['osdmap']['osdmap']['num_osds'] - data['osdmap']['osdmap']['num_up_osds'] || 0;
+            unhealthyOSDDetails = data['osdmap']['details'];
             osdFull = data['osdmap']['osdmap']['full'];
             osdNearFull = data['osdmap']['osdmap']['nearfull'];
 
@@ -321,6 +332,21 @@ $(function () {
             $("#num_in_osds").html(numOSDin);
             $("#num_up_osds").html(numOSDup);
             $("#unhealthy_osds").html(numOSDunhealthy);
+
+            // update unhealthy osd popover if there are any unhealthy osds
+            osdPopover = $('#unhealthy_osds').data('bs.popover');
+            osdPopover.options.content = '';
+            if (typeof(unhealthyOSDDetails) != 'undefined') {
+                osdPopover.options.content += '<table class="table table-condensed">';
+                $.each(unhealthyOSDDetails, function(index, osd_stats) {
+                    osdPopover.options.content += '<tr>';
+                    osdPopover.options.content += '<td class="text-' + ceph2bootstrap[osd_stats.status] + '">' + osd_stats.status + '</td>';
+                    osdPopover.options.content += '<td>' + osd_stats.name + '</td>';
+                    osdPopover.options.content += '<td>' + osd_stats.host + '</td>';
+                    osdPopover.options.content += '</tr>';
+                });
+                osdPopover.options.content += '</table>';
+            }
 
             // update osd full / nearfull warnings
             $("#osd_warning").empty();
