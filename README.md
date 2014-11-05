@@ -2,6 +2,7 @@ ceph-dash - a free ceph dashboard / monitoring api
 ==================================================
 
 - [ceph-dash - a free ceph dashboard / monitoring api](#user-content-ceph-dash---a-free-ceph-dashboard--monitoring-api)
+	- [Newest Feature](#user-content-newest-feature)
 	- [Quickstart](#user-content-quickstart)
 	- [Dashboard](#user-content-dashboard)
 	- [REST Api](#user-content-rest-api)
@@ -14,6 +15,15 @@ ceph-dash - a free ceph dashboard / monitoring api
 
 
 This is a small and clean approach of providing the [Ceph](http://ceph.com) overall cluster health status via a restful json api as well as via a (hopefully) fancy web gui. There are no dependecies to the existing ```ceph-rest-api```. This wsgi application talks to the cluster directly via librados.
+
+Newest Feature
+--------------
+
+The current github version (which has no release yet) features a popover, which becomes available if there are any unhealthy osds in the cluster. If the count for Unhealthy osds is not 0, hovering over the field with the number of unhealthy osds will show a popover with additional information about those osds (including the name, the state and the host that contains this osd). To do this, ceph-dash has to issue an additional command to the cluster. This additional request will only be triggered if the first command shows any unhealthy osds!
+
+![screenshot03](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash-popover.png)
+
+I also did some minor code refactoring to clean everything up a bit. If I don't get any negative responses, I will create a new release in the next weeks.
 
 Quickstart
 ----------
@@ -68,7 +78,7 @@ In the latest git version, I've integrated the flot graphing library to make it 
 
 This is currently **TESTING**!
 
-If you do not have a graphite section in your ```config.json``` the Metrics section will not appear in ceph-dash. This has currently the status **works for me**. If no one will complain, I will create a new stable release after a few weeks.
+If you do not have a graphite section in your ```config.json``` the Metrics section will not appear in ceph-dash.
 
 ### Configuration
 
