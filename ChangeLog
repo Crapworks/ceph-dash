@@ -1,3 +1,8 @@
+2014-11-05	Christian Eichelmann	<christian@crapworks.de>
+	* ceph-dash (js): show popover with details for unhealthy osds (hover)
+	* ceph-dash (api): if osds are unhealthy, retrieve additional information
+	* ceph-dash (code): small refactorings
+
 2014-09-10	Christian Eichelmann	<christian@crapworks.de>
 	* ceph-dash (js/css): general cleanup
 	* ceph-dash (js/css): sections are now collapsable
