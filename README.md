@@ -31,7 +31,7 @@ Quickstart
 1. clone this repository
 2. place it on one of your ceph monitor nodes
 3. run ```ceph-dash.py```
-4. point your browser to http://<monitornode>:5000/
+4. point your browser to http://ceph-monitor:5000/
 5. enjoy!
 
 Dashboard
