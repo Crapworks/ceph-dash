@@ -153,17 +153,19 @@ class CephOsdView(MethodView):
     def __init__(self):
         MethodView.__init__(self)
         self.config = CephApiConfig()
-        self.connection = CephClusterConnection(self.config)
+        self.clusterprop = CephClusterProperties(self.config)
 
     def get(self):
         command = { 'prefix': 'osd tree', 'format': 'json' }
-        buf = self.connection.run(command)
+        with Rados(**self.clusterprop) as cluster:
+            osd_status = CephClusterCommand(cluster, prefix='osd tree', format='json')
+            if 'err' in osd_status:
+                abort(500, osd_status['err'])
 
-        if request.mimetype == 'application/json':
-            return jsonify(json.loads(buf))
-        else:
-            return render_template('osd.html', data=json.loads(buf),
-                    config=self.config)
+            if request.mimetype == 'application/json':
+                return jsonify(osd_status)
+            else:
+                return render_template('osd.html', data=osd_status, config=self.config)
 
 class CephAPI(Flask):
     def __init__(self, name):
