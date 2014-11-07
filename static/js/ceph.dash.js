@@ -202,9 +202,7 @@ $(function () {
           data: null,
           contentType: 'application/json',
           success: callback,
-          complete: function() {
-            setTimeout(worker, 5000);
-          }
+          timeout: 3000
         });
     }
     // }}}
@@ -393,6 +391,7 @@ $(function () {
         ajaxCall(window.location.pathname, callback);
     };
     worker();
+    setInterval(worker, 5000);
     // }}}
 })
 
