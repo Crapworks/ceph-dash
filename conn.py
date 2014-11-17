@@ -56,8 +56,11 @@ class CephClusterCommand(dict):
 
     def run(self):
         self.cluster.connect()
+        self.cluster.require_state("connected")
         ret, buf, err = self.cluster.mon_command(self.cmd, '', timeout=5)
         if ret != 0:
             self['err'] = err
         else:
             self.update(json.loads(buf))
+        self.cluster.shutdown()
+        return self
