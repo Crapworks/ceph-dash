@@ -39,8 +39,6 @@ class CephProbeDaemon(Daemon):
 
     def run(self):
         while True:
-            #sys.stderr.write("Working!\n")
-            #time.sleep(3i)
             status_refresh = 3 
 
             statusThread = None

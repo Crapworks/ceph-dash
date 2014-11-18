@@ -52,9 +52,6 @@ class CephClusterCommand(dict):
         self.cluster = Rados(**self.clusterprop)
 
     def __init__(self, **kwargs):
-        #self.config = CephApiConfig()
-        #self.clusterprop = CephClusterProperties(self.config)
-        #self.cluster = Rados(**self.clusterprop)
         self.configure()
         self.cmd = json.dumps(kwargs)
         dict.__init__(self)
