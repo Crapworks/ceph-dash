@@ -46,15 +46,21 @@ class CephClusterCommand(dict):
     """
     Issue a ceph command on the given cluster and provide the returned json
     """
-
-    def __init__(self, **kwargs):
+    def configure(self):
         self.config = CephApiConfig()
         self.clusterprop = CephClusterProperties(self.config)
         self.cluster = Rados(**self.clusterprop)
+
+    def __init__(self, **kwargs):
+        #self.config = CephApiConfig()
+        #self.clusterprop = CephClusterProperties(self.config)
+        #self.cluster = Rados(**self.clusterprop)
+        self.configure()
         self.cmd = json.dumps(kwargs)
         dict.__init__(self)
 
     def run(self):
+        self.configure()
         self.cluster.connect()
         self.cluster.require_state("connected")
         ret, buf, err = self.cluster.mon_command(self.cmd, '', timeout=5)

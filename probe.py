@@ -1,7 +1,11 @@
 import sys
 import os
-import time
+import datetime
+import traceback
+
+from threading import Thread, Event
 from daemon import Daemon
+from conn import CephClusterCommand
 
 runfile = "/var/run/cephprobe/cephprobe.pid"
 logfile = "/var/log/cephprobe.log"
@@ -11,14 +15,40 @@ def ensure_dir(f):
     if not os.path.exists(d):
         os.makedirs(d)
 
+class Repeater(Thread):
+    def __init__(self, event, function, period = 5.0):
+        Thread.__init__(self)
+        self.stopped = event
+        self.period = period
+        self.function = function
+    def run(self):
+        while not self.stopped.wait(self.period):
+            try:
+                print self.function()
+                #self.conn.shutdown()
+            except Exception as e:
+                sys.stderr.write("[" + str(datetime.datetime.now()) + "] WARNING: " + e.__class__.__name__ + "\n")
+                traceback.print_exc(file = sys.stderr)
+                pass
+
+evt = Event()
+
 class CephProbeDaemon(Daemon):
     def __init__(self, pidfile):
         Daemon.__init__(self, pidfile, stdout = logfile, stderr = logfile)
 
     def run(self):
         while True:
-            sys.stderr.write("Working!\n")
-            time.sleep(3)
+            #sys.stderr.write("Working!\n")
+            #time.sleep(3i)
+            status_refresh = 3 
+
+            statusThread = None
+            status_cmd = CephClusterCommand(prefix='status', format='json')
+            if status_refresh > 0:
+                statusThread = Repeater(evt, status_cmd.run, status_refresh)
+                statusThread.start()
+
 
 if __name__ == "__main__":
     ensure_dir(runfile)
