@@ -16,16 +16,17 @@ def ensure_dir(f):
         os.makedirs(d)
 
 class Repeater(Thread):
-    def __init__(self, event, function, period = 5.0):
+    def __init__(self, name, event, function, period = 5.0):
         Thread.__init__(self)
+        self.name = name
         self.stopped = event
         self.period = period
         self.function = function
     def run(self):
         while not self.stopped.wait(self.period):
             try:
+                sys.stderr.write("[" + str(datetime.datetime.now()) + "] Processing "+ self.name + ".\n")
                 print self.function()
-                #self.conn.shutdown()
             except Exception as e:
                 sys.stderr.write("[" + str(datetime.datetime.now()) + "] WARNING: " + e.__class__.__name__ + "\n")
                 traceback.print_exc(file = sys.stderr)
@@ -38,14 +39,13 @@ class CephProbeDaemon(Daemon):
         Daemon.__init__(self, pidfile, stdout = logfile, stderr = logfile)
 
     def run(self):
-        while True:
-            status_refresh = 3 
+        status_refresh = 3 
 
-            statusThread = None
-            status_cmd = CephClusterCommand(prefix='status', format='json')
-            if status_refresh > 0:
-                statusThread = Repeater(evt, status_cmd.run, status_refresh)
-                statusThread.start()
+        statusThread = None
+        status_cmd = CephClusterCommand(prefix='status', format='json')
+        if status_refresh > 0:
+            statusThread = Repeater("StatusDump", evt, status_cmd.run, status_refresh)
+            statusThread.start()
 
 
 if __name__ == "__main__":
