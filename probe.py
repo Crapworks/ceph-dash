@@ -31,8 +31,14 @@ def processStatusDump(db):
 
 def processOsdDump(db):
     osd_cmd = CephClusterCommand(prefix='osd dump', format='json')
-    osd = osd_cmd.run()
-    db.osd.update({'fsid': osd['fsid']}, osd, upsert=True)
+    osddump = osd_cmd.run()
+    db.osd.update({'fsid': osddump['fsid']}, osddump, upsert=True)
+
+def processPgDump(db):
+    pg_cmd = CephClusterCommand(prefix='pg dump', format='json')
+    pgdump = pg_cmd.run()
+    for pg in pgdump["pg_stats"]:
+        db.pg.update({'pgid': pg['pgid']}, pg, upsert=True)
 
 class Repeater(Thread):
     def __init__(self, name, event, function, args=[], period = 5.0):
@@ -64,6 +70,7 @@ class CephProbeDaemon(Daemon):
 
         status_refresh = 3
         osd_dump_refresh = 3
+        pg_dump_refresh = 60
 
         statusThread = None
         if status_refresh > 0:
@@ -73,6 +80,10 @@ class CephProbeDaemon(Daemon):
         if osd_dump_refresh > 0:
             osdThread = Repeater("OsdDump", evt, processOsdDump, [db], osd_dump_refresh)
             osdThread.start()
+
+        if pg_dump_refresh > 0:
+            pgThread = Repeater("PgDump", evt, processPgDump, [db], pg_dump_refresh)
+            pgThread.start()
 
 
 if __name__ == "__main__":
