@@ -64,6 +64,6 @@ class CephClusterCommand(dict):
         if ret != 0:
             self['err'] = err
         else:
-            self.update(json.loads(buf))
+            self.update(json.loads(buf, parse_int=str))
         self.cluster.shutdown()
         return self

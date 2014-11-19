@@ -24,10 +24,15 @@ def getMongoClient():
     client = MongoClient(mongodb_host, mongodb_port)
     return client
 
-def processStatus(db):
+def processStatusDump(db):
     status_cmd = CephClusterCommand(prefix='status', format='json')
     status = status_cmd.run()
     db.status.update({'fsid': status['fsid']}, status, upsert=True)
+
+def processOsdDump(db):
+    osd_cmd = CephClusterCommand(prefix='osd dump', format='json')
+    osd = osd_cmd.run()
+    db.osd.update({'fsid': osd['fsid']}, osd, upsert=True)
 
 class Repeater(Thread):
     def __init__(self, name, event, function, args=[], period = 5.0):
@@ -57,13 +62,17 @@ class CephProbeDaemon(Daemon):
         client = getMongoClient()
         db = client["ceph"]
 
-        status_refresh = 3 
+        status_refresh = 3
+        osd_dump_refresh = 3
 
         statusThread = None
-        status_cmd = CephClusterCommand(prefix='status', format='json')
         if status_refresh > 0:
-            statusThread = Repeater("StatusDump", evt, processStatus, [db], status_refresh)
+            statusThread = Repeater("StatusDump", evt, processStatusDump, [db], status_refresh)
             statusThread.start()
+
+        if osd_dump_refresh > 0:
+            osdThread = Repeater("OsdDump", evt, processOsdDump, [db], osd_dump_refresh)
+            osdThread.start()
 
 
 if __name__ == "__main__":
