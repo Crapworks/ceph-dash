@@ -99,7 +99,6 @@ def get_unhealthy_osd_details(osd_status):
     """ get all unhealthy osds from osd status """
 
     unhealthy_osds = list()
-    import pprint
 
     for obj in osd_status['nodes']:
         if obj['type'] == 'osd':

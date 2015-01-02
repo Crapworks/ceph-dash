@@ -1,5 +1,3 @@
 {
-    "ceph_config": "./ceph.conf",
-    "keyring": "./ceph.keyring",
-    "client_name": "client.monitoring"
+    "ceph_config": "/etc/ceph/ceph.conf"
 }
