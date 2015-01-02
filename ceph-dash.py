@@ -99,15 +99,22 @@ def get_unhealthy_osd_details(osd_status):
     """ get all unhealthy osds from osd status """
 
     unhealthy_osds = list()
+    import pprint
 
     for obj in osd_status['nodes']:
         if obj['type'] == 'osd':
+            #if OSD does not exists (DNE in osd tree) skip this entry
+            if obj['exists'] == 0: continue
             if obj['status'] == 'down' or obj['status'] == 'out':
-                unhealthy_osds.append({
+                #It is possible to have one host in more than one branch in the tree. 
+                #Add each unhealthy OSD only once in the list
+                entry = {
                     'name': obj['name'],
                     'status': obj['status'],
                     'host': find_host_for_osd(obj['id'], osd_status)
-                })
+                }
+                if entry not in unhealthy_osds:
+                    unhealthy_osds.append(entry)
 
     return unhealthy_osds
 
