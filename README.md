@@ -16,14 +16,16 @@ ceph-dash - a free ceph dashboard / monitoring api
 
 This is a small and clean approach of providing the [Ceph](http://ceph.com) overall cluster health status via a restful json api as well as via a (hopefully) fancy web gui. There are no dependecies to the existing ```ceph-rest-api```. This wsgi application talks to the cluster directly via librados.
 
+You can find a blog entry regarding monitoring a Ceph cluster with ceph-dash on [Crapworks](http://crapworks.de/blog/2015/01/05/ceph-monitoring/).
+
 Newest Feature
 --------------
 
-The current github version (which has no release yet) features a popover, which becomes available if there are any unhealthy osds in the cluster. If the count for Unhealthy osds is not 0, hovering over the field with the number of unhealthy osds will show a popover with additional information about those osds (including the name, the state and the host that contains this osd). To do this, ceph-dash has to issue an additional command to the cluster. This additional request will only be triggered if the first command shows any unhealthy osds!
+The current release features a popover, which becomes available if there are any unhealthy osds in the cluster. If the count for Unhealthy osds is not 0, hovering over the field with the number of unhealthy osds will show a popover with additional information about those osds (including the name, the state and the host that contains this osd). To do this, ceph-dash has to issue an additional command to the cluster. This additional request will only be triggered if the first command shows any unhealthy osds!
 
 ![screenshot03](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash-popover.png)
 
-I also did some minor code refactoring to clean everything up a bit. If I don't get any negative responses, I will create a new release in the next weeks.
+I also did some minor code refactoring to clean everything up a bit.
 
 Quickstart
 ----------
@@ -74,9 +76,7 @@ In case anyone wants to see what to expect, here you go:
 Graphite Integration
 --------------------
 
-In the latest git version, I've integrated the flot graphing library to make it possible to show some graphs from [Graphite](graphite.wikidot.com) in ceph-dash. First of all: ceph-dash does **NOT** put any data into graphite! You have to do it yourself. We are using our [Icinga](https://www.icinga.org/) monitoring to push performance metrics to graphite. The graphs shown in the example were created by the above mentioned [Nagios check for ceph-dash](https://github.com/Crapworks/check_ceph_dash).
-
-This is currently **TESTING**!
+I've integrated the flot graphing library to make it possible to show some graphs from [Graphite](graphite.wikidot.com) in ceph-dash. First of all: ceph-dash does **NOT** put any data into graphite! You have to do it yourself. We are using our [Icinga](https://www.icinga.org/) monitoring to push performance metrics to graphite. The graphs shown in the example were created by the above mentioned [Nagios check for ceph-dash](https://github.com/Crapworks/check_ceph_dash).
 
 If you do not have a graphite section in your ```config.json``` the Metrics section will not appear in ceph-dash.
 
