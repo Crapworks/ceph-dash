@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
-    ceph-dash.py
-    ~~~~~~~~~~~~
+ceph-dash.py
+~~~~~~~~~~~~
 
-    Flask based api / dashboard for viewing a ceph clusters overall health
-    status
+Flask based api / dashboard for viewing a ceph clusters overall health
+status
 
-    :copyright: (c) 2014 by Christian Eichelmann
-    :license: BSD, see LICENSE for more details.
+:copyright: (c) 2014 by Christian Eichelmann
+:license: BSD, see LICENSE for more details.
 """
 
 import os
@@ -26,62 +26,10 @@ from rados import ObjectNotFound
 from rados import PermissionError
 from rados import Error as RadosError
 
+from conn import *
+
 from werkzeug.exceptions import default_exceptions
 from werkzeug.exceptions import HTTPException
-
-
-class CephApiConfig(dict):
-    """ loads the json configuration file """
-
-    def _string_decode_hook(self, data):
-        rv = {}
-        for key, value in data.iteritems():
-            if isinstance(key, unicode):
-                key = key.encode('utf-8')
-            if isinstance(value, unicode):
-                value = value.encode('utf-8')
-            rv[key] = value
-        return rv
-
-    def __init__(self):
-        dict.__init__(self)
-        configfile = os.path.join(os.path.dirname(__file__), 'config.json')
-        self.update(json.load(open(configfile), object_hook=self._string_decode_hook))
-
-
-class CephClusterProperties(dict):
-    """
-    Validate ceph cluster connection properties
-    """
-
-    def __init__(self, config):
-        dict.__init__(self)
-
-        self['conffile'] = config['ceph_config']
-        self['conf'] = dict()
-
-        if 'keyring' in config:
-            self['conf']['keyring'] = config['keyring']
-        if 'client_id' in config and 'client_name' in config:
-            raise RadosError("Can't supply both client_id and client_name")
-        if 'client_id' in config:
-            self['rados_id'] = config['client_id']
-        if 'client_name' in config:
-            self['name'] = config['client_name']
-
-
-class CephClusterCommand(dict):
-    """
-    Issue a ceph command on the given cluster and provide the returned json
-    """
-
-    def __init__(self, cluster, **kwargs):
-        dict.__init__(self)
-        ret, buf, err = cluster.mon_command(json.dumps(kwargs), '', timeout=5)
-        if ret != 0:
-            self['err'] = err
-        else:
-            self.update(json.loads(buf))
 
 
 def find_host_for_osd(osd, osd_status):
@@ -125,32 +73,31 @@ class CephStatusView(MethodView):
 
     def __init__(self):
         MethodView.__init__(self)
-        self.config = CephApiConfig()
-        self.clusterprop = CephClusterProperties(self.config)
 
     def get(self):
-        with Rados(**self.clusterprop) as cluster:
-            cluster_status = CephClusterCommand(cluster, prefix='status', format='json')
-            if 'err' in cluster_status:
-                abort(500, cluster_status['err'])
+        cluster_cmd = CephClusterCommand(prefix='status', format='json')
+        cluster_status = cluster_cmd.run()
+        if 'err' in cluster_status:
+            abort(500, cluster_status['err'])
 
-            # check for unhealthy osds and get additional osd infos from cluster
-            total_osds = cluster_status['osdmap']['osdmap']['num_osds']
-            in_osds = cluster_status['osdmap']['osdmap']['num_up_osds']
-            up_osds = cluster_status['osdmap']['osdmap']['num_in_osds']
+        # check for unhealthy osds and get additional osd infos from cluster
+        total_osds = cluster_status['osdmap']['osdmap']['num_osds']
+        in_osds = cluster_status['osdmap']['osdmap']['num_up_osds']
+        up_osds = cluster_status['osdmap']['osdmap']['num_in_osds']
 
-            if up_osds < total_osds or in_osds < total_osds:
-                osd_status = CephClusterCommand(cluster, prefix='osd tree', format='json')
-                if 'err' in osd_status:
-                    abort(500, osd_status['err'])
+        if up_osds < total_osds or in_osds < total_osds:
+            osd_cmd = CephClusterCommand(prefix='osd tree', format='json')
+            osd_status = osd_cmd.run()
+            if 'err' in osd_status:
+                abort(500, osd_status['err'])
 
-                # find unhealthy osds in osd tree
-                cluster_status['osdmap']['details'] = get_unhealthy_osd_details(osd_status)
+            # find unhealthy osds in osd tree
+            cluster_status['osdmap']['details'] = get_unhealthy_osd_details(osd_status)
 
-            if request.mimetype == 'application/json':
-                return jsonify(cluster_status)
-            else:
-                return render_template('status.html', data=cluster_status, config=self.config)
+        if request.mimetype == 'application/json':
+            return jsonify(cluster_status)
+        else:
+            return render_template('status.html', data=cluster_status)
 
 
 class CephAPI(Flask):
