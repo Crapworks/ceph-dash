@@ -21,6 +21,14 @@ You can find a blog entry regarding monitoring a Ceph cluster with ceph-dash on 
 Newest Feature
 --------------
 
+### Old content warning
+
+If an AJAX call to the underlying ceph-dash API isn't answered within 3 seconds, a silent timeout is happening. The dashboard will still show the old data. I wanted to give the user a hint if something is wrong with the api or the ceph cluster, so I've added a little warning icon that tells you if the data shown in ceph-dash is getting to old. Reasons for that can be an slow or unresponsive cluster (some error handling is happening - a monitor failover for example).
+
+![screenshot03](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash-content-warning.png)
+
+### Unhealthy OSD popover
+
 The current release features a popover, which becomes available if there are any unhealthy osds in the cluster. If the count for Unhealthy osds is not 0, hovering over the field with the number of unhealthy osds will show a popover with additional information about those osds (including the name, the state and the host that contains this osd). To do this, ceph-dash has to issue an additional command to the cluster. This additional request will only be triggered if the first command shows any unhealthy osds!
 
 ![screenshot03](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash-popover.png)
