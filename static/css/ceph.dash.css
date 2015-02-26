@@ -1,3 +1,15 @@
+.icon-ok {
+    color: #62C462;
+}
+
+.icon-warn {
+    color: #F89406;
+}
+
+.icon-err {
+    color: #EE5F5B;
+}
+
 .panel-body {
     font-weight: bold;
 }

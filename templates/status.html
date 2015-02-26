@@ -10,8 +10,12 @@
   <div class="container">
     <div class="well">
       <h1>Ceph Dashboard</h1>
-      <!--add cluster fsid for informational purposes-->
-      <p><small id="cluster_fsid"></small></p>
+      <p>
+        <!--show warning icon if data is getting to old-->
+        <span id="last_update" style="display:none;" class="glyphicon glyphicon-warning-sign icon-warn"></span>
+        <!--add cluster fsid for informational purposes-->
+        <small id="cluster_fsid"></small>
+      </p>
     </div>
 
     <!--START CEPH OVERALL CLUSTER STATUS-->

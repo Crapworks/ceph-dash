@@ -1,4 +1,15 @@
 $(function () {
+    // global variable to configure refresh interval and timeout (in seconds!)
+    var refreshInterval = 5;
+    var refreshTimeout = 3;
+
+    // calculate outdated warning thresholds
+    var outDatedWarning = (refreshInterval * 3);
+    var outDatedError = (refreshInterval * 10);
+
+    // last updated timestamp global variable
+    var lastUpdatedTimestamp = 0;
+
     // Gauge chart configuration options {{{
     var gauge_options = {
         palette: 'Soft Pastel',
@@ -202,7 +213,27 @@ $(function () {
           data: null,
           contentType: 'application/json',
           success: callback,
-          timeout: 3000
+          error: function() {
+              // refresh last updated timestamp
+              timeStamp = Math.floor(Date.now() / 1000);
+              timeDiff = timeStamp - lastUpdatedTimestamp;
+
+              if (lastUpdatedTimestamp == 0) {
+                  lastUpdatedTimestamp = timeStamp - refreshInterval;
+                  timeDiff = refreshInterval;
+              }
+
+
+              if (timeDiff > outDatedWarning) {
+                  msg = 'Content has last been refreshed more than ' + timeDiff + ' seconds before';
+                  $('#last_update').show();
+                  $('#last_update').tooltip({
+                      placement: 'bottom',
+                  });
+                  $('#last_update').attr('data-original-title', msg);
+              }
+          },
+          timeout: (refreshTimeout * 1000)
         });
     }
     // }}}
@@ -247,6 +278,11 @@ $(function () {
     // WORKER FUNCTION (UPDATED) {{{
     function worker() {
         callback = function(data, status, xhr) {
+            // refresh last updated timestamp
+            timeStamp = Math.floor(Date.now() / 1000);
+            lastUpdatedTimestamp = timeStamp;
+            $('#last_update').hide();
+
             // Update cluster fsid
             $("#cluster_fsid").html(data['fsid']);
 
@@ -391,7 +427,7 @@ $(function () {
         ajaxCall(window.location.pathname, callback);
     };
     worker();
-    setInterval(worker, 5000);
+    setInterval(worker, (refreshInterval * 1000));
     // }}}
 })
 
