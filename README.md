@@ -3,6 +3,8 @@ ceph-dash - a free ceph dashboard / monitoring api
 
 - [ceph-dash - a free ceph dashboard / monitoring api](#user-content-ceph-dash---a-free-ceph-dashboard--monitoring-api)
 	- [Newest Feature](#user-content-newest-feature)
+		- [Old content warning](#user-content-old-content-warning)
+		- [Unhealthy OSD popover](#user-content-unhealthy-osd-popover)
 	- [Quickstart](#user-content-quickstart)
 	- [Dashboard](#user-content-dashboard)
 	- [REST Api](#user-content-rest-api)
