@@ -20,7 +20,7 @@ This is a small and clean approach of providing the [Ceph](http://ceph.com) over
 
 You can find a blog entry regarding monitoring a Ceph cluster with ceph-dash on [Crapworks](http://crapworks.de/blog/2015/01/05/ceph-monitoring/).
 
-[Here](http://de.slideshare.net/Inktank_Ceph/07-ceph-days-sf2015-paul-evans-static) you can find a slide from Paul Evans, taken from the Ceph Day in San Francisco (March 12, 2015) where he is comparing several Ceph-GUIs, including ceph-dash.
+[Here](http://de.slideshare.net/Inktank_Ceph/07-ceph-days-sf2015-paul-evans-static) you can find a presentation from Paul Evans, taken from the Ceph Day in San Francisco (March 12, 2015) where he is comparing several Ceph-GUIs, including ceph-dash.
 
 Newest Feature
 --------------
