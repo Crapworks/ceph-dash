@@ -316,6 +316,16 @@ $(function () {
             osdFull = data['osdmap']['osdmap']['full'];
             osdNearFull = data['osdmap']['osdmap']['nearfull'];
 
+            var $parent = $("#unhealthy_osds").parent('.panel');
+
+            if (numOSDunhealthy == '0') {
+                $parent.removeClass('panel-danger');
+                $parent.addClass('panel-success');
+            } else {
+                $parent.removeClass('panel-success');
+                $parent.addClass('panel-danger');
+            }
+
             // *overall status*
             clusterStatusOverall = data['health']['overall_status'];
             clusterHealthSummary = data['health']['summary'];
