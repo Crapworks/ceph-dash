@@ -29,6 +29,7 @@ from rados import Error as RadosError
 from werkzeug.exceptions import default_exceptions
 from werkzeug.exceptions import HTTPException
 
+import settings
 
 class CephApiConfig(dict):
     """ loads the json configuration file """
@@ -196,8 +197,9 @@ class CephAPI(Flask):
 
 def main():
     app = CephAPI(__name__)
-    app.run(debug=False, host='0.0.0.0')
-
+    app.run(debug=False, 
+        host=settings.server.get('ip', '0.0.0.0'), 
+        port=settings.server.get('port', 5000))
 
 if __name__ == '__main__':
     main()
