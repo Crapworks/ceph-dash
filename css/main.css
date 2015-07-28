@@ -1,9 +1,3 @@
-
-
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
-
 small {
     font-size: 60%;
     font-weight: lighter;
@@ -36,9 +30,11 @@ hr {
 
 .fancycolumn {
     text-align: center;
-    font-size: 1.825em;
+    font-size: 2.2em;
     margin-top: 50px;
     margin-bottom: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .textcolumn {

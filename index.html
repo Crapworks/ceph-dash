@@ -24,7 +24,7 @@
         <h1><img src="img/ceph_logo.png">Ceph-Dash</h1>
         <p>The most easy to install and clean to view Ceph dashboard</p>
         <p>
-          <a class="btn btn-primary btn-lg" href="#" role="button">
+          <a class="btn btn-primary btn-lg" href="https://github.com/Crapworks/ceph-dash/archive/v1.0.tar.gz" role="button">
             Download Ceph-dash
             <br/>
             <small>Version 1.0 released 26.02.2015</small>
@@ -39,12 +39,12 @@
         <div class="col-md-4 fancycolumn">
           <img src="img/setup.png" alt="setup" class="img-rounded">
           <h2>Easy to setup</h2>
-          <p></p>
+          <p>You can try ceph-dash in a few seconds! It requires no api (since it brings it's own), just Python2, Flask and the Ceph Python bindins. And for sure a running Ceph cluster. See <a href="https://github.com/Crapworks/ceph-dash#user-content-quickstart">here</a> how you can get it up and running!</p>
         </div>
         <div class="col-md-4 fancycolumn">
           <img src="img/read.png" alt="setup" class="img-rounded">
           <h2>Easy to read</h2>
-          <p></p>
+          <p>Ceph-dash shows you exactly what you need to know on a single web page! You can see at the first glance if something is wrong, and it will show you at the second glance <var>WHAT</var> and <var>WHERE</var> the problem is!</p>
        </div>
         <div class="col-md-4 fancycolumn">
           <img src="img/speed.png" alt="setup" class="img-rounded">
@@ -67,13 +67,15 @@
           <div class="thumbnail"><a href="img/ceph-dash-popover.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/ceph-dash-popover_min.png" alt="cephdash" class="img-rounded"></a></div>
         </div>
         <div class="col-md-6 textcolumn">
-          <h2>Integrate your graphite data</h2>
-          <p>Ceph-dash uses the awesome <a href="">D3 Librabry</a> to display graphs for your <a href="">graphite</a> data! Anything that you feed into graphite can be integrated into ceph-dash to complete the whole picture of your cluster health even more! We are using the  <a href="">Nagios-Check for ceph-dash</a> to gather performance data, that we then show as graphs in ceph-dash!</p>
-          <div class="thumbnail"><a href="img/cephdash01.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/cephdash01_graph.png" alt="cephdash" class="img-rounded"></a></div>
           <h2>Use the read-only api</h2>
           <p>You can use ceph-dash not only as a dashboard, you can also get all the cluster status information as <samp>JSON</samp> data, calling ceph-dash with <kbd>Content-Type: application/json</kbd>! <samp>JSON</samp> is easily parsable in any programming language, so you can use the information from ceph-dash to automate processes with your own tools in your own infrastructure.</p>
           <h2>Use Icinga/Nagios to monitor you cluster</h2>
-          <p>I have also provided a Nagios/Icinga Plugin that uses ceph-dash as a monitoring endpoint. You can simply plug it into you monitoring coniguration and get the cluster status and lots of performance data from you cluster without the need of running local processes on your ceph systems! The check can be obtained <a href="">here</a> and an article about monitoring Ceph with ceph-dash can be found <a href="">here</a>.</p>
+          <p>I have also provided a Nagios/Icinga Plugin that uses ceph-dash as a monitoring endpoint. You can simply plug it into you monitoring coniguration and get the cluster status and lots of performance data from you cluster without the need of running local processes on your ceph systems! The check can be obtained <a href="https://github.com/Crapworks/check_ceph_dash">here</a> and an article about monitoring Ceph with ceph-dash can be found <a href="http://crapworks.de/blog/2015/01/05/ceph-monitoring/">here</a>.</p>
+          <h2>Integrate your graphite data</h2>
+          <p>Ceph-dash uses the awesome <a href="">D3 Librabry</a> to display graphs for your <a href="">graphite</a> data! Anything that you feed into graphite can be integrated into ceph-dash to complete the whole picture of your cluster health even more! We are using the <a href="https://github.com/Crapworks/check_ceph_dash">Nagios-Check for ceph-dash</a> to gather performance data, that we then show as graphs in ceph-dash!</p>
+          <div class="thumbnail"><a href="img/cephdash01.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/cephdash01_graph.png" alt="cephdash" class="img-rounded"></a></div>
+          <h2>Deploy it into your favourite webserver</h2>
+          <p>Ceph-dash is a <samp>WSGI</samp> application, powered by <kbd>Flask</kbd>. That means you can deploy it into <samp>WSGI</samp>-capable webserver, like <samp>Apache</samp> or <samp>Nginx</samp>. Sample configuration files for these two webserver are already included into ceph-dash. Make use of it! Since the built-in webserver is single threaded and just for testing, this will improve performance a lot!</p>
        </div>
       </div>
 
@@ -82,7 +84,8 @@
       <footer>
         <p>&copy; Christian Eichelmann 2015</p>
       </footer>
-    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    </div> <!-- /container -->      
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
         <script src="js/vendor/bootstrap.min.js"></script>
