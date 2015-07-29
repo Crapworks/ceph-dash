@@ -13,16 +13,16 @@
 
         <link rel="stylesheet" href="css/lightbox.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/main.css">
 
         <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     </head>
     <body>
+
     <div class="jumbotron">
       <div class="container">
         <h1><img src="img/ceph_logo.png">Ceph-Dash</h1>
-        <p>The most easy to install and clean to view Ceph dashboard</p>
+        <p>Monitor your Ceph cluster with a fast, clean and easy to setup dashboard</p>
         <p>
           <a class="btn btn-primary btn-lg" href="https://github.com/Crapworks/ceph-dash/archive/v1.0.tar.gz" role="button">
             Download Ceph-dash
@@ -34,22 +34,27 @@
     </div>
 
     <div class="container">
-      <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4 fancycolumn">
           <img src="img/setup.png" alt="setup" class="img-rounded">
           <h2>Easy to setup</h2>
-          <p>You can try ceph-dash in a few seconds! It requires no api (since it brings it's own), just Python2, Flask and the Ceph Python bindins. And for sure a running Ceph cluster. See <a href="https://github.com/Crapworks/ceph-dash#user-content-quickstart">here</a> how you can get it up and running!</p>
+          <p>
+            You can try ceph-dash in a few seconds! It requires no api (since it brings it's own), just Python2, Flask and the Ceph Python bindins. And for sure a running Ceph cluster. See <a href="https://github.com/Crapworks/ceph-dash#user-content-quickstart">here</a> how you can get it up and running!
+          </p>
         </div>
         <div class="col-md-4 fancycolumn">
           <img src="img/read.png" alt="setup" class="img-rounded">
           <h2>Easy to read</h2>
-          <p>Ceph-dash shows you exactly what you need to know on a single web page! You can see at the first glance if something is wrong, and it will show you at the second glance <var>WHAT</var> and <var>WHERE</var> the problem is!</p>
+          <p>
+            Ceph-dash shows you exactly what you need to know on a single web page! You can see at the first glance if something is wrong, and it will show you at the second glance <var>WHAT</var> and <var>WHERE</var> the problem is!
+          </p>
        </div>
         <div class="col-md-4 fancycolumn">
-          <img src="img/speed.png" alt="setup" class="img-rounded">
-          <h2>Lightweight and fast</h2>
-          <p></p>
+          <img src="img/world.png" alt="setup" class="img-rounded">
+          <h2>Easy to contribute</h2>
+          <p>
+            Ceph-dash is a small piece of software and written in (hopefully) easily understandable code. I already received lots of contributions and have also seen some forks with custom feature that suit special environments!
+          </p>
         </div>
       </div>
 
@@ -58,54 +63,72 @@
       <div class="row">
         <div class="col-md-6 textcolumn">
           <h2>
-            <img src="img/star.png">
             Your overall cluster status on one page
           </h2>
-          <p>Ceph-dash is designed to show you everything you need to know about your ceph cluster health status on one clean page. Is there some recovery going on? Is my cluster in a warning state and if yes why? How many of placement groups are in a unclean state? How much traffic is on my cluster right now? You will get all of the information by one quick look on your dashboard!</p>
-          <div class="thumbnail"><a href="img/cephdash01.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/cephdash01_thumb.png" alt="cephdash" class="img-rounded"></a></div>
+          <p>
+            Ceph-dash is designed to show you everything you need to know about your ceph cluster health status on one clean page. Is there some recovery going on? Is my cluster in a warning state and if yes why? How many placement groups are in a unclean state? How much traffic is on my cluster right now? You will get all of the information by one quick look on your dashboard!
+          </p>
+          <div class="thumbnail">
+            <a href="img/cephdash01.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/cephdash01_thumb.png" alt="cephdash" class="img-rounded"></a>
+          </div>
           <h2>
-            <img src="img/star.png">
             Small dependencies
           </h2>
-          <p>Ceph-dash only needs <kbd>Python2</kbd> installed together with <kbd>python-flask</kbd> and <kbd>python-ceph</kbd>. It uses <samp>librados</samp> directly to talk with the ceph cluster and is not dependant on any other api. Just fire up <kbd>ceph-dash.py</kbd> and you have everything you need to monitor your ceph cluster!</p>
+          <p>
+            Ceph-dash only needs Python2 installed together with <samp>python-flask</samp> and <samp>python-ceph</samp>. It uses <samp>librados</samp> directly to talk with the ceph cluster and is not dependant on any other api. Just fire up <kbd>./ceph-dash.py</kbd> and you have everything you need to monitor your ceph cluster!
+          </p>
           <h2>
-            <img src="img/star.png">
             See where the problem is
           </h2>
-          <p>Ceph-dash shows you not only <var>THAT</var> something is wrong, it also shows you <var>WHERE</var> the problem is! Is one of your monitors down? Are placementgroups inconsistent? See it at a single glance! Does ceph-dash show you unhealthy OSDs? Hover over the field and see what OSDs on which hosts are making trouble!</p>
-          <div class="thumbnail"><a href="img/ceph-dash-popover.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/ceph-dash-popover_min.png" alt="cephdash" class="img-rounded"></a></div>
+          <p>
+            Ceph-dash shows you not only <var>THAT</var> something is wrong, it also shows you <var>WHERE</var> the problem is! Is one of your monitors down? Are placementgroups inconsistent? See it at a single glance! Does ceph-dash show you unhealthy OSDs? Hover over the field and see what OSDs on which hosts are making trouble!
+          </p>
+          <div class="thumbnail">
+            <a href="img/ceph-dash-popover.png" data-lightbox="cephdash" data-title="Ceph-Dash shows you where the unhealthy osds are"><img src="img/ceph-dash-popover_min.png" alt="cephdash" class="img-rounded"></a>
+          </div>
         </div>
         <div class="col-md-6 textcolumn">
           <h2>
-            <img src="img/star.png">
             Use the read-only api
           </h2>
-          <p>You can use ceph-dash not only as a dashboard, you can also get all the cluster status information as <samp>JSON</samp> data, calling ceph-dash with <kbd>Content-Type: application/json</kbd>! <samp>JSON</samp> is easily parsable in any programming language, so you can use the information from ceph-dash to automate processes with your own tools in your own infrastructure.</p>
+          <p>
+            You can use ceph-dash not only as a dashboard, you can also get all the cluster status information as <samp>JSON</samp> data, calling ceph-dash with <kbd>Content-Type: application/json</kbd>! <samp>JSON</samp> is easily parsable in any programming language, so you can use the information from ceph-dash to automate processes with your own tools in your own infrastructure.
+          </p>
           <h2>
-            <img src="img/star.png">
             Monitor you cluster with Nagios
           </h2>
-          <p>I have also provided a Nagios/Icinga Plugin that uses ceph-dash as a monitoring endpoint. You can simply plug it into you monitoring coniguration and get the cluster status and lots of performance data from you cluster without the need of running local processes on your ceph systems! The check can be obtained <a href="https://github.com/Crapworks/check_ceph_dash">here</a> and an article about monitoring Ceph with ceph-dash can be found <a href="http://crapworks.de/blog/2015/01/05/ceph-monitoring/">here</a>.</p>
+          <p>
+            I have also provided a Nagios/Icinga Plugin that uses ceph-dash as a monitoring endpoint. You can simply plug it into you monitoring coniguration and get the cluster status and lots of performance data from your cluster without the need of running local processes on your ceph systems! The check can be obtained <a href="https://github.com/Crapworks/check_ceph_dash">here</a> and an article about monitoring Ceph with ceph-dash can be found <a href="http://crapworks.de/blog/2015/01/05/ceph-monitoring/">here</a>.
+          </p>
           <h2>
-            <img src="img/star.png">
             Integrate your graphite data
           </h2>
-          <p>Ceph-dash uses the awesome <a href="">D3 Librabry</a> to display graphs for your <a href="">graphite</a> data! Anything that you feed into graphite can be integrated into ceph-dash to complete the whole picture of your cluster health even more! We are using the <a href="https://github.com/Crapworks/check_ceph_dash">Nagios-Check for ceph-dash</a> to gather performance data, that we then show as graphs in ceph-dash!</p>
+          <p>
+            Ceph-dash uses the awesome <a href="http://d3js.org/">D3 Librabry</a> to display graphs for your <a href="https://graphite.readthedocs.org/">Graphite</a> data! Anything that you feed into graphite can be integrated into ceph-dash to complete the whole picture of your cluster health even more! We are using the <a href="https://github.com/Crapworks/check_ceph_dash">Nagios-Check for ceph-dash</a> to gather performance data, that we then show as graphs in ceph-dash!
+          </p>
           <div class="thumbnail"><a href="img/cephdash01.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/cephdash01_graph.png" alt="cephdash" class="img-rounded"></a></div>
           <h2>
-            <img src="img/star.png">
             Deploy it into your favourite webserver
           </h2>
-          <p>Ceph-dash is a <samp>WSGI</samp> application, powered by <kbd>Flask</kbd>. That means you can deploy it into <samp>WSGI</samp>-capable webserver, like <samp>Apache</samp> or <samp>Nginx</samp>. Sample configuration files for these two webserver are already included into ceph-dash. Make use of it! Since the built-in webserver is single threaded and just for testing, this will improve performance a lot!</p>
+          <p>
+            Ceph-dash is a <samp>WSGI</samp> application, powered by <kbd>Flask</kbd>. That means you can deploy it into <samp>WSGI</samp>-capable webserver, like <samp>Apache</samp> or <samp>Nginx</samp>. Sample configuration files for these two webserver are already included into ceph-dash. Make use of it! Since the built-in webserver is single threaded and just for testing, this will improve performance a lot!
+          </p>
        </div>
       </div>
 
       <hr>
 
       <footer>
+        <p class="github">
+          <a href="https://github.com/Crapworks/ceph-dash">
+            Watch and contribute to ceph-dash on Github<br>
+            <img src="img/github.png">
+          </a>
+        </p>
         <p>&copy; Christian Eichelmann 2015</p>
       </footer>
-    </div> <!-- /container -->      
+    </div> <!-- /container -->
+
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
@@ -113,14 +136,6 @@
         <script src="js/lightbox.js"></script>
         <script src="js/main.js"></script>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
+
     </body>
 </html>

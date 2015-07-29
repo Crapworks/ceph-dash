@@ -47,6 +47,28 @@ hr {
 
 footer {
     font-size: 1.525em;
+    margin-top: 50px;
+    text-align: center;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+a:hover {
+    color: #33a6cc;
+    text-decoration: none;
+}
+
+.github {
+    font-size: 2.525em;
+    margin-bottom: 50px;
+    color: #FFF;
+}
+
+.github .link-github:before {
+    background-image: url(../img/github.png);
+
 }
 
 body {
