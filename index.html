@@ -6,8 +6,8 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
+        <title>Ceph-Dash</title>
+        <meta name="description" content="ceph-dash - ceph monitoring dashboard">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
@@ -57,24 +57,45 @@
 
       <div class="row">
         <div class="col-md-6 textcolumn">
-          <h2>Your overall cluster status on one page</h2>
+          <h2>
+            <img src="img/star.png">
+            Your overall cluster status on one page
+          </h2>
           <p>Ceph-dash is designed to show you everything you need to know about your ceph cluster health status on one clean page. Is there some recovery going on? Is my cluster in a warning state and if yes why? How many of placement groups are in a unclean state? How much traffic is on my cluster right now? You will get all of the information by one quick look on your dashboard!</p>
           <div class="thumbnail"><a href="img/cephdash01.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/cephdash01_thumb.png" alt="cephdash" class="img-rounded"></a></div>
-          <h2>Small dependencies</h2>
+          <h2>
+            <img src="img/star.png">
+            Small dependencies
+          </h2>
           <p>Ceph-dash only needs <kbd>Python2</kbd> installed together with <kbd>python-flask</kbd> and <kbd>python-ceph</kbd>. It uses <samp>librados</samp> directly to talk with the ceph cluster and is not dependant on any other api. Just fire up <kbd>ceph-dash.py</kbd> and you have everything you need to monitor your ceph cluster!</p>
-          <h2>See where the problem is</h2>
+          <h2>
+            <img src="img/star.png">
+            See where the problem is
+          </h2>
           <p>Ceph-dash shows you not only <var>THAT</var> something is wrong, it also shows you <var>WHERE</var> the problem is! Is one of your monitors down? Are placementgroups inconsistent? See it at a single glance! Does ceph-dash show you unhealthy OSDs? Hover over the field and see what OSDs on which hosts are making trouble!</p>
           <div class="thumbnail"><a href="img/ceph-dash-popover.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/ceph-dash-popover_min.png" alt="cephdash" class="img-rounded"></a></div>
         </div>
         <div class="col-md-6 textcolumn">
-          <h2>Use the read-only api</h2>
+          <h2>
+            <img src="img/star.png">
+            Use the read-only api
+          </h2>
           <p>You can use ceph-dash not only as a dashboard, you can also get all the cluster status information as <samp>JSON</samp> data, calling ceph-dash with <kbd>Content-Type: application/json</kbd>! <samp>JSON</samp> is easily parsable in any programming language, so you can use the information from ceph-dash to automate processes with your own tools in your own infrastructure.</p>
-          <h2>Use Icinga/Nagios to monitor you cluster</h2>
+          <h2>
+            <img src="img/star.png">
+            Monitor you cluster with Nagios
+          </h2>
           <p>I have also provided a Nagios/Icinga Plugin that uses ceph-dash as a monitoring endpoint. You can simply plug it into you monitoring coniguration and get the cluster status and lots of performance data from you cluster without the need of running local processes on your ceph systems! The check can be obtained <a href="https://github.com/Crapworks/check_ceph_dash">here</a> and an article about monitoring Ceph with ceph-dash can be found <a href="http://crapworks.de/blog/2015/01/05/ceph-monitoring/">here</a>.</p>
-          <h2>Integrate your graphite data</h2>
+          <h2>
+            <img src="img/star.png">
+            Integrate your graphite data
+          </h2>
           <p>Ceph-dash uses the awesome <a href="">D3 Librabry</a> to display graphs for your <a href="">graphite</a> data! Anything that you feed into graphite can be integrated into ceph-dash to complete the whole picture of your cluster health even more! We are using the <a href="https://github.com/Crapworks/check_ceph_dash">Nagios-Check for ceph-dash</a> to gather performance data, that we then show as graphs in ceph-dash!</p>
           <div class="thumbnail"><a href="img/cephdash01.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/cephdash01_graph.png" alt="cephdash" class="img-rounded"></a></div>
-          <h2>Deploy it into your favourite webserver</h2>
+          <h2>
+            <img src="img/star.png">
+            Deploy it into your favourite webserver
+          </h2>
           <p>Ceph-dash is a <samp>WSGI</samp> application, powered by <kbd>Flask</kbd>. That means you can deploy it into <samp>WSGI</samp>-capable webserver, like <samp>Apache</samp> or <samp>Nginx</samp>. Sample configuration files for these two webserver are already included into ceph-dash. Make use of it! Since the built-in webserver is single threaded and just for testing, this will improve performance a lot!</p>
        </div>
       </div>
