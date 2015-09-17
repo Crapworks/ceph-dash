@@ -9,6 +9,7 @@ Vcs-Browser: http://github.com/crapworks/ceph-dash
 
 Package: ceph-dash
 Architecture: all
-Depends: python, python-flask, python-ceph
+Depends: python, python-flask, python-ceph, debconf
+Pre-Depends: debconf
 Description: Dashboard to view ceph cluster status
   Dashboard to view ceph cluster status

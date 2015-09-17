@@ -1,0 +1,3 @@
+{
+    "ceph_config": "/etc/ceph/ceph.conf"
+}
