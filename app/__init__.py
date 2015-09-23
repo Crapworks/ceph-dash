@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import json
 
+from os.path import dirname
+from os.path import join
 from flask import Flask
 
 app = Flask(__name__)
-app.template_folder = os.path.join(os.path.dirname(__file__), 'templates')
-app.static_folder = os.path.join(os.path.dirname(__file__), 'static')
+app.template_folder = join(dirname(__file__), 'templates')
+app.static_folder = join(dirname(__file__), 'static')
 
 
 class UserConfig(dict):
@@ -26,13 +27,15 @@ class UserConfig(dict):
 
     def __init__(self):
         dict.__init__(self)
-        configfile = os.path.join(os.path.dirname(__file__), 'config.json')
+        configfile = join(dirname(dirname(__file__)), 'config.json')
         self.update(json.load(open(configfile), object_hook=self._string_decode_hook))
 
 app.config['USER_CONFIG'] = UserConfig()
 
 from app.dashboard.views import DashboardResource
 from app.influx.views import InfluxResource
+from app.graphite.views import GraphiteResource
 
 app.register_blueprint(DashboardResource.as_blueprint())
 app.register_blueprint(InfluxResource.as_blueprint())
+app.register_blueprint(GraphiteResource.as_blueprint())
