@@ -22,25 +22,29 @@ class GraphiteResource(ApiResource):
 
     def get(self):
         config = current_app.config['USER_CONFIG'].get('graphite', {})
+        default_colors = [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ]
         results = []
 
         for metric in config.get('metrics', []):
-            #url = config['url'] + "/render?format=json&from=" + metric['from']
-            url = config['url'] + "/render?format=json&from=-1h"
+            url = config['url'] + "/render?format=json&from=" + metric['from']
             for target in metric.get('targets', []):
                 url += '&target=' + target
             resp = urlopen(url, context=ssl._create_unverified_context())
 
-            datapoints = []
-            for dataset in json.load(resp):
-                datapoints.append(dataset)
+            collection = []
+            for index, dataset in enumerate(json.load(resp)):
+                series = {}
+                # map graphite timestamp to javascript timestamp
+                # TODO: fill null values with the last dataset OR remove null values
+                data = [ [ts * 1000, value] for value, ts in dataset.get('datapoints', []) ]
+                series['data'] = data
+                series['label'] = metric['labels'][index] if 'labels' in metric else None
+                series['lines'] = dict(fill=True)
+                series['mode'] = metric['mode'] if 'mode' in metric else None 
+                series['color'] = metric['colors'][index] if 'colors' in metric else default_colors[index]
+                collection.append(series)
 
-            graph = dict()
-            graph['metric'] = datapoints
-            graph['labels'] = metric.get('labels', [])
-            graph['colors'] = metric.get('colors', [])
-            graph['mode'] = metric.get('mode', '')
-            results.append(graph)
+            results.append(collection)
 
         return jsonify(results=results)
 

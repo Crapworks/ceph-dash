@@ -83,43 +83,17 @@ $(function () {
     }
 
     // TODO: Test more graphs / alignment
-    function updatePlot(index, graphite_url, targets, from, labels, colors, mode) {
-        combined_targets = "";
-        $.each(targets, function(index, target) {
-            combined_targets += "&target=" + target;
-        });
-        var query_url = graphite_url + "/render?format=json&from=" + from + combined_targets;
+    function updatePlot() {
+        var graphite_endpoint = window.location.pathname + 'graphite/';
 
-        var series = [ ];
-        $.getJSON(query_url, function(targets) {
-            if (targets.length > 0) {
-                $.each(targets, function(index, target) {
-                    // map graphite timestamp to javascript timestamps
-                    var data = $.map(target.datapoints, function(value) {
-                    if (value[0] === null) return null;
-                        return [[ value[1] * 1000, value[0] ]];
-                    });
-
-                    // replace null value with previous item value
-                    for (var i = 0; i < data.length; i++) {
-                        if (i > 0 && data[i] === null) data[i] = data[-i];
-                    }
-
-                    // add target datapoints to dataseries
-                    series.push({
-                        data: data,
-                        label: labels[index],
-                        lines: { fill: true },
-                        mode: (typeof mode != "undefined") ? mode : null
-                    });
-                });
+        $.getJSON(graphite_endpoint, function(data) {
+            $.each(data.results, function(index, series) {
                 // set the yaxis mode
-                flot_options.yaxis.mode = (typeof mode != "undefined") ? mode : null;
-                // set the target graph colors
-                flot_options.colors = (typeof colors != "undefined") ? colors :  [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ];
+                flot_options.yaxis.mode = (typeof series[0].mode != "undefined") ? series[0].mode : null;
+
                 // update plot
-                $.plot("#graphite" + index, series, flot_options);
-            }
+                $.plot("#graphite" + (index+1), series, flot_options);
+            });
         });
     }
     // }}}
@@ -427,9 +401,7 @@ $(function () {
 
             if ($('#graphite1').length > 0) {
                 // update graphite if available
-                $.each(config.graphite.metrics, function(index, metric) {
-                    updatePlot(index + 1, config.graphite.url, metric.targets, metric.from, metric.labels, metric.colors, metric.mode);
-                });
+                updatePlot();
             }
             // }}}
         }
