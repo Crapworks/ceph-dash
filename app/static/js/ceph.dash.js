@@ -10,6 +10,11 @@ $(function () {
     // last updated timestamp global variable
     var lastUpdatedTimestamp = 0;
 
+    // add a endsWith function to strings
+    String.prototype.endsWith = function(suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+
     // Gauge chart configuration options {{{
     var gauge_options = {
         palette: 'Soft Pastel',
@@ -84,7 +89,11 @@ $(function () {
     }
 
     function updatePlot(backend) {
-        var endpoint = window.location.pathname + backend +'/';
+        if (window.location.pathname.endsWith('/')) {
+            var endpoint = window.location.pathname + backend +'/';
+        } else {
+            var endpoint = window.location.pathname + '/' +  backend +'/';
+        }
 
         $.getJSON(endpoint, function(data) {
             $.each(data.results, function(index, series) {

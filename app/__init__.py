@@ -41,6 +41,7 @@ except ImportError:
         del app.config['USER_CONFIG']['influxdb']
 
     # log something so the user knows what's up
+    # TODO: make logging work!
     app.logger.warning('No influxdb module found, disabling influxdb support')
 else:
     from app.influx.views import InfluxResource
