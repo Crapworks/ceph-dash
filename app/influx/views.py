@@ -14,33 +14,32 @@ class InfluxResource(ApiResource):
     url_rules = {
         'index': {
             'rule': '/',
-            'defaults': { 'query': None  }
-        },
-        'show': {
-            'rule': '/<query>'
-        },
+        }
     }
 
-    def get(self, query):
-        client = InfluxDBClient.from_DSN(current_app.config['INFLUX_DATABASE_URI'], timeout=5)
-        result = client.query(query)
+    def get(self):
+        config = current_app.config['USER_CONFIG'].get('influxdb', {})
+        #TODO: define default colors in js
+        default_colors = [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ]
+        client = InfluxDBClient.from_DSN(config['uri'], timeout=5)
+        results = []
 
-        fmtResults = []
-        if result:
-            for series in result.raw['series']:
-                fmtSeries= {}
-                fmtSeries['name'] = series['name']
-                if 'tags' in series:
-                    fmtSeries['tags'] = series['tags']
+        for metric in config.get('metrics', []):
+            for query in metric.get('queries', []):
+                result = client.query(query, epoch='ms')
 
-                columns = series['columns']
-                values = series['values']
+                collection = []
+                if result:
+                    for index, dataset in enumerate(result.raw['series']):
+                        series= {}
+                        series['data'] = dataset['values']
+                        series['label'] = metric['labels'][index] if 'labels' in metric else None
+                        series['lines'] = dict(fill=True)
+                        series['mode'] = metric['mode'] if 'mode' in metric else None
+                        series['color'] = metric['colors'][index] if 'colors' in metric else default_colors[index]
 
-                fmtSeries['data'] = [ dict(zip(columns, v)) for v in values ]
+                        collection.append(series)
 
-                fmtResults.append(fmtSeries)
+            results.append(collection)
 
-            return jsonify(result=fmtResults)
-        else:
-            return jsonify(result=[])
-
+        return jsonify(result=results)
