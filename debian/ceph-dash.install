@@ -1,7 +1,5 @@
 config.json /opt/ceph-dash
 ceph-dash.py /opt/ceph-dash
-ceph_dash.py /opt/ceph-dash
-templates /opt/ceph-dash
-static /opt/ceph-dash
+app /opt/ceph-dash
 contrib/wsgi/cephdash.wsgi /opt/ceph-dash
 contrib/apache/cephdash /etc/apache2/sites-available
