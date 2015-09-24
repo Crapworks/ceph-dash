@@ -79,20 +79,20 @@ $(function () {
         },
         yaxis: {
             min: 0
-        }
+        },
+        colors: [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ]
     }
 
-    // TODO: Test more graphs / alignment
-    function updatePlot() {
-        var graphite_endpoint = window.location.pathname + 'graphite/';
+    function updatePlot(backend) {
+        var endpoint = window.location.pathname + backend +'/';
 
-        $.getJSON(graphite_endpoint, function(data) {
+        $.getJSON(endpoint, function(data) {
             $.each(data.results, function(index, series) {
-                // set the yaxis mode
+                //// set the yaxis mode
                 flot_options.yaxis.mode = (typeof series[0].mode != "undefined") ? series[0].mode : null;
 
-                // update plot
-                $.plot("#graphite" + (index+1), series, flot_options);
+                //// update plot
+                $.plot('#' + backend + (index+1), series, flot_options);
             });
         });
     }
@@ -400,8 +400,12 @@ $(function () {
             });
 
             if ($('#graphite1').length > 0) {
-                // update graphite if available
-                updatePlot();
+                // update graphite graphs if available
+                updatePlot('graphite');
+            }
+            if ($('#influxdb1').length > 0) {
+                // update influxdb graphs if available
+                updatePlot('influxdb');
             }
             // }}}
         }

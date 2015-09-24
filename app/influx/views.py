@@ -9,8 +9,8 @@ from influxdb import InfluxDBClient
 from app.base import ApiResource
 
 class InfluxResource(ApiResource):
-    endpoint = 'influx'
-    url_prefix = '/influx'
+    endpoint = 'influxdb'
+    url_prefix = '/influxdb'
     url_rules = {
         'index': {
             'rule': '/',
@@ -19,8 +19,6 @@ class InfluxResource(ApiResource):
 
     def get(self):
         config = current_app.config['USER_CONFIG'].get('influxdb', {})
-        #TODO: define default colors in js
-        default_colors = [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ]
         client = InfluxDBClient.from_DSN(config['uri'], timeout=5)
         results = []
 
@@ -36,10 +34,10 @@ class InfluxResource(ApiResource):
                         series['label'] = metric['labels'][index] if 'labels' in metric else None
                         series['lines'] = dict(fill=True)
                         series['mode'] = metric['mode'] if 'mode' in metric else None
-                        series['color'] = metric['colors'][index] if 'colors' in metric else default_colors[index]
+                        series['color'] = metric['colors'][index] if 'colors' in metric else None
 
                         collection.append(series)
 
             results.append(collection)
 
-        return jsonify(result=results)
+        return jsonify(results=results)

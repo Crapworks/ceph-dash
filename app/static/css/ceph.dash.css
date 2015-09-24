@@ -39,6 +39,13 @@
      line-height: 1.2em;
 }
 
+.influxdb {
+     width: 500px;
+     height: 150px;
+     font-size: 14px;
+     line-height: 1.2em;
+}
+
 #tooltip {
     position: absolute;
     display: none;
