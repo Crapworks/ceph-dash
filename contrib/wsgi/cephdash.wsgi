@@ -6,5 +6,4 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 # application holds the actual wsgi application
-from ceph_dash import CephAPI
-application = CephAPI(__name__)
+from app import app as application
