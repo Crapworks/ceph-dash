@@ -97,10 +97,7 @@
     <!--END CEPH OSD STATUS-->
 
     <!--START GRAPHITE METRICS-->
-    {% if "graphite" in config.keys() %}
-    <script language="javascript">
-        var config = {{ config|tojson|safe}};
-    </script>
+    {% if "graphite" in config or "influxdb" in config %}
     <div class="panel panel-primary">
       <div class="panel-heading cd-collapsable">
         <h3 class="panel-title">
@@ -109,9 +106,14 @@
       </div>
       <div class="panel-body">
         <div class="row">
-          {% for index in config['graphite']['metrics'] %}
+          {% for index in config.get('graphite', {}).get('metrics', []) %}
             <div class="col-md-6">
               <div id="graphite{{ loop.index }}" class="graphite"></div>
+            </div>
+          {% endfor %}
+          {% for index in config.get('influxdb', {}).get('metrics', []) %}
+            <div class="col-md-6">
+              <div id="influxdb{{ loop.index }}" class="influxdb"></div>
             </div>
           {% endfor %}
         </div>
@@ -204,7 +206,7 @@
 
   </div>
 
-  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.0.3.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.1.4.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/globalize.min.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/dx.chartjs.js') }}"></script>
