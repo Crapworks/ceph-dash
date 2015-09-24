@@ -37,8 +37,8 @@ class GraphiteResource(ApiResource):
             for index, dataset in enumerate(json.load(resp)):
                 series = {}
                 # map graphite timestamp to javascript timestamp
-                # TODO: fill null values with the last dataset OR remove null values
-                data = [ [ts * 1000, value] for value, ts in dataset.get('datapoints', []) ]
+                data = [ [ts * 1000, value] for value, ts in dataset.get('datapoints', []) if value is not None ]
+
                 series['data'] = data
                 series['label'] = metric['labels'][index] if 'labels' in metric else None
                 series['lines'] = dict(fill=True)
