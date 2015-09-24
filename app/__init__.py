@@ -32,10 +32,23 @@ class UserConfig(dict):
 
 app.config['USER_CONFIG'] = UserConfig()
 
+# only load influxdb endpoint if module is available
+try:
+    import influxdb
+except ImportError:
+    # remove influxdb config because we can't use it
+    if 'influxdb' in app.config['USER_CONFIG']:
+        del app.config['USER_CONFIG']['influxdb']
+
+    # log something so the user knows what's up
+    app.logger.warning('No influxdb module found, disabling influxdb support')
+else:
+    from app.influx.views import InfluxResource
+    app.register_blueprint(InfluxResource.as_blueprint())
+
+# load dashboard and graphite endpoint
 from app.dashboard.views import DashboardResource
-from app.influx.views import InfluxResource
 from app.graphite.views import GraphiteResource
 
 app.register_blueprint(DashboardResource.as_blueprint())
-app.register_blueprint(InfluxResource.as_blueprint())
 app.register_blueprint(GraphiteResource.as_blueprint())
