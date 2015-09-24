@@ -28,7 +28,10 @@ class GraphiteResource(ApiResource):
             url = config['url'] + "/render?format=json&from=" + metric['from']
             for target in metric.get('targets', []):
                 url += '&target=' + target
-            resp = urlopen(url, context=ssl._create_unverified_context())
+
+            if hasattr(ssl, '_create_unverified_context'):
+                ssl._create_default_https_context = ssl._create_unverified_context
+            resp = urlopen(url)
 
             collection = []
             for index, dataset in enumerate(json.load(resp)):
