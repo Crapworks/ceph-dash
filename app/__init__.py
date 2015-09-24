@@ -44,12 +44,16 @@ except ImportError:
     # TODO: make logging work!
     app.logger.warning('No influxdb module found, disabling influxdb support')
 else:
-    from app.influx.views import InfluxResource
-    app.register_blueprint(InfluxResource.as_blueprint())
+    # only load endpoint if user wants to use influxdb
+    if 'influxdb' in app.config['USER_CONFIG']:
+        from app.influx.views import InfluxResource
+        app.register_blueprint(InfluxResource.as_blueprint())
+
+# only load endpoint if user wants to use graphite
+if 'graphite' in app.config['USER_CONFIG']:
+    from app.graphite.views import GraphiteResource
+    app.register_blueprint(GraphiteResource.as_blueprint())
 
 # load dashboard and graphite endpoint
 from app.dashboard.views import DashboardResource
-from app.graphite.views import GraphiteResource
-
 app.register_blueprint(DashboardResource.as_blueprint())
-app.register_blueprint(GraphiteResource.as_blueprint())
