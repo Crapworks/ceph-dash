@@ -3,6 +3,7 @@ ceph-dash - a free ceph dashboard / monitoring api
 
 - [ceph-dash - a free ceph dashboard / monitoring api](#user-content-ceph-dash---a-free-ceph-dashboard--monitoring-api)
 	- [Newest Feature](#user-content-newest-feature)
+		- [InfluxDB support](#user-content-influxdb-support)
 		- [Old content warning](#user-content-old-content-warning)
 		- [Unhealthy OSD popover](#user-content-unhealthy-osd-popover)
 	- [Quickstart](#user-content-quickstart)
@@ -24,6 +25,18 @@ You can find a blog entry regarding monitoring a Ceph cluster with ceph-dash on 
 
 Newest Feature
 --------------
+
+### InfluxDB support
+
+I've refactored the code quite a bit to make use of [Blueprints](http://flask.pocoo.org/docs/0.10/blueprints/) instead of [Method Views](http://flask.pocoo.org/docs/0.10/views/). The structure of the code has changed, but I was keeping everything backwards compatible to all your deployments should still work with the current version. This is for now not a release, because I want to see if there is some negative feedback on this. And here are two new things you can cheer about!
+
+#### Graphing Proxies
+
+Your browser does not talk directly to [Graphite](graphite.wikidot.com) directly anymore! It uses the ```/graphite``` endpoint which already provides flot-formated json output. Ceph-dash will establish a connection to Graphite and gather all relevant data. This should prevent Cross-Domain issues and in case of [InfluxDB](https://influxdb.com), also hides the database password. Due to it's generic nature, it should be easy to add more graphing backends if needed.
+
+#### InfluxDB support
+
+Ceph-dash now supports also [InfluxDB](https://influxdb.com) as a graphing backend besides [Graphite](graphite.wikidot.com). You can find a sample configuration file called ```config.influxdb.json``` in the root folder, which should explain how to use it. Please understand that I can't give you support for you InfluxDB setup, because this would definitely exceed the scope of Ceph-Dash.
 
 ### Old content warning
 
