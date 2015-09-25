@@ -39,6 +39,8 @@ Your browser does not talk directly to [Graphite](graphite.wikidot.com) directly
 Ceph-dash now supports also [InfluxDB](https://influxdb.com) as a graphing backend besides [Graphite](graphite.wikidot.com). You need client and server version ```> 0.9``` since the api broke with that release and is not backwards compatible. If you do not have the InfluxDB python module installed, Ceph-dash will *NOT* enable the InfluxDB proxy and will not load any configured InfluxDB resources. So please be sure to have the latest InfluxDB python module installed if you want to use InfluxDB as a backend.
 You can find a sample configuration file called ```config.influxdb.json``` in the root folder, which should explain how to use it. Please understand that I can't give you support for you InfluxDB setup, because this would definitely exceed the scope of Ceph-Dash.
 
+![screenshot04](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash-influxdb.png)
+
 ### Old content warning
 
 If an AJAX call to the underlying ceph-dash API isn't answered within 3 seconds, a silent timeout is happening. The dashboard will still show the old data. I wanted to give the user a hint if something is wrong with the api or the ceph cluster, so I've added a little warning icon that tells you if the data shown in ceph-dash is getting to old. Reasons for that can be an slow or unresponsive cluster (some error handling is happening - a monitor failover for example).
