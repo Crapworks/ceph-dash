@@ -23,10 +23,11 @@ class InfluxResource(ApiResource):
         results = []
 
         for metric in config.get('metrics', []):
+            collection = []
             for query in metric.get('queries', []):
                 result = client.query(query, epoch='ms')
+                print query
 
-                collection = []
                 if result:
                     for index, dataset in enumerate(result.raw['series']):
                         series= {}
