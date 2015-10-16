@@ -17,6 +17,7 @@ $(function () {
 
     // Gauge chart configuration options {{{
     var gauge_options = {
+        palette: [ "#62c462", "#f89406", "#ee5f5b", "#5bc0de" ],
         palette: 'Soft Pastel',
         animation: false,
         title: {
