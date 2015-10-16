@@ -122,6 +122,11 @@ class DashboardResource(ApiResource):
                 # find unhealthy osds in osd tree
                 cluster_status['osdmap']['details'] = get_unhealthy_osd_details(osd_status)
 
+            pool_utilization = CephClusterCommand(cluster, prefix='df', format='json')
+            if 'err' in pool_utilization:
+                abort(500, pool_utilization['err'])
+            cluster_status['poolstats'] = pool_utilization.get('pools', [])
+
             if request.mimetype == 'application/json':
                 return jsonify(cluster_status)
             else:

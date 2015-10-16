@@ -28,18 +28,6 @@ $(function () {
             top: 0,
             right: 10
         },
-        tooltip: {
-            enabled: true,
-            precision: 2,
-            font: { 
-                size: 14, 
-                color: '#1C1E22', 
-                weight: 100
-            },
-            customizeText: function() { 
-                return this.valueText + '%';
-            }
-        },
         startValue: 0,
         endValue: 100,
         label: false,
@@ -303,13 +291,38 @@ $(function () {
             // *monitor state*
             monmapMons = data['monmap']['mons'];
             timechekMons = data['health']['timechecks']['mons'];
+
+            // *per pool utilization*
+            poolStats = data['poolstats']
             // }}}
+
 
             // Update Content {{{
             // ----------------------------------------------------------------
-            // update storage capacity
+            // update storage capacity per pool
+            var poolValues = [];
+            var poolTooltips = [];
+            $.each(poolStats, function(index, pool) {
+                used = pool.stats.bytes_used;
+                avail = pool.stats.max_avail;
+                percUsage = (used / avail) * 100;
+                poolValues.push(percUsage.toFixed(2));
+                poolTooltips.push(pool.name + ': ' + fmtBytes(used) + ' / ' + fmtBytes(avail) + ' (' + percUsage.toFixed(2) + '%)')
+            });
             $("#utilization").dxBarGauge($.extend(true, {}, gauge_options, {
-                values: [21.3, 54.1, 30.9, 80,9]
+                values: poolValues,
+                tooltip: {
+                    enabled: true,
+                    precision: 2,
+                    font: { 
+                        size: 14, 
+                        color: '#1C1E22', 
+                        weight: 100
+                    },
+                    customizeText: function() { 
+                        return poolTooltips[this.index];
+                    }
+                },
             }));
             $("#utilization_info").html(fmtBytes(bytesUsed) + " / " + fmtBytes(bytesTotal) + " (" + percentUsed + "%)");
 
