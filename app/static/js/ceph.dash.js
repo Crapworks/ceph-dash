@@ -18,45 +18,32 @@ $(function () {
     // Gauge chart configuration options {{{
     var gauge_options = {
         palette: 'Soft Pastel',
-        animation: {
-            enabled: false
-        },
-        valueIndicator: {
-            type: 'triangleNeedle',
-            color: '#7a8288'
-        },
+        animation: false,
         title: {
-             text: 'Cluster storage utilization',
+             text: 'Utilization per pool',
              font: { size: 18, color: '#c8c8c8', family: 'Helvetica' },
              position: 'bottom-center'
-        },
-        geometry: {
-            startAngle: 180, 
-            endAngle: 0
         },
         margin: {
             top: 0,
             right: 10
         },
-        rangeContainer: {
-            ranges: [
-                { startValue: 0, endValue: 60, color: '#62c462' },
-                { startValue: 60, endValue: 80, color: '#f89406' },
-                { startValue: 80, endValue: 100, color: '#ee5f5b' }
-            ]
-        },
-        scale: {
-            startValue: 0, 
-            endValue: 100,
-            majorTick: {
-                tickInterval: 20
+        tooltip: {
+            enabled: true,
+            precision: 2,
+            font: { 
+                size: 14, 
+                color: '#1C1E22', 
+                weight: 100
             },
-            label: {
-                customizeText: function (arg) {
-                    return arg.valueText + ' %';
-                }
+            customizeText: function() { 
+                return this.valueText + '%';
             }
-        }
+        },
+        startValue: 0,
+        endValue: 100,
+        label: false,
+        backgroundColor: '#3E444C'
     };
     // }}}
 
@@ -321,8 +308,8 @@ $(function () {
             // Update Content {{{
             // ----------------------------------------------------------------
             // update storage capacity
-            $("#utilization").dxCircularGauge($.extend(true, {}, gauge_options, {
-                value: percentUsed
+            $("#utilization").dxBarGauge($.extend(true, {}, gauge_options, {
+                values: [21.3, 54.1, 30.9, 80,9]
             }));
             $("#utilization_info").html(fmtBytes(bytesUsed) + " / " + fmtBytes(bytesTotal) + " (" + percentUsed + "%)");
 
