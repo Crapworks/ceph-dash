@@ -318,7 +318,7 @@ $(function () {
                     font: { 
                         size: 14, 
                         color: '#1C1E22', 
-                        weight: 100
+                        weight: 600
                     },
                     customizeText: function() { 
                         return poolTooltips[this.index];
