@@ -305,10 +305,10 @@ $(function () {
             var poolTooltips = [];
             $.each(poolStats, function(index, pool) {
                 used = pool.stats.bytes_used;
-                avail = pool.stats.max_avail;
-                percUsage = (used / avail) * 100;
+                total = pool.stats.max_avail + used;
+                percUsage = (used / total) * 100;
                 poolValues.push(percUsage.toFixed(2));
-                poolTooltips.push(pool.name + ': ' + fmtBytes(used) + ' / ' + fmtBytes(avail) + ' (' + percUsage.toFixed(2) + '%)')
+                poolTooltips.push(pool.name + ': ' + fmtBytes(used) + ' / ' + fmtBytes(total) + ' (' + percUsage.toFixed(2) + '%)')
             });
             $("#utilization").dxBarGauge($.extend(true, {}, gauge_options, {
                 values: poolValues,
