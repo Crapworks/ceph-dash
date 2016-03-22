@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask.views import MethodView
 
+
 class ApiResource(MethodView):
     endpoint = None
     url_prefix = None
