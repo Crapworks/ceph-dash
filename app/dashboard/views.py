@@ -15,6 +15,7 @@ from rados import Error as RadosError
 
 from app.base import ApiResource
 
+
 class CephClusterProperties(dict):
     """
     Validate ceph cluster connection properties
