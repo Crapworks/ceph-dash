@@ -71,12 +71,16 @@ def get_unhealthy_osd_details(osd_status):
             # if OSD does not exists (DNE in osd tree) skip this entry
             if obj['exists'] == 0:
                 continue
-            if obj['status'] == 'down' or obj['status'] == 'out':
+            if obj['status'] == 'down' or obj['reweight'] == 0.0:
                 # It is possible to have one host in more than one branch in the tree.
                 # Add each unhealthy OSD only once in the list
+                if obj['status'] == 'down':
+                    status = 'down'
+                else:
+                    status = 'out'
                 entry = {
                     'name': obj['name'],
-                    'status': obj['status'],
+                    'status': status,
                     'host': find_host_for_osd(obj['id'], osd_status)
                 }
                 if entry not in unhealthy_osds:
