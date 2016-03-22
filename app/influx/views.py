@@ -6,8 +6,8 @@ from flask import current_app
 
 from influxdb import InfluxDBClient
 
-
 from app.base import ApiResource
+
 
 class InfluxResource(ApiResource):
     endpoint = 'influxdb'
