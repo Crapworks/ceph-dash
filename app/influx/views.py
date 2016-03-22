@@ -6,6 +6,7 @@ from flask import current_app
 
 from influxdb import InfluxDBClient
 
+
 from app.base import ApiResource
 
 class InfluxResource(ApiResource):
@@ -29,7 +30,7 @@ class InfluxResource(ApiResource):
 
                 if result:
                     for dataset in result.raw['series']:
-                        series= {}
+                        series = {}
                         series['data'] = dataset['values']
                         series['label'] = metric['labels'][index] if 'labels' in metric else None
                         series['lines'] = dict(fill=True)
