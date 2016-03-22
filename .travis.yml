@@ -5,5 +5,5 @@ python:
 install: 
   - pip install pep8
 before_script:
-  - pep8 .
+  - pep8 --ignore=E501 .
 #script: nosetests
