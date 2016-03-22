@@ -11,6 +11,7 @@ from urllib2 import urlopen
 
 from app.base import ApiResource
 
+
 class GraphiteResource(ApiResource):
     endpoint = 'graphite'
     url_prefix = '/graphite'
@@ -37,16 +38,15 @@ class GraphiteResource(ApiResource):
             for index, dataset in enumerate(json.load(resp)):
                 series = {}
                 # map graphite timestamp to javascript timestamp
-                data = [ [ts * 1000, value] for value, ts in dataset.get('datapoints', []) if value is not None ]
+                data = [[ts * 1000, value] for value, ts in dataset.get('datapoints', []) if value is not None]
 
                 series['data'] = data
                 series['label'] = metric['labels'][index] if 'labels' in metric else None
                 series['lines'] = dict(fill=True)
-                series['mode'] = metric['mode'] if 'mode' in metric else None 
+                series['mode'] = metric['mode'] if 'mode' in metric else None
                 series['color'] = metric['colors'][index] if 'colors' in metric else None
                 collection.append(series)
 
             results.append(collection)
 
         return jsonify(results=results)
-
