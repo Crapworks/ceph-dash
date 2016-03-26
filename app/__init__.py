@@ -37,6 +37,7 @@ app.config['USER_CONFIG'] = UserConfig()
 # only load influxdb endpoint if module is available
 try:
     import influxdb
+    assert influxdb
 except ImportError:
     # remove influxdb config because we can't use it
     if 'influxdb' in app.config['USER_CONFIG']:
