@@ -50,7 +50,7 @@ CEPH_OSD_TREE = {
 }
 
 
-class TestScraper(unittest.TestCase):
+class TestDashboard(unittest.TestCase):
     def setUp(self):
         pass
 
@@ -65,7 +65,7 @@ class TestScraper(unittest.TestCase):
 
     def test_unhealthy_osd(self):
         result = get_unhealthy_osd_details(CEPH_OSD_TREE)
-        self.assertIsInstance(result, list)
+        self.assertTrue(isinstance(result, list))
         self.assertEqual(len(result), 2)
 
     def test_unhealthy_osd_detail(self):
