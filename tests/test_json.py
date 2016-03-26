@@ -8,12 +8,12 @@ class TestScraper(unittest.TestCase):
         self.app.testing = True
 
     def tearDown(self):
-        pass 
+        pass
 
     def test_config(self):
         config = app.config['USER_CONFIG']
         self.assertIsInstance(config, dict)
-        self.assertTrue(config.has_key('ceph_config')) 
+        self.assertTrue('ceph_config' in config)
 
 if __name__ == '__main__':
     unittest.main()

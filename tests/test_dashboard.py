@@ -55,7 +55,7 @@ class TestScraper(unittest.TestCase):
         pass
 
     def tearDown(self):
-        pass 
+        pass
 
     def test_find_host(self):
         result = find_host_for_osd(0, CEPH_OSD_TREE)
