@@ -285,8 +285,17 @@ $(function () {
             recoverKeys = data['pgmap']['recovering_keys_per_sec'];
             recoverObjects = data['pgmap']['recovering_objects_per_sec'];
 
-            // *throughput* 
-            opsPerSec = data['pgmap']['op_per_sec'] || 0;
+            // *throughput*
+            if('op_per_sec' in data['pgmap']){
+              opsPerSec = data['pgmap']['op_per_sec'] || 0;
+            }
+
+            // new in Jewel
+            if('write_op_per_sec' in data['pgmap']) {
+              writeOpsPerSec = data['pgmap']['write_op_per_sec'] || 0
+              readOpsPerSec = data['pgmap']['read_op_per_sec'] || 0
+            }
+
             writesPerSec = fmtBytes(data['pgmap']['write_bytes_sec'] || 0);
             readsPerSec = fmtBytes(data['pgmap']['read_bytes_sec'] || 0);
 
@@ -350,7 +359,24 @@ $(function () {
             }
 
             // update current throughput values
-            $("#operations_per_second").html(opsPerSec);
+            if( typeof(opsPerSec) !== "undefined"){
+              $("#operations_per_second").html(opsPerSec);
+            } else{
+              $("#ops_container").hide();
+            }
+
+            if( typeof(writeOpsPerSec) !== "undefined"){
+              $("#write_operations_per_second").html(writeOpsPerSec);
+            } else{
+              $("#write_ops_container").hide();
+            }
+
+            if( typeof(readOpsPerSec) != "undefined"){
+              $("#read_operations_per_second").html(readOpsPerSec);
+            } else{
+              $("#reads_ops_container").hide();
+            }
+
             $("#write_bytes").html(writesPerSec);
             $("#read_bytes").html(readsPerSec);
 
