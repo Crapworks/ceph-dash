@@ -374,7 +374,7 @@ $(function () {
             if( typeof(readOpsPerSec) != "undefined"){
               $("#read_operations_per_second").html(readOpsPerSec);
             } else{
-              $("#reads_ops_container").hide();
+              $("#read_ops_container").hide();
             }
 
             $("#write_bytes").html(writesPerSec);
