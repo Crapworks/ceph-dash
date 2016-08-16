@@ -2,11 +2,10 @@
 
 import sys
 import json
-import time
-import argparse
 from urllib2 import Request
 from urllib2 import urlopen
 from influxdb import InfluxDBClient
+
 
 class CephClusterStatus(dict):
     def __init__(self, url):
@@ -75,10 +74,10 @@ class CephClusterStatus(dict):
                 }
             }
         ]
-    
+
         client = InfluxDBClient(host, port, database=dbname)
         client.create_database(dbname)
         client.create_retention_policy('standard', '1h', 3, default=True)
-    
-        result = client.write_points(data)
+
+        client.write_points(data)
         #print 'DEBUG: Wrote data to Influx'
