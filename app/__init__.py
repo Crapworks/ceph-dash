@@ -37,16 +37,19 @@ class UserConfig(dict):
 
 
 def InfluxInject(url='http://localhost/', host='localhost', port=8086):
-    # the program isnt finished starting up yet the first time we run this thread... so wait 2 seconds
+    # the program isnt finished starting up yet the first time
+    # we run this thread... so we will wait a small while
     time.sleep(2)
-    
+
     #print "DEBUG: Thread running..."
     status = CephClusterStatus(url)
     perfData = status.get_perf_data()
     status.InfluxDBInject(perfData, host, port)
-    
-    # now lets fire up the thread again in 4 seconds... ad infinitum
-    threading.Timer(4, InfluxInject, [url, host, port]).start()
+
+    # now lets fire up the thread again in fewer than 10 seconds
+    # I find that if we wait longer than 5 seconds there are sometimes
+    # gaps in the graphing.
+    threading.Timer(5, InfluxInject, [url, host, port]).start()
 
 
 app.config['USER_CONFIG'] = UserConfig()
@@ -68,12 +71,12 @@ else:
     if 'influxdb' in app.config['USER_CONFIG']:
         from app.influx.views import InfluxResource
         app.register_blueprint(InfluxResource.as_blueprint())
-        
+
         if 'uri' in app.config['USER_CONFIG']['influxdb']:
             uriList = app.config['USER_CONFIG']['influxdb']['uri'].split('/')
             hostname = uriList[2].split(':')[0]
             portnum = uriList[2].split(':')[1]
-            
+
             # run this in a seperate thread... will repeat until we close program
             threading.Thread(target=InfluxInject, args=('http://localhost/', hostname, portnum)).start()
 
