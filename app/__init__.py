@@ -41,7 +41,7 @@ def InfluxInject(url='http://localhost/', host='localhost', port=8086):
     # we run this thread... so we will wait a small while
     time.sleep(2)
 
-    #print "DEBUG: Thread running..."
+    # print "DEBUG: Thread running..."
     status = CephClusterStatus(url)
     perfData = status.get_perf_data()
     status.InfluxDBInject(perfData, host, port)
@@ -74,11 +74,11 @@ else:
 
         if 'uri' in app.config['USER_CONFIG']['influxdb']:
             uriList = app.config['USER_CONFIG']['influxdb']['uri'].split('/')
-            hostname = uriList[2].split(':')[0]
-            portnum = uriList[2].split(':')[1]
+            host = uriList[2].split(':')[0]
+            port = uriList[2].split(':')[1]
 
             # run this in a seperate thread... will repeat until we close program
-            threading.Thread(target=InfluxInject, args=('http://localhost/', hostname, portnum)).start()
+            threading.Thread(target=InfluxInject, args=('http://localhost/', host, port)).start()
 
 # only load endpoint if user wants to use graphite
 if 'graphite' in app.config['USER_CONFIG']:

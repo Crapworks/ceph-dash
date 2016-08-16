@@ -80,4 +80,4 @@ class CephClusterStatus(dict):
         client.create_retention_policy('standard', '1h', 3, default=True)
 
         client.write_points(data)
-        #print 'DEBUG: Wrote data to Influx'
+        # print 'DEBUG: Wrote data to Influx'
