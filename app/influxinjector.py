@@ -21,7 +21,7 @@ class CephClusterStatus(dict):
 
     def get_perf_data(self):
         perf_values = {
-            'pgmap': ['bytes_used', 'bytes_total', 'bytes_avail', 'data_bytes', 'num_pgs', 'read_bytes_sec', 'write_bytes_sec', 'read_op_per_sec', 'write_op_per_sec'],
+            'pgmap': ['read_bytes_sec', 'write_bytes_sec', 'read_op_per_sec', 'write_op_per_sec'],
         }
 
         perfdata = dict()
@@ -82,26 +82,3 @@ class CephClusterStatus(dict):
     
         result = client.write_points(data)
         #print 'DEBUG: Wrote data to Influx'
-
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--url', type=str, required=False, default='http://localhost',
-                        help='url for the ceph rados API')
-    parser.add_argument('--host', type=str, required=False, default='localhost',
-                        help='hostname of InfluxDB http API')
-    parser.add_argument('--port', type=int, required=False, default=8086,
-                        help='port of InfluxDB http API')
-    return parser.parse_args()
-
-
-if __name__ == '__main__':
-    args = parse_args()
-    
-    # Loop for as long as program is running...
-    while True:
-        status = CephClusterStatus(args.url)
-        perfData = status.get_perf_data()
-        status.InfluxDBInject(perfData, args.host, args.port)
-        #print "DEBUG: Now sleeping for 4 seconds..."
-        time.sleep(4)
