@@ -78,7 +78,7 @@ else:
             port = uriList[2].split(':')[1]
 
             # run this in a seperate thread... will repeat until we close program
-            threading.Thread(target=InfluxInject, args=('http://localhost/', host, port)).start()
+            threading.Thread(target=InfluxInject, args=('http://'+host, host, port)).start()
 
 # only load endpoint if user wants to use graphite
 if 'graphite' in app.config['USER_CONFIG']:
