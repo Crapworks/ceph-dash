@@ -15,6 +15,7 @@ from app.dashboard.views import DashboardResource
 
 import time
 import datetime
+import thread
 
 app = Flask(__name__)
 app.template_folder = join(dirname(__file__), 'templates')
@@ -52,7 +53,7 @@ class InsertDB():
                     self.client.write_points(self.create_json_body("op",cluster_status['pgmap']['op_per_sec']))
                 else:
                     self.client.write_points(self.create_json_body("op",0))
-                print "OK"
+                # settime interval
                 time.sleep(10)
 
     def __init__(self):
@@ -102,8 +103,7 @@ else:
     if 'influxdb-selfinsert' in app.config['USER_CONFIG']:
         from app.influx.views import InfluxResource
         app.register_blueprint(InfluxResource.as_blueprint())
-        insert = InsertDB()
-        insert.insert_data()
+        thread.start_new_thread(InsertDB().insert_data,())
 
 # only load endpoint if user wants to use graphite
 if 'graphite' in app.config['USER_CONFIG']:
