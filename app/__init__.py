@@ -37,12 +37,13 @@ class InsertDB():
     ]
 
     def insert_data(self):
-        with Rados(**self.clusterprop) as cluster:
-            cluster_status = CephClusterCommand(cluster, prefix='status', format='json')
-            while True:
+        while True:
+            with Rados(**self.clusterprop) as cluster:
+                cluster_status = CephClusterCommand(cluster, prefix='status', format='json')
                 # support insert database
                 if 'write_bytes_sec' in cluster_status['pgmap']:
                     self.client.write_points(self.create_json_body("write",cluster_status['pgmap']['write_bytes_sec']))
+                    print cluster_status['pgmap']['write_bytes_sec']
                 else:
                     self.client.write_points(self.create_json_body("write",0))
                 if 'read_bytes_sec' in cluster_status['pgmap']:
@@ -54,10 +55,10 @@ class InsertDB():
                 else:
                     self.client.write_points(self.create_json_body("op",0))
                 # settime interval
-                time.sleep(10)
+            time.sleep(10)
 
     def __init__(self):
-        self.config = app.config['USER_CONFIG'].get('influxdb-selfinsert', {})
+        self.config = app.config['USER_CONFIG'].get('influxdb', {})
         self.client = InfluxDBClient.from_DSN(self.config['uri'], timeout=5)
         self.clusterprop = CephClusterProperties(app.config['USER_CONFIG'])
 
@@ -98,12 +99,9 @@ else:
     if 'influxdb' in app.config['USER_CONFIG']:
         from app.influx.views import InfluxResource
         app.register_blueprint(InfluxResource.as_blueprint())
-
-    # set to self insert node if user don't want to use external program
-    if 'influxdb-selfinsert' in app.config['USER_CONFIG']:
-        from app.influx.views import InfluxResource
-        app.register_blueprint(InfluxResource.as_blueprint())
-        thread.start_new_thread(InsertDB().insert_data,())
+        # set to self insert node if user don't want to use external program
+        if 'selfinsert' in app.config['USER_CONFIG']['influxdb']:
+            thread.start_new_thread(InsertDB().insert_data,())
 
 # only load endpoint if user wants to use graphite
 if 'graphite' in app.config['USER_CONFIG']:

@@ -1,6 +1,6 @@
 {
     "ceph_config": "/etc/ceph/ceph.conf",
-    "influxdb": {
+    "influxdb-selfinsert": {
         "uri": "influxdb://host:8086/database",
         "metrics": [
             {

@@ -1,7 +1,8 @@
 {
     "ceph_config": "/etc/ceph/ceph.conf",
-    "influxdb-selfinsert": {
+    "influxdb": {
         "uri": "influxdb://192.168.4.2:8086/test",
+        "selfinsert": "yes",
         "metrics": [
             {
                 "queries" : [
