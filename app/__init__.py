@@ -6,13 +6,59 @@ import json
 from os.path import dirname
 from os.path import join
 from flask import Flask
+from rados import Rados
 
+from influxdb import InfluxDBClient
+
+from app.dashboard.views import *
 from app.dashboard.views import DashboardResource
+
+import time
+import datetime
 
 app = Flask(__name__)
 app.template_folder = join(dirname(__file__), 'templates')
 app.static_folder = join(dirname(__file__), 'static')
 
+class InsertDB():
+    """ Insert Database """
+
+    def create_json_body(self,rw,bytes_sec):
+        return [
+        {
+            "measurement": "ceph",
+            "time": datetime.datetime.now().isoformat(),
+            "fields": {
+                "type": rw,
+                "bytes_sec": bytes_sec,
+            }
+        }
+    ]
+
+    def insert_data(self):
+        with Rados(**self.clusterprop) as cluster:
+            cluster_status = CephClusterCommand(cluster, prefix='status', format='json')
+            while True:
+                # support insert database
+                if 'write_bytes_sec' in cluster_status['pgmap']:
+                    self.client.write_points(self.create_json_body("write",cluster_status['pgmap']['write_bytes_sec']))
+                else:
+                    self.client.write_points(self.create_json_body("write",0))
+                if 'read_bytes_sec' in cluster_status['pgmap']:
+                    self.client.write_points(self.create_json_body("read",cluster_status['pgmap']['read_bytes_sec']))
+                else:
+                    self.client.write_points(self.create_json_body("read",0))
+                if 'op_per_sec' in cluster_status['pgmap']:
+                    self.client.write_points(self.create_json_body("op",cluster_status['pgmap']['op_per_sec']))
+                else:
+                    self.client.write_points(self.create_json_body("op",0))
+                print "OK"
+                time.sleep(10)
+
+    def __init__(self):
+        self.config = app.config['USER_CONFIG'].get('influxdb-selfinsert', {})
+        self.client = InfluxDBClient.from_DSN(self.config['uri'], timeout=5)
+        self.clusterprop = CephClusterProperties(app.config['USER_CONFIG'])
 
 class UserConfig(dict):
     """ loads the json configuration file """
@@ -51,6 +97,13 @@ else:
     if 'influxdb' in app.config['USER_CONFIG']:
         from app.influx.views import InfluxResource
         app.register_blueprint(InfluxResource.as_blueprint())
+
+    # set to self insert node if user don't want to use external program
+    if 'influxdb-selfinsert' in app.config['USER_CONFIG']:
+        from app.influx.views import InfluxResource
+        app.register_blueprint(InfluxResource.as_blueprint())
+        insert = InsertDB()
+        insert.insert_data()
 
 # only load endpoint if user wants to use graphite
 if 'graphite' in app.config['USER_CONFIG']:
