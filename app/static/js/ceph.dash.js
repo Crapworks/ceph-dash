@@ -70,7 +70,8 @@ $(function () {
             timezone: "browser"
         },
         legend: {
-            show: true
+            show: true,
+            position: "nw"
         },
         grid: {
             hoverable: true,
