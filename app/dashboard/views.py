@@ -90,6 +90,24 @@ def get_unhealthy_osd_details(osd_status):
     return unhealthy_osds
 
 
+def get_osd_utilzations(osd_disk_utils):
+    """ get all osd utilization details (such as disk usage) from osds
+        this way we cna graph the distribution of crush placement of data """
+
+    osd_utils = list()
+
+    for obj in osd_disk_utils['nodes']:
+        if obj['type'] == 'osd':
+            entry = {
+                'name': obj['name'],
+                'utilization': obj['utilization'],
+                #'host': find_host_for_osd(obj['id'], osd_disk_utils)
+            }
+            osd_utils.append(entry)
+
+    return osd_utils
+
+
 class DashboardResource(ApiResource):
     """
     Endpoint that shows overall cluster status
@@ -114,6 +132,10 @@ class DashboardResource(ApiResource):
             if 'err' in cluster_status:
                 abort(500, cluster_status['err'])
 
+            osd_disk_utils = CephClusterCommand(cluster, prefix='osd df', format='json')
+            if 'err' in osd_disk_utils:
+                abort(500, osd_disk_utils['err'])
+
             # check for unhealthy osds and get additional osd infos from cluster
             total_osds = cluster_status['osdmap']['osdmap']['num_osds']
             in_osds = cluster_status['osdmap']['osdmap']['num_up_osds']
@@ -126,6 +148,9 @@ class DashboardResource(ApiResource):
 
                 # find unhealthy osds in osd tree
                 cluster_status['osdmap']['details'] = get_unhealthy_osd_details(osd_status)
+
+            # now find osds utilizations in osd df
+            cluster_status['osdmap']['utilizations'] = get_osd_utilzations(osd_disk_utils)
 
             if request.mimetype == 'application/json':
                 return jsonify(cluster_status)

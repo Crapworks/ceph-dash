@@ -170,6 +170,11 @@ $(function () {
         placement: 'bottom',
         trigger: 'hover'
     });
+    $("#num_osds").popover({
+        html: true,
+        placement: 'bottom',
+        trigger: 'hover'
+    });
     // }}}
 
     // MAKE SECTION COLLAPSABLE {{{
@@ -305,6 +310,7 @@ $(function () {
             numOSDup = data['osdmap']['osdmap']['num_up_osds'] || 0;
             numOSDunhealthy = data['osdmap']['osdmap']['num_osds'] - data['osdmap']['osdmap']['num_up_osds'] || 0;
             unhealthyOSDDetails = data['osdmap']['details'];
+            osdUtilizationDetails = data['osdmap']['utilizations'];
             osdFull = data['osdmap']['osdmap']['full'];
             osdNearFull = data['osdmap']['osdmap']['nearfull'];
 
@@ -433,6 +439,19 @@ $(function () {
                 msg = 'Monitor ' + mon['name'].toUpperCase() + ': ' + health;
                 $("#monitor_status").append('<div class="col-md-4">' + message(ceph2bootstrap[health], msg) + '</div>');
             });
+
+            osdPopover = $('#num_osds').data('bs.popover');
+            osdPopover.options.content = '';
+            if (typeof(osdUtilizationDetails) != 'undefined') {
+                osdPopover.options.content += '<table class="table table-condensed">';
+                $.each(osdUtilizationDetails, function(index, osd_utils) {
+                    osdPopover.options.content += '<tr>';
+                    osdPopover.options.content += '<td>' + osd_utils.name + '</td>';
+                    osdPopover.options.content += '<td>' + Math.round(osd_utils.utilization * 100) / 100 + ' %</td>';
+                    osdPopover.options.content += '</tr>';
+                });
+                osdPopover.options.content += '</table>';
+            }
 
             if ($('#graphite1').length > 0) {
                 // update graphite graphs if available
