@@ -146,14 +146,17 @@ class DashboardResource(ApiResource):
             if 'err' in cluster_status:
                 abort(500, cluster_status['err'])
 
-            osd_disk_utils = CephClusterCommand(cluster, prefix='osd df', format='json')
-            if 'err' in osd_disk_utils:
-                abort(500, osd_disk_utils['err'])
-
             # check for unhealthy osds and get additional osd infos from cluster
             total_osds = cluster_status['osdmap']['osdmap']['num_osds']
             in_osds = cluster_status['osdmap']['osdmap']['num_up_osds']
             up_osds = cluster_status['osdmap']['osdmap']['num_in_osds']
+
+            osd_disk_utils = CephClusterCommand(cluster, prefix='osd df', format='json')
+            if 'err' in osd_disk_utils:
+                abort(500, osd_disk_utils['err'])
+
+            # now find osds utilizations in osd df
+            cluster_status['osdmap']['utilizations'] = get_osd_utilzations(osd_disk_utils)
 
             if up_osds < total_osds or in_osds < total_osds:
                 osd_status = CephClusterCommand(cluster, prefix='osd tree', format='json')
@@ -162,9 +165,6 @@ class DashboardResource(ApiResource):
 
                 # find unhealthy osds in osd tree
                 cluster_status['osdmap']['details'] = get_unhealthy_osd_details(osd_status)
-
-            # now find osds utilizations in osd df
-            cluster_status['osdmap']['utilizations'] = get_osd_utilzations(osd_disk_utils)
 
             if request.mimetype == 'application/json':
                 return jsonify(cluster_status)
