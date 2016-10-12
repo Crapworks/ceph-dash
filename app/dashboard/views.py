@@ -100,12 +100,26 @@ def get_osd_utilzations(osd_disk_utils):
         if obj['type'] == 'osd':
             entry = {
                 'name': obj['name'],
+                'crush_weight': obj['crush_weight'],
+                'reweight': obj['reweight'],
+                'kb': obj['kb'],
+                'kb_used': obj['kb_used'],
+                'kb_avail': obj['kb_avail'],
                 'utilization': obj['utilization'],
+                'var': obj['var'],
+                'pgs': obj['pgs'],
                 #'host': find_host_for_osd(obj['id'], osd_disk_utils)
             }
             osd_utils.append(entry)
 
+    # and finally sort the list by OSD id before we return it
+    osd_utils = sorted(osd_utils, key=getName)
+
     return osd_utils
+
+
+def getName(item):
+    return item['name']
 
 
 class DashboardResource(ApiResource):

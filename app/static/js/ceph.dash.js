@@ -444,10 +444,28 @@ $(function () {
             osdPopover.options.content = '';
             if (typeof(osdUtilizationDetails) != 'undefined') {
                 osdPopover.options.content += '<table class="table table-condensed">';
+                osdPopover.options.content += '<tr>';
+                osdPopover.options.content += '<th><font color="yellow">Name</font></th>';
+                osdPopover.options.content += '<th><font color="yellow">Weight</font></th>';
+                osdPopover.options.content += '<th><font color="yellow">Reweight</font></th>';
+                osdPopover.options.content += '<th><font color="yellow">Total_Size</font></th>';
+                osdPopover.options.content += '<th><font color="yellow">Space_Used</font></th>';
+                osdPopover.options.content += '<th><font color="yellow">Space_Free</font></th>';
+                osdPopover.options.content += '<th><font color="yellow">Utilization</font></th>';
+                osdPopover.options.content += '<th><font color="yellow">Variability</font></th>';
+                osdPopover.options.content += '<th><font color="yellow">Pages</font></th>';
+                osdPopover.options.content += '</tr>';
                 $.each(osdUtilizationDetails, function(index, osd_utils) {
                     osdPopover.options.content += '<tr>';
                     osdPopover.options.content += '<td>' + osd_utils.name + '</td>';
+                    osdPopover.options.content += '<td>' + osd_utils.crush_weight + '</td>';
+                    osdPopover.options.content += '<td>' + osd_utils.reweight + '</td>';
+                    osdPopover.options.content += '<td>' + Math.round(osd_utils.kb / 1024 / 1024) + ' GB</td>';
+                    osdPopover.options.content += '<td>' + Math.round(osd_utils.kb_used / 1024 / 1024) + ' GB</td>';
+                    osdPopover.options.content += '<td>' + Math.round(osd_utils.kb_avail / 1024 / 1024) + ' GB</td>';
                     osdPopover.options.content += '<td>' + Math.round(osd_utils.utilization * 100) / 100 + ' %</td>';
+                    osdPopover.options.content += '<td>' + Math.round(osd_utils.var * 100) / 100 + '</td>';
+                    osdPopover.options.content += '<td>' + osd_utils.pgs + '</td>';
                     osdPopover.options.content += '</tr>';
                 });
                 osdPopover.options.content += '</table>';
