@@ -108,7 +108,7 @@ def get_osd_utilzations(osd_disk_utils):
                 'utilization': obj['utilization'],
                 'var': obj['var'],
                 'pgs': obj['pgs'],
-                #'host': find_host_for_osd(obj['id'], osd_disk_utils)
+                # 'host': find_host_for_osd(obj['id'], osd_disk_utils)
             }
             osd_utils.append(entry)
 
