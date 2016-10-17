@@ -327,7 +327,7 @@ $(function () {
             if (monmapMons.length > 1) {
                 timechekMons = data['health']['timechecks']['mons'];
             } else {
-                timechekMons = data['health']['health']['health_services']['mons'];
+                timechekMons = data['health']['health']['health_services'][0]['mons'];
             }
             // }}}
 
