@@ -1,3 +1,26 @@
 {
-    "ceph_config": "/etc/ceph/ceph.conf"
+    "ceph_config": "/etc/ceph/ceph.conf",
+    "influxdb": {
+        "uri": "influxdb://localhost:8086/cephstats",
+        "metrics": [
+            {
+                "queries" : [
+                    "SELECT mean(value) FROM \"ceph.cluster\" WHERE hostname =~ /ceph-mon-.*/ AND type = 'read_bytes_sec' AND time > now() - 15m GROUP BY time(10s);",
+                    "SELECT mean(value) FROM \"ceph.cluster\" WHERE hostname =~ /ceph-mon-.*/ AND type = 'write_bytes_sec' AND time > now() - 15m GROUP BY time(10s);"
+                ],
+                "labels": [ "Read Bytes", "Write Bytes" ],
+                "colors": [ "#00dd00", "#dd0000" ],
+                "mode": "byteRate"
+            },
+            {
+                "queries" : [
+                    "SELECT mean(value) FROM \"ceph.cluster\" WHERE hostname =~ /ceph-mon-.*/ AND type = 'read_ops_sec' AND time > now() - 15m GROUP BY time(10s);",
+                    "SELECT mean(value) FROM \"ceph.cluster\" WHERE hostname =~ /ceph-mon-.*/ AND type = 'write_ops_sec' AND time > now() - 15m GROUP BY time(10s);"
+                ],
+                "labels": [ "Read OPS", "Write OPS" ],
+                "colors": [ "#5bc0de", "#dddd00" ]
+            }
+        ]
+    }
 }
+
