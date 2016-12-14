@@ -25,6 +25,10 @@ You can find a blog entry regarding monitoring a Ceph cluster with ceph-dash on 
 
 Newest Feature
 --------------
+### Configuration File selection
+
+`ceph-dash.py` now takes a `-c` option that allows users to specify the location of the configuration file. This defaults to ./config.json but can be anywhere on the filesystem
+
 
 ### InfluxDB support
 

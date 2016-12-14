@@ -8,6 +8,7 @@ from os.path import join
 from flask import Flask
 
 from app.dashboard.views import DashboardResource
+from optparse import OptionParser
 
 app = Flask(__name__)
 app.template_folder = join(dirname(__file__), 'templates')
@@ -27,10 +28,18 @@ class UserConfig(dict):
             rv[key] = value
         return rv
 
+    def parse_options(self):
+        parser = OptionParser()
+        parser.add_option("-c", "--config", dest="conf",
+                          help="use configuration FILE",
+                          default=join(dirname(dirname(__file__)), 'config.json'))
+        (self.options, self.args) = parser.parse_args()
+
     def __init__(self):
         dict.__init__(self)
-        configfile = join(dirname(dirname(__file__)), 'config.json')
-        self.update(json.load(open(configfile), object_hook=self._string_decode_hook))
+        self.parse_options()
+        self.update(json.load(open(self.options.conf), object_hook=self._string_decode_hook))
+
 
 app.config['USER_CONFIG'] = UserConfig()
 
