@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import json
 
 from os.path import dirname
@@ -31,6 +32,16 @@ class UserConfig(dict):
         dict.__init__(self)
         configfile = join(dirname(dirname(__file__)), 'config.json')
         self.update(json.load(open(configfile), object_hook=self._string_decode_hook))
+
+        if os.environ.get('CEPHDASH_CEPHCONFIG', False):
+            self['ceph_config'] = os.environ['CEPHDASH_CEPHCONFIG']
+        if os.environ.get('CEPHDASH_KEYRING', False):
+            self['keyring'] = os.environ['CEPHDASH_KEYRING']
+        if os.environ.get('CEPHDASH_ID', False):
+            self['client_id'] = os.environ['CEPHDASH_ID']
+        if os.environ.get('CEPHDASH_NAME', False):
+            self['client_name'] = os.environ['CEPHDASH_NAME']
+
 
 app.config['USER_CONFIG'] = UserConfig()
 
