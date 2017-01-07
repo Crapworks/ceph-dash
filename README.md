@@ -152,4 +152,4 @@ Please keep in mind that the development server should not be used in a producti
 
 ### Problems with NginX and uwsgi
 
-See [this isse](/../../issues/35) for a detailed explanation how to fix errors with NginX and uwsgi (Thanks to [@Lighiche](https://github.com/Lighiche))
+See [this issue](/../../issues/35) for a detailed explanation how to fix errors with NginX and uwsgi (Thanks to [@Lighiche](https://github.com/Lighiche))
