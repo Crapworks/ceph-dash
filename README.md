@@ -16,6 +16,7 @@ ceph-dash - a free ceph dashboard / monitoring api
 	- [Graphite Integration](#user-content-graphite-integration)
 		- [Configuration](#user-content-configuration)
 		- [Example](#user-content-example)
+	- [FAQ](#user-content-faq)
 
 
 This is a small and clean approach of providing the [Ceph](http://ceph.com) overall cluster health status via a restful json api as well as via a (hopefully) fancy web gui. There are no dependecies to the existing ```ceph-rest-api```. This wsgi application talks to the cluster directly via librados.
@@ -80,18 +81,6 @@ Quickstart
 4. point your browser to http://ceph-monitor:5000/
 5. enjoy!
 
-**If you want to change the port number:**
-
-The development server of Ceph-dash runs by default on port 5000. If you can't use this port since it is already used by another application, you can change it by opening `ceph-dash.py` and change the line
-```python
-app.run(host='0.0.0.0', debug=True)
-```
-to
-```python
-app.run(host='0.0.0.0', port=6666, debug=True)
-```
-Please keep in mind that the development server should not be used in a production environment. Ceph-dash should be deployed into a proper webserver like Apache or Nginx.
-
 Dashboard
 ---------
 
@@ -146,3 +135,19 @@ Here you can see an example where one graph shows the bytes read/write per secon
 
 ![screenshot01](https://github.com/crapworks/ceph-dash/raw/master/screenshots/ceph-dash-graphite.png)
 
+FAQ
+---
+
+### How can I change the port number
+
+The development server of Ceph-dash runs by default on port 5000. If you can't use this port since it is already used by another application, you can change it by opening `ceph-dash.py` and change the line
+```python
+app.run(host='0.0.0.0', debug=True)
+```
+to
+```python
+app.run(host='0.0.0.0', port=6666, debug=True)
+```
+Please keep in mind that the development server should not be used in a production environment. Ceph-dash should be deployed into a proper webserver like Apache or Nginx.
+
+### How to deploy to Nginx
