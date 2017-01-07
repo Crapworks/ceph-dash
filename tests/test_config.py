@@ -15,5 +15,6 @@ class TestConfig(unittest.TestCase):
         self.assertTrue(isinstance(config, dict))
         self.assertTrue('ceph_config' in config)
 
+
 if __name__ == '__main__':
     unittest.main()

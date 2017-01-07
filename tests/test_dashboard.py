@@ -76,5 +76,6 @@ class TestDashboard(unittest.TestCase):
             if item['name'] == 'osd.2':
                 self.assertEqual(item['status'], 'out')
 
+
 if __name__ == '__main__':
     unittest.main()
