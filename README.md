@@ -3,6 +3,7 @@ ceph-dash - a free ceph dashboard / monitoring api
 
 - [ceph-dash - a free ceph dashboard / monitoring api](#user-content-ceph-dash---a-free-ceph-dashboard--monitoring-api)
 	- [Newest Feature](#user-content-newest-feature)
+		- [Docker Container](#user-content-docker-container)
 		- [InfluxDB support](#user-content-influxdb-support)
 		- [Old content warning](#user-content-old-content-warning)
 		- [Unhealthy OSD popover](#user-content-unhealthy-osd-popover)
@@ -25,6 +26,21 @@ You can find a blog entry regarding monitoring a Ceph cluster with ceph-dash on 
 
 Newest Feature
 --------------
+
+### Docker container
+
+Since everybody recently seems to be hyped as hell about the container stuff, I've decided that I can contribute to that with a ready-to-use docker container. Available at [Docker Hub](https://hub.docker.com/r/crapworks/ceph-dash/) you cann pull the ceph-dash container and configure it via the following environment variables:
+
+* Required: $CEPHMONS (comma separated list of ceph monitor ip addresses)
+* Required: $KEYRING (full keyring that you want to use to connect to your ceph cluster)
+* Optional: $NAME (name of the key you want to use)
+* Optional: $ID (id of the key you want to use)
+
+**Example**
+
+```bash
+docker run -p 5000:5000 -e CEPHMONS='10.0.2.15,10.0.2.16' -e KEYRING="$(sudo cat /etc/ceph/keyring)" crapworks/ceph-dash:latest
+```
 
 ### InfluxDB support
 
