@@ -150,4 +150,6 @@ app.run(host='0.0.0.0', port=6666, debug=True)
 ```
 Please keep in mind that the development server should not be used in a production environment. Ceph-dash should be deployed into a proper webserver like Apache or Nginx.
 
-### How to deploy to Nginx
+### Problems with NginX and uwsgi
+
+See [this isse](/../../issues/35) for a detailed explanation how to fix errors with NginX and uwsgi (Thanks to [@Lighiche](https://github.com/Lighiche))
