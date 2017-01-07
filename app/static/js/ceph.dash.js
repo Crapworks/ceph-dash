@@ -324,7 +324,11 @@ $(function () {
 
             // *monitor state*
             monmapMons = data['monmap']['mons'];
-            timechekMons = data['health']['timechecks']['mons'];
+            if (monmapMons.length > 1) {
+                timechekMons = data['health']['timechecks']['mons'];
+            } else {
+                timechekMons = data['health']['health']['health_services'][0]['mons'];
+            }
             // }}}
 
             // Update Content {{{
