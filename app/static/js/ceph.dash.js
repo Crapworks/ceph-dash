@@ -363,18 +363,21 @@ $(function () {
             // update current throughput values
             if( typeof(writeOpsPerSec) == 'undefined' && typeof(readOpsPerSec) == 'undefined' ){
               $("#operations_per_second").html(opsPerSec);
+              $("#ops_container").show();
             } else{
               $("#ops_container").hide();
             }
 
             if( typeof(writeOpsPerSec) != 'undefined'){
               $("#write_operations_per_second").html(writeOpsPerSec);
+              $("#write_ops_container").show();
             } else{
               $("#write_ops_container").hide();
             }
 
             if( typeof(readOpsPerSec) != 'undefined'){
               $("#read_operations_per_second").html(readOpsPerSec);
+              $("#read_ops_container").show();
             } else{
               $("#read_ops_container").hide();
             }
