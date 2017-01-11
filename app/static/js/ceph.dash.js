@@ -285,15 +285,6 @@ $(function () {
             recoverKeys = data['pgmap']['recovering_keys_per_sec'];
             recoverObjects = data['pgmap']['recovering_objects_per_sec'];
 
-            // *throughput*
-            opsPerSec = data['pgmap']['op_per_sec'] || 0;
-
-            // new in Jewel
-            if('write_op_per_sec' in data['pgmap']) {
-              writeOpsPerSec = data['pgmap']['write_op_per_sec'] || 0
-              readOpsPerSec = data['pgmap']['read_op_per_sec'] || 0
-            }
-
             writesPerSec = fmtBytes(data['pgmap']['write_bytes_sec'] || 0);
             readsPerSec = fmtBytes(data['pgmap']['read_bytes_sec'] || 0);
 
@@ -331,6 +322,28 @@ $(function () {
 
             // Update Content {{{
             // ----------------------------------------------------------------
+            // update current throughput values
+            if ('op_per_sec' in data['pgmap']) {
+                $("#operations_per_second").html(data['pgmap']['op_per_sec'] || 0);
+                $("#ops_container").show();
+            } else {
+                if (!('write_op_per_sec' in data['pgmap'] || 'read_op_per_sec' in data['pgmap'])) {
+                    $("#ops_container").show();
+                } else {
+                    $("#ops_container").hide();
+                }
+            }
+
+            if ('write_op_per_sec' in data['pgmap'] || 'read_op_per_sec' in data['pgmap']) {
+                $("#write_operations_per_second").html(data['pgmap']['write_op_per_sec'] || 0);
+                $("#read_operations_per_second").html(data['pgmap']['read_op_per_sec'] || 0);
+                $("#write_ops_container").show();
+                $("#read_ops_container").show();
+            } else{
+                $("#read_ops_container").hide();
+                $("#write_ops_container").hide();
+            }
+            
             // update storage capacity
             $("#utilization").dxCircularGauge($.extend(true, {}, gauge_options, {
                 value: percentUsed
@@ -358,14 +371,6 @@ $(function () {
                 $("#recovering_objects").html(panel('warning', 'Recovering objects / second', recoverObjects));
             } else {
                  $("#recovering_objects").empty();
-            }
-
-            // update current throughput values
-            if( typeof(writeOpsPerSec) == 'undefined' && typeof(readOpsPerSec) == 'undefined' ){
-              $("#operations_per_second").html(opsPerSec);
-              $("#ops_container").show();
-            } else{
-              $("#ops_container").hide();
             }
 
             if( typeof(writeOpsPerSec) != 'undefined'){
