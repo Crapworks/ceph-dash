@@ -328,6 +328,7 @@ $(function () {
                 $("#ops_container").show();
             } else {
                 if (!('write_op_per_sec' in data['pgmap'] || 'read_op_per_sec' in data['pgmap'])) {
+                    $("#operations_per_second").html(0);
                     $("#ops_container").show();
                 } else {
                     $("#ops_container").hide();
@@ -339,11 +340,11 @@ $(function () {
                 $("#read_operations_per_second").html(data['pgmap']['read_op_per_sec'] || 0);
                 $("#write_ops_container").show();
                 $("#read_ops_container").show();
-            } else{
+            } else {
                 $("#read_ops_container").hide();
                 $("#write_ops_container").hide();
             }
-            
+
             // update storage capacity
             $("#utilization").dxCircularGauge($.extend(true, {}, gauge_options, {
                 value: percentUsed
@@ -371,20 +372,6 @@ $(function () {
                 $("#recovering_objects").html(panel('warning', 'Recovering objects / second', recoverObjects));
             } else {
                  $("#recovering_objects").empty();
-            }
-
-            if( typeof(writeOpsPerSec) != 'undefined'){
-              $("#write_operations_per_second").html(writeOpsPerSec);
-              $("#write_ops_container").show();
-            } else{
-              $("#write_ops_container").hide();
-            }
-
-            if( typeof(readOpsPerSec) != 'undefined'){
-              $("#read_operations_per_second").html(readOpsPerSec);
-              $("#read_ops_container").show();
-            } else{
-              $("#read_ops_container").hide();
             }
 
             $("#write_bytes").html(writesPerSec);
