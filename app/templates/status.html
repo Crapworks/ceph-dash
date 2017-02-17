@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>Ceph Dashboard</title>
+  <title>{% if title %}{{ title }}{% else %}Ceph Dashboard{% endif %}</title>
   <link href="{{ url_for('static', filename='css/bootstrap.min.slate.css') }}" rel="stylesheet">
   <link href="{{ url_for('static', filename='css/ceph.dash.css') }}" rel="stylesheet">
   <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" />
@@ -11,7 +11,7 @@
 <body>
   <div class="container">
     <div class="well">
-      <h1>Ceph Dashboard</h1>
+      <h1>{% if title %}{{ title }}{% else %}Ceph Dashboard{% endif %}</h1>
       <p>
         <!--show warning icon if data is getting to old-->
         <span id="last_update" style="display:none;" class="glyphicon glyphicon-warning-sign icon-warn"></span>

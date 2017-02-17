@@ -130,4 +130,4 @@ class DashboardResource(ApiResource):
             if request.mimetype == 'application/json':
                 return jsonify(cluster_status)
             else:
-                return render_template('status.html', data=cluster_status, config=self.config)
+                return render_template('status.html', data=cluster_status, config=self.config, title=request.args.get('title'))
