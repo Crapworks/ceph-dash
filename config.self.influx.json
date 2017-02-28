@@ -1,0 +1,25 @@
+{
+    "ceph_config": "/etc/ceph/ceph.conf",
+    "influxdb": {
+        "uri": "influxdb://host:8086/database",
+        "selfinsert": "yes",
+        "metrics": [
+            {
+                "queries" : [
+                    "SELECT \"bytes_sec\" FROM \"ceph\" WHERE type = 'read' AND time > now() - 15m",
+                    "SELECT \"bytes_sec\" FROM \"ceph\" WHERE type = 'write' AND time > now() - 15m"
+                ],
+                "labels": [ "Read", "Write" ],
+                "mode": "byteRate"
+            },
+            {
+                "queries" : [
+                    "SELECT \"bytes_sec\" FROM \"ceph\" WHERE type = 'op' AND time > now() - 15m"
+                ],
+                "labels": [ "IOPS" ],
+                "colors": [ "#5bc0de" ]
+            }
+        ]
+    }
+}
+
