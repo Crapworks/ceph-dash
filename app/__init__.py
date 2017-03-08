@@ -31,6 +31,7 @@ class UserConfig(dict):
     def __init__(self):
         dict.__init__(self)
         configfile = join(dirname(dirname(__file__)), 'config.json')
+        configfile = os.environ.get('CEPHDASH_CONFIGFILE', configfile)
         self.update(json.load(open(configfile), object_hook=self._string_decode_hook))
 
         if os.environ.get('CEPHDASH_CEPHCONFIG', False):
