@@ -150,6 +150,25 @@ app.run(host='0.0.0.0', port=6666, debug=True)
 ```
 Please keep in mind that the development server should not be used in a production environment. Ceph-dash should be deployed into a proper webserver like Apache or Nginx.
 
+### Running ceph-dash behind a reverse proxy
+
+Since Version 1.2 ceph-dash is able to run behind a reverse proxy that rewrites the path where ceph-dash resides correctly. If you are using nginx, you need to use a config like this:
+
+```
+server {
+    location /foobar {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Scheme $scheme;
+        proxy_set_header X-Script-Name /foobar;
+    }
+}
+
+```
+
+See also: https://github.com/wilbertom/flask-reverse-proxy, which is where I got the code for doing this.
+
 ### Problems with NginX and uwsgi
 
 See [this issue](/../../issues/35) for a detailed explanation how to fix errors with NginX and uwsgi (Thanks to [@Lighiche](https://github.com/Lighiche))

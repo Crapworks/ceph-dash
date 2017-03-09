@@ -8,6 +8,7 @@ echo "* CEPHMONS (comma separated list of ceph monitor ip addresses)"
 echo "* KEYRING (full keyring to deploy in docker container)"
 echo ""
 echo "# OPTIONAL ENVIRONMENT VARIABLES"
+echo "* CONFIG (path to ceph-dash config file"
 echo "* NAME (keyring name to use)"
 echo "* ID (keyting id to use)"
 echo ""
@@ -20,6 +21,11 @@ ceph -s
 
 export CEPHDASH_CEPHCONFIG="${CEPHCONFIG}"
 export CEPHDASH_KEYRING="${CEPHKEYRING}"
+
+
+if [ -n "${CONFIG}" ]; then
+    export CEPHDASH_CONFIGFILE="${CONFIG}"
+fi
 
 if [ -n "${NAME}" ]; then
     export CEPHDASH_NAME="${NAME}"
