@@ -13,7 +13,7 @@ echo "* NAME (keyring name to use)"
 echo "* ID (keyting id to use)"
 echo ""
 
-echo "${KEYRING}" > ${CEPHKEYRING}
+echo -e "${KEYRING}" > ${CEPHKEYRING}
 echo -e "[global]\nmon host = ${CEPHMONS}" > ${CEPHCONFIG}
 
 echo "# CEPH STATUS"
