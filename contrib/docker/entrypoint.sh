@@ -21,7 +21,11 @@ ceph -s
 
 export CEPHDASH_CEPHCONFIG="${CEPHCONFIG}"
 export CEPHDASH_KEYRING="${CEPHKEYRING}"
-export CEPHDASH_CONFIGFILE="${CONFIG}"
+
+
+if [ -n "${CONFIG}" ]; then
+    export CEPHDASH_CONFIGFILE="${CONFIG}"
+fi
 
 if [ -n "${NAME}" ]; then
     export CEPHDASH_NAME="${NAME}"
