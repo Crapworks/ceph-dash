@@ -310,13 +310,20 @@ $(function () {
             // *overall status*
             clusterStatusOverall = data['health']['overall_status'];
             clusterHealthSummary = [];
-            $.each(data['health']['checks'], function(index, check) {
-                clusterHealthSummary.push(check['summary']['message']);
-            });
+	    if (data['health']['summary'] || false) {
+	        $.each(data['health']['summary'], function(index, check) {
+                    clusterHealthSummary.push(check['summary']);
+                });
+            }
+            if (data['health']['checks'] || false) {
+                $.each(data['health']['checks'], function(index, check) {
+                    clusterHealthSummary.push(check['summary']['message']);
+                });
+            }
 
             // *monitor state*
             monmapMons = data['monmap']['mons'];
-            timechekMons = data['quorum_names'];
+            quorumMons = data['quorum_names'];
             // }}}
 
             // Update Content {{{
@@ -421,7 +428,7 @@ $(function () {
             $("#monitor_status").empty();
             $.each(monmapMons, function(index, mon) {
                 health = 'HEALTH_ERR'
-		if (timechekMons.includes(mon['name'])) {
+		if (quorumMons.includes(mon['name'])) {
                         health = 'HEALTH_OK';
                 }
                 msg = 'Monitor ' + mon['name'].toUpperCase() + ': ' + health;
