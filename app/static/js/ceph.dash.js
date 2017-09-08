@@ -309,15 +309,14 @@ $(function () {
 
             // *overall status*
             clusterStatusOverall = data['health']['overall_status'];
-            clusterHealthSummary = data['health']['summary'];
+            clusterHealthSummary = [];
+            $.each(data['health']['checks'], function(index, check) {
+                clusterHealthSummary.push(check['summary']['message']);
+            });
 
             // *monitor state*
             monmapMons = data['monmap']['mons'];
-            if (monmapMons.length > 1) {
-                timechekMons = data['health']['timechecks']['mons'];
-            } else {
-                timechekMons = data['health']['health']['health_services'][0]['mons'];
-            }
+            timechekMons = data['quorum_names'];
             // }}}
 
             // Update Content {{{
@@ -414,7 +413,7 @@ $(function () {
             // update overall cluster status details
             $("#overall_status").append('<ul class="list-group">');
             $.each(clusterHealthSummary, function(index, obj) {
-                $("#overall_status").append('<li class="list-group-item active"><span class="glyphicon glyphicon-flash"></span><strong>' + obj['summary'] + '</strong></li>');
+                $("#overall_status").append('<li class="list-group-item active"><span class="glyphicon glyphicon-flash"></span><strong>' + obj + '</strong></li>');
             });
             $("#overall_status").append('</ul>');
 
@@ -422,11 +421,9 @@ $(function () {
             $("#monitor_status").empty();
             $.each(monmapMons, function(index, mon) {
                 health = 'HEALTH_ERR'
-                $.each(timechekMons, function(index, mon_health) {
-                    if (mon['name'] == mon_health['name']) {
-                        health = mon_health['health'];
-                    }
-                });
+		if (timechekMons.includes(mon['name'])) {
+                        health = 'HEALTH_OK';
+                }
                 msg = 'Monitor ' + mon['name'].toUpperCase() + ': ' + health;
                 $("#monitor_status").append('<div class="col-md-4">' + message(ceph2bootstrap[health], msg) + '</div>');
             });
