@@ -309,6 +309,9 @@ $(function () {
 
             // *overall status*
             clusterStatusOverall = data['health']['overall_status'];
+	    if (data['health']['status'] || false) {
+	        clusterStatusOverall = data['health']['status'];
+	    }
             clusterHealthSummary = [];
 	    if (data['health']['summary'] || false) {
 	        $.each(data['health']['summary'], function(index, check) {
