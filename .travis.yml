@@ -5,5 +5,4 @@ script:
   - tox
 env:
   - TOXENV=flake8
-  - TOXENV=py26
   - TOXENV=py27
