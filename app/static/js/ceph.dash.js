@@ -31,7 +31,7 @@ $(function () {
              position: 'bottom-center'
         },
         geometry: {
-            startAngle: 180, 
+            startAngle: 180,
             endAngle: 0
         },
         margin: {
@@ -46,7 +46,7 @@ $(function () {
             ]
         },
         scale: {
-            startValue: 0, 
+            startValue: 0,
             endValue: 100,
             majorTick: {
                 tickInterval: 20
@@ -118,7 +118,7 @@ $(function () {
             percentPrecision: 2,
             font: { size: 14, color: '#1c1e22', family: 'Helvetica' },
             arrowLength: 10,
-            customizeText: function() { 
+            customizeText: function() {
                 return this.valueText + " - " + this.argumentText + " (" + this.percentText + ")";
             }
         },
@@ -309,20 +309,21 @@ $(function () {
 
             // *overall status*
             clusterStatusOverall = data['health']['overall_status'];
-	    if (data['health']['status'] || false) {
-	        clusterStatusOverall = data['health']['status'];
-	    }
-            clusterHealthSummary = [];
-	    if (data['health']['summary'] || false) {
-	        $.each(data['health']['summary'], function(index, check) {
-                    clusterHealthSummary.push(check['summary']);
-                });
+            if (data['health']['status'] || false) {
+                clusterStatusOverall = data['health']['status'];
             }
+            clusterHealthSummary = [];
             if (data['health']['checks'] || false) {
                 $.each(data['health']['checks'], function(index, check) {
                     clusterHealthSummary.push(check['summary']['message']);
                 });
             }
+            else if (data['health']['summary'] || false) {
+                $.each(data['health']['summary'], function(index, check) {
+                    clusterHealthSummary.push(check['summary']);
+                });
+            }
+
 
             // *monitor state*
             monmapMons = data['monmap']['mons'];
