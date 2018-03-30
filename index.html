@@ -1,151 +1,344 @@
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<!DOCTYPE html>
+
+
+
+
+<html>
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Ceph-Dash</title>
-        <meta name="description" content="ceph-dash - ceph monitoring dashboard">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+	<meta name="generator" content="Hugo 0.37.1" />
+            <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> Ceph-Dash</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="css/lightbox.css">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/main.css">
+    <meta name="author" content="Christian Eichelmann">
+    <meta name="description" content="simple and fast ceph monitoring dashboard">
+    <meta http-equiv="content-language" content="en-us" />
 
-        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+  
+
+    
+    
+    <meta name="og:site_name" content="Ceph-Dash">
+    <meta name="og:title" content="Ceph-Dash">
+    <meta name="og:url" content="localhost:1313/">
+    <meta name="og:image" content="localhost:1313images/">
+    <meta name="twitter:title" content="Ceph-Dash" />
+    <meta name="twitter:url" content="localhost:1313/" />
+    <meta name="twitter:image" content="localhost:1313images/" />
+    <meta name="twitter:card" content="" />
+    
+    
+    
+    <link rel="canonical" href="#ZgotmplZ"/>
+
+    
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
+    
+    
+    <link rel="stylesheet" href="css/animate.css">
+    
+    <link rel="stylesheet" href="css/icomoon.css">
+    
+    <link rel="stylesheet" href="css/simple-line-icons.css">
+    
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    
+    <link rel="stylesheet" href="css/bootstrap.css">
+
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    
+    
+    <link rel="stylesheet" href="css/custom1.css">
+    
+    <link rel="stylesheet" href="css/custom2.css">
+    
+
+    
+    <script src="js/modernizr-2.6.2.min.js"></script>
+    
+    
+
     </head>
     <body>
+            <header role="banner" id="fh5co-header">
+        <div class="container">
+            
+            <nav class="navbar navbar-default">
+                <div class="navbar-header">
+                    
+                    <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><i></i></a>
+                    <img class="navbar-brand" src="img/ceph_logo.png"></img><a class="navbar-brand" href="index.html">Ceph-Dash</a> 
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                  <ul class="nav navbar-nav navbar-right">
 
-    <div class="jumbotron">
-      <div class="container">
-        <h1><img src="img/ceph_logo.png">Ceph-Dash</h1>
-        <p>Monitor your Ceph cluster with a fast, clean and easy to setup dashboard</p>
-        <p>
-          <a class="btn btn-primary btn-lg" href="https://github.com/Crapworks/ceph-dash/archive/v1.2.tar.gz" role="button">
-            Download Ceph-dash
-            <br/>
-            <small>Version 1.2 released 09.03.2017</small>
-          </a>
-        </p>
-      </div>
+                    
+
+                    <li class="active"><a href="#" data-nav-section="home"><span>Home</span></a></li>
+                    
+                    
+                    <li><a href="#" data-nav-section="work"><span>Screenshots</span></a></li> 
+                    
+
+                    
+
+                    
+                    <li><a href="#" data-nav-section="services"><span>Features</span></a></li> 
+                    
+
+                    
+
+                    
+
+                    
+                        <li><a class="external" href="https://github.com/Crapworks/ceph-dash/"><span>Github</span></a></li>
+                    
+                </ul>
+            </div>
+        </nav>
+        
     </div>
+</header>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4 fancycolumn">
-          <img src="img/setup.png" alt="setup" class="img-rounded">
-          <h2>Easy to setup</h2>
-          <p>
-            You can try ceph-dash in a few seconds! It requires no api (since it brings it's own), just Python2, Flask and the Ceph Python bindins. And for sure a running Ceph cluster. See <a href="https://github.com/Crapworks/ceph-dash#user-content-quickstart">here</a> how you can get it up and running!
-          </p>
-        </div>
-        <div class="col-md-4 fancycolumn">
-          <img src="img/read.png" alt="setup" class="img-rounded">
-          <h2>Easy to read</h2>
-          <p>
-            Ceph-dash shows you exactly what you need to know on a single web page! You can see at the first glance if something is wrong, and it will show you at the second glance <var>WHAT</var> and <var>WHERE</var> the problem is!
-          </p>
-       </div>
-        <div class="col-md-4 fancycolumn">
-          <img src="img/world.png" alt="setup" class="img-rounded">
-          <h2>Easy to contribute</h2>
-          <p>
-            Ceph-dash is a small piece of software and written in (hopefully) easily understandable code. I already received lots of contributions and have also seen some forks with custom feature that suit special environments!
-          </p>
-        </div>
-      </div>
 
-      <hr>
+			<section id="fh5co-home" data-section="home" style="background-image: url(images/full_image_2.jpg);" data-stellar-background-ratio="0.5">
+		<div class="gradient"></div>
+		<div class="container">
+			<div class="text-wrap">
+				<div class="text-inner">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2">
+							<h1 class="to-animate">Monitor your Ceph cluster with a fast, clean and easy to setup dashboard</h1>
+							<h2 class="to-animate"><a href="https://github.com/Crapworks/ceph-dash/releases/latest" target="_blank" title="Free HTML5 Bootstrap Templates">Download Ceph-Dash</a></h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="slant"></div>
+	</section>
+		
+        	<section id="fh5co-intro">
+		<div class="container">
+			<div class="row row-bottom-padded-lg">
+				
+				<div class="fh5co-block to-animate" style="background-image: url(images/img_7.jpg);">
+					<div class="overlay-darker"></div>
+					<div class="overlay"></div>
+					<div class="fh5co-text">
+						<i class="fh5co-intro-icon icon-wrench"></i>
+						<h2>Easy to setup</h2>
+						<p>You can try ceph-dash in a few seconds! It requires no api (since it brings it&#39;s own), just Python2, Flask and the Ceph Python bindins. And for sure a running Ceph cluster. No admin user required.</p>
+						<p><a href="https://github.com/Crapworks/ceph-dash#user-content-quickstart" class="btn btn-primary">Run it now</a></p>
+					</div>
+				</div>
+				
+				<div class="fh5co-block to-animate" style="background-image: url(images/img_8.jpg);">
+					<div class="overlay-darker"></div>
+					<div class="overlay"></div>
+					<div class="fh5co-text">
+						<i class="fh5co-intro-icon icon-bulb"></i>
+						<h2>Easy to read</h2>
+						<p>Ceph-dash shows you exactly what you need to know on a single web page! You can see at the first glance if something is wrong, and it will show you at the second glance WHAT and WHERE the problem is!</p>
+						<p><a href="https://github.com/Crapworks/ceph-dash#user-content-pictures" class="btn btn-primary">See it now</a></p>
+					</div>
+				</div>
+				
+				<div class="fh5co-block to-animate" style="background-image: url(images/img_10.jpg);">
+					<div class="overlay-darker"></div>
+					<div class="overlay"></div>
+					<div class="fh5co-text">
+						<i class="fh5co-intro-icon icon-rocket"></i>
+						<h2>Easy to contribute</h2>
+						<p>Ceph-dash is a small piece of software and written in (hopefully) easily understandable code. I already received lots of contributions and have also seen some forks with custom feature that suit special environments!</p>
+						<p><a href="https://github.com/Crapworks/ceph-dash/pulls" class="btn btn-primary">Change it now</a></p>
+					</div>
+				</div>
+				
+			</div>
+			
+		</div>
+	</section>
 
-      <div class="row">
-        <div class="col-md-6 textcolumn">
-          <h2>
-            Your overall cluster status on one page
-          </h2>
-          <p>
-            Ceph-dash is designed to show you everything you need to know about your ceph cluster health status on one clean page. Is there some recovery going on? Is my cluster in a warning state and if yes why? How many placement groups are in a unclean state? How much traffic is on my cluster right now? You will get all of the information by one quick look on your dashboard!
-          </p>
-          <div class="thumbnail">
-            <a href="img/cephdash01.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/cephdash01_thumb.png" alt="cephdash" class="img-rounded"></a>
-          </div>
-          <h2>
-            Small dependencies
-          </h2>
-          <p>
-            Ceph-dash only needs Python2 installed together with <samp>python-flask</samp> and <samp>python-ceph</samp>. It uses <samp>librados</samp> directly to talk with the ceph cluster and is not dependant on any other api. Just fire up <kbd>./ceph-dash.py</kbd> and you have everything you need to monitor your ceph cluster!
-          </p>
-          <h2>
-            See where the problem is
-          </h2>
-          <p>
-            Ceph-dash shows you not only <var>THAT</var> something is wrong, it also shows you <var>WHERE</var> the problem is! Is one of your monitors down? Are placementgroups inconsistent? See it at a single glance! Does ceph-dash show you unhealthy OSDs? Hover over the field and see what OSDs on which hosts are making trouble!
-          </p>
-          <div class="thumbnail">
-            <a href="img/ceph-dash-popover.png" data-lightbox="cephdash" data-title="Ceph-Dash shows you where the unhealthy osds are"><img src="img/ceph-dash-popover_min.png" alt="cephdash" class="img-rounded"></a>
-          </div>
-        </div>
-        <div class="col-md-6 textcolumn">
-          <h2>
-            Use the read-only api
-          </h2>
-          <p>
-            You can use ceph-dash not only as a dashboard, you can also get all the cluster status information as <samp>JSON</samp> data, calling ceph-dash with <kbd>Content-Type: application/json</kbd>! <samp>JSON</samp> is easily parsable in any programming language, so you can use the information from ceph-dash to automate processes with your own tools in your own infrastructure.
-          </p>
-          <h2>
-            Monitor you cluster with Nagios
-          </h2>
-          <p>
-            I have also provided a Nagios/Icinga Plugin that uses ceph-dash as a monitoring endpoint. You can simply plug it into you monitoring coniguration and get the cluster status and lots of performance data from your cluster without the need of running local processes on your ceph systems! The check can be obtained <a href="https://github.com/Crapworks/check_ceph_dash">here</a> and an article about monitoring Ceph with ceph-dash can be found <a href="http://crapworks.de/blog/2015/01/05/ceph-monitoring/">here</a>.
-          </p>
-          <h2>
-            Integrate your graphite data
-          </h2>
-          <p>
-            Ceph-dash uses the awesome <a href="http://d3js.org/">D3 Librabry</a> to display graphs for your <a href="https://graphite.readthedocs.org/">Graphite</a> data! Anything that you feed into graphite can be integrated into ceph-dash to complete the whole picture of your cluster health even more! We are using the <a href="https://github.com/Crapworks/check_ceph_dash">Nagios-Check for ceph-dash</a> to gather performance data, that we then show as graphs in ceph-dash!
-          </p>
-          <div class="thumbnail"><a href="img/cephdash01.png" data-lightbox="cephdash" data-title="Ceph-Dash in action"><img src="img/cephdash01_graph.png" alt="cephdash" class="img-rounded"></a></div>
-          <h2>
-            Deploy it into your favourite webserver
-          </h2>
-          <p>
-            Ceph-dash is a <samp>WSGI</samp> application, powered by <kbd>Flask</kbd>. That means you can deploy it into <samp>WSGI</samp>-capable webserver, like <samp>Apache</samp> or <samp>Nginx</samp>. Sample configuration files for these two webserver are already included into ceph-dash. Make use of it! Since the built-in webserver is single threaded and just for testing, this will improve performance a lot!
-          </p>
-       </div>
-      </div>
+		
+       			<section id="fh5co-work" data-section="work">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 section-heading text-center">
+					<h2 class="to-animate">Screenshots</h2>
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2 subtext to-animate">
+							<h3>Since this is a dashboard you might want to see what you get.</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row row-bottom-padded-sm">
+			
+				<div class="col-md-4 col-sm-6 col-xxs-12">
+					<a href="img/cephdash02.png" class="fh5co-project-item image-popup to-animate">
+						<img src="img/cephdash02.png" alt="Graphite Integration" class="img-responsive">
+						<div class="fh5co-text">
+						<h2>Healthy Cluster</h2>
+						<span></span>
+						</div>
+					</a>
+				</div>				
 
-      <hr>
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-4 col-sm-6 col-xxs-12">
+					<a href="img/cephdash03.png" class="fh5co-project-item image-popup to-animate">
+						<img src="img/cephdash03.png" alt="Graphite Integration" class="img-responsive">
+						<div class="fh5co-text">
+						<h2>Cluster Error View</h2>
+						<span></span>
+						</div>
+					</a>
+				</div>				
 
-      <footer>
-        <p class="github">
-          <a href="https://github.com/Crapworks/ceph-dash">
-            Watch and contribute to ceph-dash on Github<br>
-            <img src="img/github.png">
-          </a>
-        </p>
-        <p>&copy; Christian Eichelmann 2015</p>
-      </footer>
-    </div> <!-- /container -->
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-4 col-sm-6 col-xxs-12">
+					<a href="img/cephdash01.png" class="fh5co-project-item image-popup to-animate">
+						<img src="img/cephdash01.png" alt="Graphite Integration" class="img-responsive">
+						<div class="fh5co-text">
+						<h2>Graphite Integration</h2>
+						<span></span>
+						</div>
+					</a>
+				</div>				
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+				<div class="clearfix visible-sm-block"></div>
+			
+			</div>
+			<div class="row">
+				<div class="col-md-12 text-center to-animate">
+					<p></p>
+				</div>
+			</div>
+		</div>
+	</section>
 
-        <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+       	
 
-          ga('create', 'UA-58282115-2', 'auto');
-          ga('send', 'pageview');
-        </script>
+		
 
-        <script src="js/vendor/bootstrap.min.js"></script>
-        <script src="js/lightbox.js"></script>
-        <script src="js/main.js"></script>
+		
+        		<section id="fh5co-services" data-section="services">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 section-heading text-left">
+					<h2 class=" left-border to-animate">Features</h2>
+					<div class="row">
+						<div class="col-md-8 subtext to-animate">
+							<h3>The main reason for using Ceph-Dash is obvious: It&rsquo;s awesome! Anyways, here are some more.</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-monitor"></i>
+					<h3>Your overall cluster status on one page</h3>
+					<p>Ceph-dash is designed to show you everything you need to know about your ceph cluster health status on one clean page. Is there some recovery going on? Is my cluster in a warning state and if yes why? How many placement groups are in a unclean state? How much traffic is on my cluster right now? You will get all of the information by one quick look on your dashboard!</p>
+				</div>
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-layers2"></i>
+					<h3>Small dependencies</h3>
+					<p>Ceph-dash only needs Python2 installed together with python-flask and python-ceph. It uses librados directly to talk with the ceph cluster and is not dependant on any other api. Just fire up ./ceph-dash.py and you have everything you need to monitor your ceph cluster. You don&rsquo;t even need an admin user, read only access it enough.</p>
+				</div>
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-direction"></i>
+					<h3>Use the read-only api</h3>
+					<p>You can use ceph-dash not only as a dashboard, you can also get all the cluster status information as JSON data, calling ceph-dash with Content-Type: application/json! JSON is easily parsable in any programming language, so you can use the information from ceph-dash to automate processes with your own tools in your own infrastructure.</p>
+				</div>
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-graph"></i>
+					<h3>Integrate your graphite data</h3>
+					<p>Ceph-dash uses the awesome <a href="http://d3js.org/">D3 Librabry</a> to display graphs for your <a href="https://graphite.readthedocs.org/">Graphite</a> data! Anything that you feed into graphite can be integrated into ceph-dash to complete the whole picture of your cluster health even more! We are using the <a href="https://github.com/Crapworks/check_ceph_dash">Nagios-Check for ceph-dash</a> to gather performance data, that we then show as graphs in ceph-dash!</p>
+				</div>
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-eye"></i>
+					<h3>Monitor you cluster with Nagios</h3>
+					<p>I have also provided a Nagios/Icinga Plugin that uses ceph-dash as a monitoring endpoint. You can simply plug it into you monitoring coniguration and get the cluster status and lots of performance data from your cluster without the need of running local processes on your ceph systems! The check can be obtained <a href="https://github.com/Crapworks/check_ceph_dash">here</a> and an article about monitoring Ceph with ceph-dash can be found <a href="https://github.com/Crapworks/check_ceph_dash">here</a>.</p>
+				</div>
+				<div class="clearfix visible-sm-block"></div>
+			
+				<div class="col-md-6 col-sm-6 fh5co-service to-animate">
+					<i class="icon to-animate-2 icon-settings"></i>
+					<h3>Deploy it into your favourite webserver</h3>
+					<p>Ceph-dash is a WSGI application, powered by Flask. That means you can deploy it into WSGI-capable webserver, like Apache or Nginx. Sample configuration files for these two webserver are already included into ceph-dash. Make use of it! Since the built-in webserver is single threaded and just for testing, this will improve performance a lot!</p>
+				</div>
+				<div class="clearfix visible-sm-block"></div>
+			
+			</div>
+		</div>
+	</section>
+		
 
+		
+
+		
+
+		
+
+        
+        		<footer id="footer" role="contentinfo">
+		<a href="#" class="gotop js-gotop"><i class="icon-arrow-up2"></i></a>
+		<div class="container">
+			<div class="">
+				<div class="col-md-12 text-center">
+					<p>&copy; Christian Eichelmann</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<ul class="social social-circle">
+					
+						<li><a href="https://github.com/Crapworks"><i class="icon-github"></i></a></li>
+					
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+        
+
+        	
+	<script src="js/jquery.min.js"></script>
+	
+	<script src="js/jquery.easing.1.3.js"></script>
+	
+	<script src="js/bootstrap.min.js"></script>
+	
+	<script src="js/jquery.waypoints.min.js"></script>
+	
+	<script src="js/jquery.stellar.min.js"></script>
+	
+	<script src="js/jquery.countTo.js"></script>
+	
+	<script src="js/jquery.magnific-popup.min.js"></script>
+	<script src="js/magnific-popup-options.js"></script>
+	
+	
+	
+	<script src="js/main.js"></script>
 
     </body>
 </html>
