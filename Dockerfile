@@ -1,7 +1,7 @@
 FROM centos:7
 MAINTAINER Christian Eichelmann "christian@crapworks.de"
 
-ENV CEPH_VERSION jewel
+ENV CEPH_VERSION mimic
 
 # Install Ceph
 RUN rpm --import 'https://download.ceph.com/keys/release.asc'
