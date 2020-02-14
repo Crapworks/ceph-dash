@@ -14,6 +14,9 @@ echo "* NAME (keyring name to use)"
 echo "* ID (keyting id to use)"
 echo ""
 
+CEPHMONS=$(echo ${CEPHMONS} | sed 's/[a-z]\+=//g')
+CEPHMONS=$(echo ${CEPHMONS} | sed 's/rook-ceph-mon[0-9]\+=//g')
+
 echo -e "[global]\nmon host = ${CEPHMONS}" > ${CEPHCONFIG}
 
 echo "# CEPH STATUS"
