@@ -1,0 +1,9 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ceph-dash
+  namespace: rook-ceph
+spec:
+  backend:
+    serviceName: ceph-dash
+    servicePort: 5000

@@ -3,6 +3,7 @@ ceph-dash - a free ceph dashboard / monitoring api
 
 - [ceph-dash - a free ceph dashboard / monitoring api](#user-content-ceph-dash---a-free-ceph-dashboard--monitoring-api)
 	- [Newest Feature](#user-content-newest-feature)
+		- [Rook on Kubernetes](#user-content-root-on-kubernetes)
 		- [Docker Container](#user-content-docker-container)
 		- [InfluxDB support](#user-content-influxdb-support)
 		- [Old content warning](#user-content-old-content-warning)
@@ -27,6 +28,10 @@ You can find a blog entry regarding monitoring a Ceph cluster with ceph-dash on 
 
 Newest Feature
 --------------
+
+### Root on Kubernetes
+
+I recently played around with [Rook](https://rook.io/) on [Kubernetes](https://kubernetes.io/). This was so far my fastest Ceph cluster to setup. Since Rook provides some secrets and config maps already, I made the docker container for Ceph-dash compatible with their format. I also added Kubernetes deployment files in the contrib folder (tested on [GKE](https://cloud.google.com/kubernetes-engine), but should work on any Kubernetes cluster). No need to configure anything, they should just work out of the box.
 
 ### Docker container
 

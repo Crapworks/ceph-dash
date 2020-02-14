@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ceph-dash
+  namespace: rook-ceph
+  labels:
+    app: ceph-dash
+spec:
+  selector:
+    matchLabels:
+      app: ceph-dash
+  template:
+    metadata:
+      labels:
+        app: ceph-dash
+    spec:
+      containers:
+      - image: crapworks/ceph-dash:v1.5
+        name: ceph-dash
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "100m"
+          limits:
+            memory: "500Mi"
+            cpu: "200m"
+        env:
+        - name: CEPHMONS
+          valueFrom:
+            configMapKeyRef:
+              name: rook-ceph-mon-endpoints
+              key: data
+        - name: KEYRING
+          valueFrom:
+            secretKeyRef:
+              name: rook-ceph-mons-keyring
+              key: keyring
