@@ -2,6 +2,9 @@
 # -*- coding: UTF-8 -*-
 
 import json
+import subprocess as sp
+
+from packaging import version
 
 from flask import request
 from flask import render_template
@@ -110,17 +113,20 @@ class DashboardResource(ApiResource):
 
     def get(self):
         with Rados(**self.clusterprop) as cluster:
+            ceph_version = version.parse(sp.check_output(["ceph", "-v"]).split()[2])
             cluster_status = CephClusterCommand(cluster, prefix='status', format='json')
             if 'err' in cluster_status:
                 abort(500, cluster_status['err'])
 
-            # check for unhealthy osds and get additional osd infos from cluster
             # ceph >= 15.2.5
-            if 'osdmap' not in cluster_status['osdmap']:
+            if ceph_version >= version.parse('15.2.5'):
                 # osdmap has been converted to depth-1 dict
                 cluster_status['osdmap']['osdmap'] = cluster_status['osdmap'].copy()
                 monitor_status = CephClusterCommand(cluster, prefix='quorum_status', format='json')
                 cluster_status['monmap'] = monitor_status['monmap']
+
+
+            # check for unhealthy osds and get additional osd infos from cluster
             total_osds = cluster_status['osdmap']['osdmap']['num_osds']
             in_osds = cluster_status['osdmap']['osdmap']['num_up_osds']
             up_osds = cluster_status['osdmap']['osdmap']['num_in_osds']

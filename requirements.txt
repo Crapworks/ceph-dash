@@ -1,2 +1,3 @@
 flask>=0.10
 python-cephlibs
+packaging
