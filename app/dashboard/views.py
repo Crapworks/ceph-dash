@@ -115,9 +115,12 @@ class DashboardResource(ApiResource):
                 abort(500, cluster_status['err'])
 
             # check for unhealthy osds and get additional osd infos from cluster
-            total_osds = cluster_status['osdmap']['osdmap']['num_osds']
-            in_osds = cluster_status['osdmap']['osdmap']['num_up_osds']
-            up_osds = cluster_status['osdmap']['osdmap']['num_in_osds']
+            # osdmap has been converted to depth-1 dict
+            total_osds = cluster_status['osdmap']['num_osds']
+            in_osds = cluster_status['osdmap']['num_up_osds']
+            up_osds = cluster_status['osdmap']['num_in_osds']
+            # JS still requires depth-2 osdmap
+            cluster_status['osdmap']['osdmap'] = cluster_status['osdmap'].copy()
 
             if up_osds < total_osds or in_osds < total_osds:
                 osd_status = CephClusterCommand(cluster, prefix='osd tree', format='json')
