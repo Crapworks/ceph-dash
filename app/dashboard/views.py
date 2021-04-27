@@ -114,6 +114,14 @@ class DashboardResource(ApiResource):
             if 'err' in cluster_status:
                 abort(500, cluster_status['err'])
 
+            # ceph >= 15.2.5
+            if 'osdmap' not in cluster_status['osdmap']:
+                # osdmap has been converted to depth-1 dict
+                cluster_status['osdmap']['osdmap'] = cluster_status['osdmap'].copy()
+                monitor_status = CephClusterCommand(cluster, prefix='quorum_status', format='json')
+                cluster_status['monmap'] = monitor_status['monmap']
+
+
             # check for unhealthy osds and get additional osd infos from cluster
             total_osds = cluster_status['osdmap']['osdmap']['num_osds']
             in_osds = cluster_status['osdmap']['osdmap']['num_up_osds']
