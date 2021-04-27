@@ -121,7 +121,6 @@ class DashboardResource(ApiResource):
                 monitor_status = CephClusterCommand(cluster, prefix='quorum_status', format='json')
                 cluster_status['monmap'] = monitor_status['monmap']
 
-
             # check for unhealthy osds and get additional osd infos from cluster
             total_osds = cluster_status['osdmap']['osdmap']['num_osds']
             in_osds = cluster_status['osdmap']['osdmap']['num_up_osds']
