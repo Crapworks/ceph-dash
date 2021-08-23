@@ -44,7 +44,7 @@ class CephClusterCommand(dict):
 
     def __init__(self, cluster, **kwargs):
         dict.__init__(self)
-        ret, buf, err = cluster.mon_command(json.dumps(kwargs), '', timeout=5)
+        ret, buf, err = cluster.mon_command(json.dumps(kwargs), b'', timeout=5)
         if ret != 0:
             self['err'] = err
         else:
