@@ -7,7 +7,12 @@ import json
 from flask import jsonify
 from flask import current_app
 
-from urllib2 import urlopen
+# import urlopen from urllib.request / Python3
+# and fallback to urlopen from urllib2 / Python2
+try:
+  from urllib.request import urlopen
+except ImportError:
+  from urllib2 import urlopen
 
 from app.base import ApiResource
 
