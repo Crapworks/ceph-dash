@@ -75,12 +75,18 @@ class UserConfig(dict):
 
     def _string_decode_hook(self, data):
         rv = {}
-        for key, value in data.iteritems():
+        for key, value in data.items():
+          try:
             if isinstance(key, unicode):
                 key = key.encode('utf-8')
             if isinstance(value, unicode):
                 value = value.encode('utf-8')
-            rv[key] = value
+          # unicode does not exist if python3 is used
+          # ignore and don't do encoding, it is not
+          # needed in python3
+          except NameError:
+            pass
+          rv[key] = value
         return rv
 
     def __init__(self):
